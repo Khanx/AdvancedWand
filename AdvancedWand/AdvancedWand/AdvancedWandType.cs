@@ -8,7 +8,7 @@ namespace AdvancedWand
     [AutoLoadType]
     public class AdvancedWandType : BaseType
         {
-        public AdvancedWandType() { key = "Khanx.Wand"; }
+        public AdvancedWandType() { key = "bronzeaxe"; }
 
         public override void OnLeftClickWith(Players.Player player, Box<PlayerClickedData> boxedData)
             {
