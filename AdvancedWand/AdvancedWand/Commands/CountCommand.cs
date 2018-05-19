@@ -1,0 +1,74 @@
+﻿using ExtendedAPI.Commands;
+using Pipliz;
+
+namespace AdvancedWand.Commands
+    {
+
+    [AutoLoadCommand]
+    public class CountCommand : BaseCommand
+        {
+
+        public CountCommand()
+            {
+            startWith.Add("//count");
+            }
+
+        public override bool TryDoCommand(Players.Player player, string arg)
+            {
+            if(!AdvancedWandHelper.CheckCommand(player, arg, 2, out string[] args))
+                return true;
+
+            AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
+
+            AdvancedWandHelper.GenerateCorners(player, out Vector3Int start, out Vector3Int end);
+
+            ushort blockIndex = 0;
+
+            try
+                {
+                bool isNumeric = int.TryParse(args[1], out int IDBlock);
+
+                if(isNumeric)
+                    blockIndex = (ushort)IDBlock;
+                else
+                    blockIndex = ItemTypes.IndexLookup.GetIndex(args[1]);
+                }
+            catch(System.ArgumentException)
+                {
+                Pipliz.Chatting.Chat.Send(player, "Block not found");
+                return false;
+                }
+
+            int count = 0;
+
+            for(int x = start.x; x <= end.x; x++)
+                for(int y = start.y; y <= end.y; y++)
+                    for(int z = start.z; z <= end.z; z++)
+                        {
+                        Vector3Int newPos = new Vector3Int(x, y, z);
+                        if(World.TryGetTypeAt(newPos, out ushort actualType))
+                            {
+                            if(actualType == blockIndex)
+                                count++;
+                            else
+                                {
+                                ItemTypes.ItemType type = ItemTypes.GetType(actualType);
+
+                                if(!ItemTypes.NotableTypes.Contains(type) && type.ParentItemType != null && type.ParentItemType.ItemIndex == blockIndex)
+                                    count++;
+                                }
+                            }
+                        }
+
+            //Las camas son de dos bloques
+            if(blockIndex == ItemTypes.IndexLookup.GetIndex("bed"))
+                count /= 2;
+
+            Pipliz.Chatting.Chat.Send(player, string.Format("{0}: {1}", args[1], count));
+
+            return true;
+            }
+
+        }
+
+    }
