@@ -8,7 +8,7 @@ namespace AdvancedWand.Commands
     {
         public SizeCommand()
         {
-            startWith.Add("//size");
+            equalsTo.Add("//size");
         }
 
         public override bool TryDoCommand(Players.Player player, string arg)
@@ -24,11 +24,11 @@ namespace AdvancedWand.Commands
 
             int blocks_in_selected_area = x * y * z;
 
-            Pipliz.Chatting.Chat.Send(player, "Area size:");
-            Pipliz.Chatting.Chat.Send(player, string.Format("x: {0}", x));
-            Pipliz.Chatting.Chat.Send(player, string.Format("y: {0}", y));
-            Pipliz.Chatting.Chat.Send(player, string.Format("z: {0}", z));
-            Pipliz.Chatting.Chat.Send(player, string.Format("total: {0}", blocks_in_selected_area));
+            Pipliz.Chatting.Chat.Send(player, "<color=olive>Area size:</color>");
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>x: {0}</color>", x));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>y: {0}</color>", y));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>z: {0}</color>", z));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>total: {0}</color>", blocks_in_selected_area));
 
             return true;
         }

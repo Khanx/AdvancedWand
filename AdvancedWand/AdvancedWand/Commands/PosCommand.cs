@@ -8,8 +8,8 @@ namespace AdvancedWand.Commands
     {
         public PosCommand()
         {
-            startWith.Add("//pos1");
-            startWith.Add("//pos2");
+            equalsTo.Add("//pos1");
+            equalsTo.Add("//pos2");
         }
 
         public override bool TryDoCommand(Players.Player player, string arg)
@@ -27,7 +27,7 @@ namespace AdvancedWand.Commands
             //Wand is OFF
             if(!wand.active)
             {
-                Pipliz.Chatting.Chat.Send(player, "Wand is OFF, use //wand to activate");
+                Pipliz.Chatting.Chat.Send(player, "<color=red>Wand is OFF, use //wand to activate</color>");
                 return false;
             }
 
@@ -36,12 +36,12 @@ namespace AdvancedWand.Commands
             if(args[0].Equals("//pos1"))
             {
                 wand.pos1 = new Vector3Int(player.Position);
-                Pipliz.Chatting.Chat.Send(player, string.Format("Pos 1: {0}", wand.pos1));
+                Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Pos 1: {0}</color>", wand.pos1));
             }
             else //pos2
             {
                 wand.pos2 = new Vector3Int(player.Position);
-                Pipliz.Chatting.Chat.Send(player, string.Format("Pos 2: {0}", wand.pos2));
+                Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Pos 2: {0}</color>", wand.pos2));
             }
 
             return true;

@@ -14,12 +14,12 @@ namespace AdvancedWand
         public override bool TryDoCommand(Players.Player player, string arg)
         {
             if(!AdvancedWandHelper.CheckCommand(player, arg, 3, out string[] args))
-                return false;
+                return true;
 
             if(!int.TryParse(args[1], out int quantity))
             {
-                Pipliz.Chatting.Chat.Send(player, "Not number");
-                return false;
+                Pipliz.Chatting.Chat.Send(player, "<color=red>Not number</color>");
+                return true;
             }
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
@@ -34,7 +34,7 @@ namespace AdvancedWand
             wand.pos1 = start;
             wand.pos2 = end;
 
-            Pipliz.Chatting.Chat.Send(player, string.Format("Expand {0} {1}", quantity, args[2]));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Area expanded {0} block {1}</color>", quantity, args[2]));
 
             return true;
         }

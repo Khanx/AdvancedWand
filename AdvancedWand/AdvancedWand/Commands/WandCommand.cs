@@ -8,7 +8,7 @@ namespace AdvancedWand
         public WandCommand()
         {
             //startWith.Add("//w");
-            startWith.Add("//wand");
+            equalsTo.Add("//wand");
         }
 
         public override bool TryDoCommand(Players.Player player, string chat)
@@ -28,10 +28,10 @@ namespace AdvancedWand
             wand.active = !wand.active;
 
             if(wand.active)
-                Pipliz.Chatting.Chat.Send(player, "Wand ON");
+                Pipliz.Chatting.Chat.Send(player, "<color=green>Wand ON</color>");
             else
             {
-                Pipliz.Chatting.Chat.Send(player, "Wand OFF");
+                Pipliz.Chatting.Chat.Send(player, "<color=green>Wand OFF</color>");
                 AdvancedWand.RemoveAdvancedWand(player);
             }
 

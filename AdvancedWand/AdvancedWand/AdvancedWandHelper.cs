@@ -9,6 +9,7 @@ namespace AdvancedWand
         public static bool CheckCommand(Players.Player player, string arg, int expected_args, out string[] args)
         {
             args = null;
+
             //Player exists
             if(null == player || NetworkID.Server == player.ID)
                 return false;
@@ -22,21 +23,21 @@ namespace AdvancedWand
             //Wand is OFF
             if(!wand.active)
             {
-                Pipliz.Chatting.Chat.Send(player, "Wand is OFF, use //wand to activate");
+                Pipliz.Chatting.Chat.Send(player, "<color=red>Wand is OFF, use //wand to activate</color>");
                 return false;
             }
 
             //Pos1 initialized
-            if(null == wand.pos1)
+            if(Vector3Int.maximum == wand.pos1)
             {
-                Pipliz.Chatting.Chat.Send(player, "Pos 1 not initialized");
+                Pipliz.Chatting.Chat.Send(player, "<color=red>Pos 1 not initialized</color>");
                 return false;
             }
 
             //Pos2 initialized
-            if(null == wand.pos2)
+            if(Vector3Int.maximum == wand.pos2)
             {
-                Pipliz.Chatting.Chat.Send(player, "Pos 2 not initialized");
+                Pipliz.Chatting.Chat.Send(player, "<color=red>Pos 2 not initialized</color>");
                 return false;
             }
 
@@ -44,14 +45,14 @@ namespace AdvancedWand
 
             if(expected_args != args.Length)
             {
-                Pipliz.Chatting.Chat.Send(player, "Wrong Arguments");
+                Pipliz.Chatting.Chat.Send(player, "<color=red>Wrong Arguments</color>");
                 return false;
             }
 
             return true;
         }
 
-        //pos1 & pos2 MUST be initialized
+        //player != null & pos1 & pos2 MUST be initialized
         public static void GenerateCorners(Players.Player player, out Vector3Int start, out Vector3Int end)
         {
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
@@ -60,38 +61,38 @@ namespace AdvancedWand
             end = Vector3Int.Max(wand.pos1, wand.pos2);
         }
 
+        //player != null
         private static bool CheckBlock(Players.Player player, ushort block)
         {
-            if(block == 0)  //Air block
+            if(0 == block)  //Air block
                 return true;
 
             ItemTypes.ItemType type = ItemTypes.GetType(block);
 
             if(!type.IsPlaceable || type.NeedsBase || !ItemTypes.NotableTypes.Contains(type))
             {
-                Pipliz.Chatting.Chat.Send(player, "You can't place this block");
+                Pipliz.Chatting.Chat.Send(player, "<color=red>You can't place this block</color>");
                 return false;
             }
 
             return true;
         }
 
+        //player != null
         public static bool GetBlockIndex(Players.Player player, string block, out ushort blockIndex)
         {
             blockIndex = 0;
 
             try
             {
-                bool isNumeric = int.TryParse(block, out int IDBlock);
-
-                if(isNumeric)
+                if(int.TryParse(block, out int IDBlock))
                     blockIndex = (ushort)IDBlock;
                 else
                     blockIndex = ItemTypes.IndexLookup.GetIndex(block);
             }
             catch(System.ArgumentException)
             {
-                Pipliz.Chatting.Chat.Send(player, "Block not found");
+                Pipliz.Chatting.Chat.Send(player, "<color=red>Block not found</color>");
                 return false;
             }
 
@@ -99,6 +100,7 @@ namespace AdvancedWand
             return CheckBlock(player, blockIndex);
         }
 
+        //player != null
         public static bool CheckLimit(Players.Player player)
         {
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
@@ -112,7 +114,7 @@ namespace AdvancedWand
 
             if(wand.limit < blocks_in_selected_area)
             {
-                Pipliz.Chatting.Chat.Send(player, string.Format("You are trying to change {0} and the limit is {1}. You can change the limit with //limit <new_limit>", blocks_in_selected_area, wand.limit));
+                Pipliz.Chatting.Chat.Send(player, string.Format("<color=red>You are trying to change {0} and the limit is {1}. You can change the limit with //limit <new_limit></color>", blocks_in_selected_area, wand.limit));
                 return false;
             }
 

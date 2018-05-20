@@ -15,7 +15,7 @@ namespace AdvancedWand.Commands
         {
             //Player exists
             if(null == player || NetworkID.Server == player.ID)
-                return false;
+                return true;
 
             //Check permissions
             if(!Permissions.PermissionsManager.CheckAndWarnPermission(player, "khanx.wand"))
@@ -26,32 +26,32 @@ namespace AdvancedWand.Commands
             //Wand is OFF
             if(!wand.active)
             {
-                Pipliz.Chatting.Chat.Send(player, "Wand is OFF, use //wand to activate");
-                return false;
+                Pipliz.Chatting.Chat.Send(player, "<color=red>Wand is OFF, use //wand to activate</color>");
+                return true;
             }
 
             String[] args = ChatCommands.CommandManager.SplitCommand(arg);
 
             if(1 == args.Length)
             {
-                Pipliz.Chatting.Chat.Send(player, string.Format("Limit: {0}", wand.limit));
+                Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Limit: {0}</color>", wand.limit));
                 return true;
             }
 
             if(2 != args.Length)
             {
-                Pipliz.Chatting.Chat.Send(player, "Wrong Arguments");
-                return false;
+                Pipliz.Chatting.Chat.Send(player, "<color=red>Wrong Arguments</color>");
+                return true;
             }
 
             if(!int.TryParse(args[1], out int newLimit))
             {
-                Pipliz.Chatting.Chat.Send(player, "Not number");
-                return false;
+                Pipliz.Chatting.Chat.Send(player, "<color=red>Not number</color>");
+                return true;
             }
 
             wand.limit = newLimit;
-            Pipliz.Chatting.Chat.Send(player, string.Format("Limit: {0}", newLimit));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Limit: {0}</color>", newLimit));
 
             return true;
         }

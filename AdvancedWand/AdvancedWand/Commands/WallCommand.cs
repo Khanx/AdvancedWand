@@ -15,13 +15,13 @@ namespace AdvancedWand
         public override bool TryDoCommand(Players.Player player, string arg)
         {
             if(!AdvancedWandHelper.CheckCommand(player, arg, 2, out string[] args))
-                return false;
+                return true;
 
             if(!AdvancedWandHelper.CheckLimit(player))
-                return false;
+                return true;
 
             if(!AdvancedWandHelper.GetBlockIndex(player, args[1], out ushort blockIndex))
-                return false;
+                return true;
 
             AdvancedWandHelper.GenerateCorners(player, out Vector3Int start, out Vector3Int end);
 
@@ -40,6 +40,8 @@ namespace AdvancedWand
                             ServerManager.TryChangeBlock(newPos, BlockTypes.Builtin.BuiltinBlocks.Air);
                         }
                     }
+
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Wall: {0}</color>", args[1]));
 
             return true;
         }

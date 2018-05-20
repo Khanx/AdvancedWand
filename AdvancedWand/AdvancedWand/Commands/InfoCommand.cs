@@ -9,7 +9,7 @@ namespace AdvancedWand.Commands
     {
         public InfoCommand()
         {
-            startWith.Add("//info");
+            equalsTo.Add("//info");
         }
 
         public override bool TryDoCommand(Players.Player player, string arg)
@@ -53,14 +53,14 @@ namespace AdvancedWand.Commands
             if(info.ContainsKey(ItemTypes.IndexLookup.GetIndex("bed")))
                 info[ItemTypes.IndexLookup.GetIndex("bed")] /= 2;
 
-            Pipliz.Chatting.Chat.Send(player, "Area info:");
+            Pipliz.Chatting.Chat.Send(player, "<color=olive>Area info:</color>");
 
             foreach(ushort key in info.Keys)
             {
                 if(key == 0)
                     continue;
                 string name = ItemTypes.IndexLookup.GetName(key);
-                Pipliz.Chatting.Chat.Send(player, string.Format("{0}: {1}", name, info[key]));
+                Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>{0}: {1}</color>", name, info[key]));
             }
 
             return true;

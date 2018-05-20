@@ -33,8 +33,8 @@ namespace AdvancedWand.Commands
             }
             catch(System.ArgumentException)
             {
-                Pipliz.Chatting.Chat.Send(player, "Block not found");
-                return false;
+                Pipliz.Chatting.Chat.Send(player, "<color=red>Block not found</color>");
+                return true;
             }
 
             int count = 0;
@@ -62,7 +62,7 @@ namespace AdvancedWand.Commands
             if(blockIndex == ItemTypes.IndexLookup.GetIndex("bed"))
                 count /= 2;
 
-            Pipliz.Chatting.Chat.Send(player, string.Format("{0}: {1}", args[1], count));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>{0}: {1}</color>", args[1], count));
 
             return true;
         }

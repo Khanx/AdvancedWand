@@ -13,19 +13,15 @@ namespace AdvancedWand
 
         public override bool TryDoCommand(Players.Player player, string arg)
         {
-            //Pipliz.Chatting.Chat.Send(player, "CheckCommand");
             if(!AdvancedWandHelper.CheckCommand(player, arg, 2, out string[] args))
-                return false;
+                return true;
 
-            //Pipliz.Chatting.Chat.Send(player, "CheckLimit");
-            if(!AdvancedWandHelper.CheckLimit(player))
-                return false;
+           if(!AdvancedWandHelper.CheckLimit(player))
+                return true;
 
-            //Pipliz.Chatting.Chat.Send(player, "GetBlockIndex");
             if(!AdvancedWandHelper.GetBlockIndex(player, args[1], out ushort blockIndex))
-                return false;
+                return true;
 
-            //Pipliz.Chatting.Chat.Send(player, "WORKING");
             AdvancedWandHelper.GenerateCorners(player, out Vector3Int start, out Vector3Int end);
 
             for(int x = start.x; x <= end.x; x++)
@@ -35,6 +31,8 @@ namespace AdvancedWand
                         Vector3Int newPos = new Vector3Int(x, y, z);
                         ServerManager.TryChangeBlock(newPos, blockIndex);
                     }
+
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Set: {0}</color>", args[1]));
 
             return true;
         }

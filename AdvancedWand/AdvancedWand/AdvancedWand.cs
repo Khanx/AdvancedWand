@@ -11,8 +11,8 @@ namespace AdvancedWand
 
         public bool active = false;
         public int limit = 100000;
-        public Vector3Int pos1;
-        public Vector3Int pos2;
+        public Vector3Int pos1 = Vector3Int.maximum;
+        public Vector3Int pos2 = Vector3Int.maximum;
 
 
         private AdvancedWand() { }
