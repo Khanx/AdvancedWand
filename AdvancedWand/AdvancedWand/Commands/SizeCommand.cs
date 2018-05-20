@@ -2,19 +2,17 @@
 using Pipliz;
 
 namespace AdvancedWand.Commands
-    {
-
+{
     [AutoLoadCommand]
     public class SizeCommand : BaseCommand
-        {
-
+    {
         public SizeCommand()
-            {
+        {
             startWith.Add("//size");
-            }
+        }
 
         public override bool TryDoCommand(Players.Player player, string arg)
-            {
+        {
             if(!AdvancedWandHelper.CheckCommand(player, arg, 1, out string[] args))
                 return true;
 
@@ -33,7 +31,6 @@ namespace AdvancedWand.Commands
             Pipliz.Chatting.Chat.Send(player, string.Format("total: {0}", blocks_in_selected_area));
 
             return true;
-            }
         }
-
     }
+}

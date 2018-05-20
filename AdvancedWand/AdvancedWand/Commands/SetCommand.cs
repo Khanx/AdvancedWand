@@ -2,19 +2,17 @@
 using Pipliz;
 
 namespace AdvancedWand
-    {
-
+{
     [AutoLoadCommand]
     public class SetCommand : BaseCommand
-        {
-
+    {
         public SetCommand()
-            {
+        {
             startWith.Add("//set");
-            }
+        }
 
         public override bool TryDoCommand(Players.Player player, string arg)
-            {
+        {
             //Pipliz.Chatting.Chat.Send(player, "CheckCommand");
             if(!AdvancedWandHelper.CheckCommand(player, arg, 2, out string[] args))
                 return false;
@@ -33,14 +31,12 @@ namespace AdvancedWand
             for(int x = start.x; x <= end.x; x++)
                 for(int y = start.y; y <= end.y; y++)
                     for(int z = start.z; z <= end.z; z++)
-                        {
+                    {
                         Vector3Int newPos = new Vector3Int(x, y, z);
                         ServerManager.TryChangeBlock(newPos, blockIndex);
-                        }
+                    }
 
             return true;
-            }
-
         }
-
     }
+}
