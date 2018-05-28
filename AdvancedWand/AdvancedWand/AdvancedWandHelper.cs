@@ -6,10 +6,8 @@ namespace AdvancedWand
     public static class AdvancedWandHelper
     {
         //Misc checks to call a command
-        public static bool CheckCommand(Players.Player player, string arg, int expected_args, out string[] args)
+        public static bool CheckCommand(Players.Player player)
         {
-            args = null;
-
             //Player exists
             if(null == player || NetworkID.Server == player.ID)
                 return false;
@@ -38,14 +36,6 @@ namespace AdvancedWand
             if(Vector3Int.maximum == wand.pos2)
             {
                 Pipliz.Chatting.Chat.Send(player, "<color=red>Pos 2 not initialized</color>");
-                return false;
-            }
-
-            args = ChatCommands.CommandManager.SplitCommand(arg);
-
-            if(expected_args != args.Length)
-            {
-                Pipliz.Chatting.Chat.Send(player, "<color=red>Wrong Arguments</color>");
                 return false;
             }
 

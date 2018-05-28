@@ -14,7 +14,7 @@ namespace AdvancedWand.Commands
 
         public override bool TryDoCommand(Players.Player player, string arg)
         {
-            if(!AdvancedWandHelper.CheckCommand(player, arg, 1, out string[] args))
+            if(!AdvancedWandHelper.CheckCommand(player))
                 return true;
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);

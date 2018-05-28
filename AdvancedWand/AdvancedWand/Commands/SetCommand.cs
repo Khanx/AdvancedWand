@@ -1,4 +1,5 @@
-﻿using ExtendedAPI.Commands;
+﻿using BlockTypes.Builtin;
+using ExtendedAPI.Commands;
 using Pipliz;
 
 namespace AdvancedWand
@@ -13,14 +14,25 @@ namespace AdvancedWand
 
         public override bool TryDoCommand(Players.Player player, string arg)
         {
-            if(!AdvancedWandHelper.CheckCommand(player, arg, 2, out string[] args))
+            if(!AdvancedWandHelper.CheckCommand(player))
                 return true;
 
-           if(!AdvancedWandHelper.CheckLimit(player))
+            string[] args = ChatCommands.CommandManager.SplitCommand(arg);
+
+            if(0 >= args.Length)
+            {
+                Pipliz.Chatting.Chat.Send(player, "<color=red>Wrong Arguments</color>");
+                return true;
+            }
+
+            if(!AdvancedWandHelper.CheckLimit(player))
                 return true;
 
-            if(!AdvancedWandHelper.GetBlockIndex(player, args[1], out ushort blockIndex))
-                return true;
+            ushort blockIndex = BuiltinBlocks.Air;  //Default: Set 0
+
+            if(2 <= args.Length)
+                if(!AdvancedWandHelper.GetBlockIndex(player, args[1], out blockIndex))
+                    return true;
 
             AdvancedWandHelper.GenerateCorners(player, out Vector3Int start, out Vector3Int end);
 
@@ -32,7 +44,7 @@ namespace AdvancedWand
                         ServerManager.TryChangeBlock(newPos, blockIndex);
                     }
 
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Set: {0}</color>", args[1]));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Set: {0}</color>", blockIndex));
 
             return true;
         }

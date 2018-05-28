@@ -13,8 +13,16 @@ namespace AdvancedWand.Commands
 
         public override bool TryDoCommand(Players.Player player, string arg)
         {
-            if(!AdvancedWandHelper.CheckCommand(player, arg, 2, out string[] args))
+            if(!AdvancedWandHelper.CheckCommand(player))
                 return true;
+
+            string[] args = ChatCommands.CommandManager.SplitCommand(arg);
+
+            if(2 != args.Length)
+            {
+                Pipliz.Chatting.Chat.Send(player, "<color=red>Wrong Arguments</color>");
+                return true;
+            }
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
