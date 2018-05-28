@@ -1,4 +1,5 @@
-﻿using ExtendedAPI.Types;
+﻿using BlockTypes.Builtin;
+using ExtendedAPI.Types;
 using Pipliz;
 using Shared;
 
@@ -13,7 +14,7 @@ namespace AdvancedWand
         {
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
-            if(!wand.active)
+            if(!wand.active || boxedData.item1.typeHit == BuiltinBlocks.Air)
                 return;
 
             wand.pos1 = boxedData.item1.VoxelHit;
@@ -25,7 +26,7 @@ namespace AdvancedWand
         {
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
-            if(!wand.active)
+            if(!wand.active || boxedData.item1.typeHit == BuiltinBlocks.Air)
                 return;
 
             wand.pos2 = boxedData.item1.VoxelHit;
