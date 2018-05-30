@@ -48,7 +48,11 @@ namespace AdvancedWand.Helper
             if(0 == block)  //Air block
                 return true;
 
-            ItemTypes.ItemType type = ItemTypes.GetType(block);
+            if(!ItemTypes.TryGetType(block, out ItemTypes.ItemType type))
+            {
+                Pipliz.Chatting.Chat.Send(player, "<color=red>Block not found</color>");
+                return false;
+            }
 
             if(!type.IsPlaceable || type.NeedsBase || !ItemTypes.NotableTypes.Contains(type))
             {
@@ -64,14 +68,9 @@ namespace AdvancedWand.Helper
         {
             blockIndex = 0;
 
-            try
-            {
-                if(int.TryParse(block, out int IDBlock))
-                    blockIndex = (ushort)IDBlock;
-                else
-                    blockIndex = ItemTypes.IndexLookup.GetIndex(block);
-            }
-            catch(System.ArgumentException)
+            if(int.TryParse(block, out int IDBlock))
+                blockIndex = (ushort)IDBlock;
+            else if(!ItemTypes.IndexLookup.TryGetIndex(block, out blockIndex))
             {
                 Pipliz.Chatting.Chat.Send(player, "<color=red>Block not found</color>");
                 return false;
