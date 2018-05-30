@@ -17,9 +17,9 @@ namespace AdvancedWand
             if(!wand.active || boxedData.item1.typeHit == BuiltinBlocks.Air)
                 return;
 
-            wand.pos1 = boxedData.item1.VoxelHit;
+            wand.area.SetCorner1(boxedData.item1.VoxelHit);
 
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Pos 1: {0}</color>", wand.pos1));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Pos 1: {0}</color>", boxedData.item1.VoxelHit));
         }
 
         public override void OnRightClickWith(Players.Player player, Box<PlayerClickedData> boxedData)
@@ -29,9 +29,9 @@ namespace AdvancedWand
             if(!wand.active || boxedData.item1.typeHit == BuiltinBlocks.Air)
                 return;
 
-            wand.pos2 = boxedData.item1.VoxelHit;
+            wand.area.SetCorner2(boxedData.item1.VoxelHit);
 
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Pos 2: {0}</color>", wand.pos1));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Pos 2: {0}</color>", boxedData.item1.VoxelHit));
         }
     }
 }

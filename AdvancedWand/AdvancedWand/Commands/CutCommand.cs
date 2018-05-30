@@ -1,16 +1,15 @@
 ﻿using AdvancedWand.Helper;
-using BlockTypes.Builtin;
 using ExtendedAPI.Commands;
 using Pipliz;
 
 namespace AdvancedWand
 {
     [AutoLoadCommand]
-    public class SetCommand : BaseCommand
+    public class CutCommand : BaseCommand
     {
-        public SetCommand()
+        public CutCommand()
         {
-            startWith.Add("//set");
+            startWith.Add("//cut");
         }
 
         public override bool TryDoCommand(Players.Player player, string arg)
@@ -29,13 +28,9 @@ namespace AdvancedWand
             if(!CommandHelper.CheckLimit(player))
                 return true;
 
-            ushort blockIndex = BuiltinBlocks.Air;  //Default: Set 0
-
-            if(2 <= args.Length)
-                if(!CommandHelper.GetBlockIndex(player, args[1], out blockIndex))
-                    return true;
-
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
+
+            wand.copy = new Helper.Blueprint(wand.area, player);
 
             Vector3Int start = wand.area.corner1;
             Vector3Int end = wand.area.corner2;
@@ -45,10 +40,10 @@ namespace AdvancedWand
                     for(int z = start.z; z <= end.z; z++)
                     {
                         Vector3Int newPos = new Vector3Int(x, y, z);
-                        ServerManager.TryChangeBlock(newPos, blockIndex);
+                        ServerManager.TryChangeBlock(newPos, BlockTypes.Builtin.BuiltinBlocks.Air);
                     }
 
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Set: {0}</color>", blockIndex));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Cutted the selected area</color>"));
 
             return true;
         }

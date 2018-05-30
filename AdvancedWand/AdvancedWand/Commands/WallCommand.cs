@@ -1,4 +1,5 @@
-﻿using BlockTypes.Builtin;
+﻿using AdvancedWand.Helper;
+using BlockTypes.Builtin;
 using ExtendedAPI.Commands;
 using Pipliz;
 
@@ -15,7 +16,7 @@ namespace AdvancedWand
 
         public override bool TryDoCommand(Players.Player player, string arg)
         {
-            if(!AdvancedWandHelper.CheckCommand(player))
+            if(!CommandHelper.CheckCommand(player))
                 return true;
 
             string[] args = ChatCommands.CommandManager.SplitCommand(arg);
@@ -26,18 +27,21 @@ namespace AdvancedWand
                 return true;
             }
 
-            if(!AdvancedWandHelper.CheckLimit(player))
+            if(!CommandHelper.CheckLimit(player))
                 return true;
 
-            if(!AdvancedWandHelper.GetBlockIndex(player, args[1], out ushort blockIndex))
+            if(!CommandHelper.GetBlockIndex(player, args[1], out ushort blockIndex))
                 return true;
 
             ushort inner = BuiltinBlocks.Air;
             if(3 <= args.Length)
-                if(!AdvancedWandHelper.GetBlockIndex(player, args[2], out inner))
+                if(!CommandHelper.GetBlockIndex(player, args[2], out inner))
                     return true;
 
-            AdvancedWandHelper.GenerateCorners(player, out Vector3Int start, out Vector3Int end);
+            AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
+
+            Vector3Int start = wand.area.corner1;
+            Vector3Int end = wand.area.corner2;
 
             for(int x = start.x; x <= end.x; x++)
                 for(int y = start.y; y <= end.y; y++)

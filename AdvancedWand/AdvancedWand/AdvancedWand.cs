@@ -1,4 +1,5 @@
-﻿using Pipliz;
+﻿using AdvancedWand.Helper;
+using Pipliz;
 using System.Collections.Generic;
 
 namespace AdvancedWand
@@ -11,9 +12,8 @@ namespace AdvancedWand
 
         public bool active = false;
         public int limit = 100000;
-        public Vector3Int pos1 = Vector3Int.maximum;
-        public Vector3Int pos2 = Vector3Int.maximum;
-
+        public SelectedArea area = new SelectedArea();
+        public Blueprint copy;
 
         private AdvancedWand() { }
 

@@ -31,10 +31,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Colony Survival\colonyserver_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\SteamLibrary\steamapps\common\Colony Survival\colonyserver_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="ExtendedAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="ExtendedAPI">
       <HintPath>..\..\..\..\SteamLibrary\steamapps\common\Colony Survival\gamedata\mods\Khanx\ExtendedAPI\ExtendedAPI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -44,23 +43,29 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Colony Survival\colonyserver_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\SteamLibrary\steamapps\common\Colony Survival\colonyserver_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Colony Survival\colonyserver_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\..\..\..\SteamLibrary\steamapps\common\Colony Survival\colonyserver_Data\Managed\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdvancedWand.cs" />
-    <Compile Include="AdvancedWandHelper.cs" />
+    <Compile Include="Helper\CommandHelper.cs" />
     <Compile Include="AdvancedWandType.cs" />
     <Compile Include="Commands\ContractCommand.cs" />
+    <Compile Include="Commands\CopyCommand.cs" />
     <Compile Include="Commands\CountCommand.cs" />
+    <Compile Include="Commands\CutCommand.cs" />
     <Compile Include="Commands\ExpandCommand.cs" />
     <Compile Include="Commands\InfoCommand.cs" />
     <Compile Include="Commands\LimitCommand.cs" />
+    <Compile Include="Commands\MoveCommand.cs" />
+    <Compile Include="Commands\PasteCommand.cs" />
     <Compile Include="Commands\PosCommand.cs" />
     <Compile Include="Commands\SizeCommand.cs" />
+    <Compile Include="Helper\Blueprint.cs" />
+    <Compile Include="Helper\SelectedArea.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Commands\ReplaceCommand.cs" />
     <Compile Include="Commands\SetCommand.cs" />

@@ -33,15 +33,17 @@ namespace AdvancedWand.Commands
 
             string[] args = ChatCommands.CommandManager.SplitCommand(arg);
 
+            Vector3Int newPos = new Vector3Int(player.Position);
+
             if(args[0].Equals("//pos1"))
             {
-                wand.pos1 = new Vector3Int(player.Position);
-                Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Pos 1: {0}</color>", wand.pos1));
+                wand.area.SetCorner1(newPos);
+                Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Pos 1: {0}</color>", newPos));
             }
             else //pos2
             {
-                wand.pos2 = new Vector3Int(player.Position);
-                Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Pos 2: {0}</color>", wand.pos2));
+                wand.area.SetCorner2(newPos);
+                Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Pos 2: {0}</color>", newPos));
             }
 
             return true;

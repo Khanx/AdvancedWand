@@ -1,9 +1,9 @@
 ﻿using Pipliz;
 using UnityEngine;
 
-namespace AdvancedWand
+namespace AdvancedWand.Helper
 {
-    public static class AdvancedWandHelper
+    public static class CommandHelper
     {
         //Misc checks to call a command
         public static bool CheckCommand(Players.Player player)
@@ -26,29 +26,20 @@ namespace AdvancedWand
             }
 
             //Pos1 initialized
-            if(Vector3Int.maximum == wand.pos1)
+            if(!wand.area.IsPos1Initialized())
             {
                 Pipliz.Chatting.Chat.Send(player, "<color=red>Pos 1 not initialized</color>");
                 return false;
             }
 
             //Pos2 initialized
-            if(Vector3Int.maximum == wand.pos2)
+            if(!wand.area.IsPos2Initialized())
             {
                 Pipliz.Chatting.Chat.Send(player, "<color=red>Pos 2 not initialized</color>");
                 return false;
             }
 
             return true;
-        }
-
-        //player != null & pos1 & pos2 MUST be initialized
-        public static void GenerateCorners(Players.Player player, out Vector3Int start, out Vector3Int end)
-        {
-            AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
-
-            start = Vector3Int.Min(wand.pos1, wand.pos2);
-            end = Vector3Int.Max(wand.pos1, wand.pos2);
         }
 
         //player != null
@@ -95,12 +86,7 @@ namespace AdvancedWand
         {
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
-            int x = Math.Abs(wand.pos1.x - wand.pos2.x) + 1; //+1 is to take into account the start block
-            int y = Math.Abs(wand.pos1.y - wand.pos2.y) + 1;
-            int z = Math.Abs(wand.pos1.z - wand.pos2.z) + 1;
-
-            int blocks_in_selected_area = x * y * z;
-
+            int blocks_in_selected_area = wand.area.GetSize();
 
             if(wand.limit < blocks_in_selected_area)
             {

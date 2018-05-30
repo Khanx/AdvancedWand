@@ -1,4 +1,5 @@
-﻿using ExtendedAPI.Commands;
+﻿using AdvancedWand.Helper;
+using ExtendedAPI.Commands;
 using Pipliz;
 using System.Collections.Generic;
 
@@ -14,12 +15,13 @@ namespace AdvancedWand.Commands
 
         public override bool TryDoCommand(Players.Player player, string arg)
         {
-            if(!AdvancedWandHelper.CheckCommand(player))
+            if(!CommandHelper.CheckCommand(player))
                 return true;
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
-            AdvancedWandHelper.GenerateCorners(player, out Vector3Int start, out Vector3Int end);
+            Vector3Int start = wand.area.corner1;
+            Vector3Int end = wand.area.corner2;
 
             Dictionary<ushort, int> info = new Dictionary<ushort, int>();
 

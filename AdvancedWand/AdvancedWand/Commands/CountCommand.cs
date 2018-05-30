@@ -1,4 +1,5 @@
-﻿using ExtendedAPI.Commands;
+﻿using AdvancedWand.Helper;
+using ExtendedAPI.Commands;
 using Pipliz;
 
 namespace AdvancedWand.Commands
@@ -13,7 +14,7 @@ namespace AdvancedWand.Commands
 
         public override bool TryDoCommand(Players.Player player, string arg)
         {
-            if(!AdvancedWandHelper.CheckCommand(player))
+            if(!CommandHelper.CheckCommand(player))
                 return true;
 
             string[] args = ChatCommands.CommandManager.SplitCommand(arg);
@@ -26,7 +27,8 @@ namespace AdvancedWand.Commands
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
-            AdvancedWandHelper.GenerateCorners(player, out Vector3Int start, out Vector3Int end);
+            Vector3Int start = wand.area.corner1;
+            Vector3Int end = wand.area.corner2;
 
             ushort blockIndex = 0;
 
