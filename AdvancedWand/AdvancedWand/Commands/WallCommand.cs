@@ -52,7 +52,7 @@ namespace AdvancedWand
                             Vector3Int newPos = new Vector3Int(x, y, z);
                             ServerManager.TryChangeBlock(newPos, blockIndex);
                         }
-                        else
+                        else if(inner != BuiltinBlocks.Air)
                         {
                             Vector3Int newPos = new Vector3Int(x, y, z);
                             ServerManager.TryChangeBlock(newPos, inner);
