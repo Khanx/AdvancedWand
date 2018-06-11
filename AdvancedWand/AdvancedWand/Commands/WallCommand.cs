@@ -23,7 +23,7 @@ namespace AdvancedWand
 
             if(0 >= args.Length)
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=red>Wrong Arguments</color>");
+                Pipliz.Chatting.Chat.Send(player, "<color=orange>Wrong Arguments</color>");
                 return true;
             }
 
@@ -59,7 +59,7 @@ namespace AdvancedWand
                         }
                     }
 
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Wall: {0} {1}</color>", args[1], inner));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Wall: {0} {1}</color>", args[1], inner));
 
             return true;
         }

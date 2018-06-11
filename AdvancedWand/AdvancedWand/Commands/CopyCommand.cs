@@ -20,7 +20,7 @@ namespace AdvancedWand
 
             if(0 >= args.Length)
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=red>Wrong Arguments</color>");
+                Pipliz.Chatting.Chat.Send(player, "<color=orange>Wrong Arguments</color>");
                 return true;
             }
 
@@ -31,7 +31,7 @@ namespace AdvancedWand
 
             wand.copy = new Helper.Blueprint(wand.area, player);
 
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Copied the selected area</color>"));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Copied the selected area</color>"));
 
             return true;
         }

@@ -62,7 +62,7 @@ namespace AdvancedWand.Commands
                 if(key == 0)
                     continue;
                 string name = ItemTypes.IndexLookup.GetName(key);
-                Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>{0}: {1}</color>", name, info[key]));
+                Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>{0}: {1}</color>", name, info[key]));
             }
 
             return true;

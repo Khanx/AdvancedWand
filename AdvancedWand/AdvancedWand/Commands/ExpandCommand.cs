@@ -21,13 +21,13 @@ namespace AdvancedWand
 
             if(1 >= args.Length)
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=red>Wrong Arguments</color>");
+                Pipliz.Chatting.Chat.Send(player, "<color=orange>Wrong Arguments</color>");
                 return true;
             }
 
             if(!int.TryParse(args[1], out int quantity))
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=red>Not number</color>");
+                Pipliz.Chatting.Chat.Send(player, "<color=orange>Not number</color>");
                 return true;
             }
 
@@ -52,7 +52,7 @@ namespace AdvancedWand
             wand.area.SetCorner1(start);
             wand.area.SetCorner2(end);
 
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Area expanded {0} block {1}</color>", quantity, sdirection));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Area expanded {0} block {1}</color>", quantity, sdirection));
 
             return true;
         }

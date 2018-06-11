@@ -21,7 +21,7 @@ namespace AdvancedWand
 
             if(0 >= args.Length)
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=red>Wrong Arguments</color>");
+                Pipliz.Chatting.Chat.Send(player, "<color=orange>Wrong Arguments</color>");
                 return true;
             }
 
@@ -43,7 +43,7 @@ namespace AdvancedWand
                         ServerManager.TryChangeBlock(newPos, BlockTypes.Builtin.BuiltinBlocks.Air);
                     }
 
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Cutted the selected area</color>"));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Cutted the selected area</color>"));
 
             return true;
         }

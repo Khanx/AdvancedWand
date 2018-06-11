@@ -28,10 +28,10 @@ namespace AdvancedWand
             wand.active = !wand.active;
 
             if(wand.active)
-                Pipliz.Chatting.Chat.Send(player, "<color=green>Wand ON</color>");
+                Pipliz.Chatting.Chat.Send(player, "<color=lime>Wand ON</color>");
             else
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=green>Wand OFF</color>");
+                Pipliz.Chatting.Chat.Send(player, "<color=lime>Wand OFF</color>");
                 AdvancedWand.RemoveAdvancedWand(player);
             }
 

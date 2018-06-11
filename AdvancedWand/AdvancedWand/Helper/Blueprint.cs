@@ -43,10 +43,10 @@ namespace AdvancedWand.Helper
             playerMod = new Vector3Int(player.Position) - start;
 
             Pipliz.Chatting.Chat.Send(player, "<color=olive>Copied area:</color>");
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>X: {0}</color>", xSize));
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Y: {0}</color>", ySize));
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Z: {0}</color>", zSize));
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Total: {0}</color>", xSize* ySize* zSize));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>X: {0}</color>", xSize));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Y: {0}</color>", ySize));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Z: {0}</color>", zSize));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Total: {0}</color>", xSize* ySize* zSize));
         }
     }
 }

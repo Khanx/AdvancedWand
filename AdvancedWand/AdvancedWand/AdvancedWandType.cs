@@ -19,7 +19,7 @@ namespace AdvancedWand
 
             wand.area.SetCorner1(boxedData.item1.VoxelHit);
 
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Pos 1: {0}</color>", boxedData.item1.VoxelHit));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Pos 1: {0}</color>", boxedData.item1.VoxelHit));
         }
 
         public override void OnRightClickWith(Players.Player player, Box<PlayerClickedData> boxedData)
@@ -31,7 +31,7 @@ namespace AdvancedWand
 
             wand.area.SetCorner2(boxedData.item1.VoxelHit);
 
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Pos 2: {0}</color>", boxedData.item1.VoxelHit));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Pos 2: {0}</color>", boxedData.item1.VoxelHit));
         }
     }
 }

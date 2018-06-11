@@ -26,7 +26,7 @@ namespace AdvancedWand.Commands
             //Wand is OFF
             if(!wand.active)
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=red>Wand is OFF, use //wand to activate</color>");
+                Pipliz.Chatting.Chat.Send(player, "<color=orange>Wand is OFF, use //wand to activate</color>");
                 return true;
             }
 
@@ -34,24 +34,24 @@ namespace AdvancedWand.Commands
 
             if(1 == args.Length)
             {
-                Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Limit: {0}</color>", wand.limit));
+                Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Limit: {0}</color>", wand.limit));
                 return true;
             }
 
             if(2 != args.Length)
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=red>Wrong Arguments</color>");
+                Pipliz.Chatting.Chat.Send(player, "<color=orange>Wrong Arguments</color>");
                 return true;
             }
 
             if(!int.TryParse(args[1], out int newLimit))
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=red>Not number</color>");
+                Pipliz.Chatting.Chat.Send(player, "<color=orange>Not number</color>");
                 return true;
             }
 
             wand.limit = newLimit;
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=green>Limit: {0}</color>", newLimit));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Limit: {0}</color>", newLimit));
 
             return true;
         }

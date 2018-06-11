@@ -21,7 +21,7 @@ namespace AdvancedWand
 
             if(0 >= args.Length)
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=red>Wrong Arguments</color>");
+                Pipliz.Chatting.Chat.Send(player, "<color=orange>Wrong Arguments</color>");
                 return true;
             }
 
@@ -33,7 +33,7 @@ namespace AdvancedWand
 
             if(b == null)
             {
-                Pipliz.Chatting.Chat.Send(player, string.Format("<color=red>There is nothing copied</color>"));
+                Pipliz.Chatting.Chat.Send(player, string.Format("<color=orange>There is nothing copied</color>"));
                 return true;
             }
 
@@ -49,7 +49,7 @@ namespace AdvancedWand
                     }
 
             if(fail > 0)
-                Pipliz.Chatting.Chat.Send(player, string.Format("<color=red>{0} blocks have not been paste</color>", fail));
+                Pipliz.Chatting.Chat.Send(player, string.Format("<color=orange>{0} blocks have not been paste</color>", fail));
 
             return true;
         }

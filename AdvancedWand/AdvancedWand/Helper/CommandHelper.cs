@@ -21,21 +21,21 @@ namespace AdvancedWand.Helper
             //Wand is OFF
             if(!wand.active)
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=red>Wand is OFF, use //wand to activate</color>");
+                Pipliz.Chatting.Chat.Send(player, "<color=orange>Wand is OFF, use //wand to activate</color>");
                 return false;
             }
 
             //Pos1 initialized
             if(!wand.area.IsPos1Initialized())
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=red>Pos 1 not initialized</color>");
+                Pipliz.Chatting.Chat.Send(player, "<color=orange>Pos 1 not initialized</color>");
                 return false;
             }
 
             //Pos2 initialized
             if(!wand.area.IsPos2Initialized())
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=red>Pos 2 not initialized</color>");
+                Pipliz.Chatting.Chat.Send(player, "<color=orange>Pos 2 not initialized</color>");
                 return false;
             }
 
@@ -50,13 +50,13 @@ namespace AdvancedWand.Helper
 
             if(!ItemTypes.TryGetType(block, out ItemTypes.ItemType type))
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=red>Block not found</color>");
+                Pipliz.Chatting.Chat.Send(player, "<color=orange>Block not found</color>");
                 return false;
             }
 
             if(!type.IsPlaceable || type.NeedsBase || !ItemTypes.NotableTypes.Contains(type))
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=red>You can't place this block</color>");
+                Pipliz.Chatting.Chat.Send(player, "<color=orange>You can't place this block</color>");
                 return false;
             }
 
@@ -72,7 +72,7 @@ namespace AdvancedWand.Helper
                 blockIndex = (ushort)IDBlock;
             else if(!ItemTypes.IndexLookup.TryGetIndex(block, out blockIndex))
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=red>Block not found</color>");
+                Pipliz.Chatting.Chat.Send(player, "<color=orange>Block not found</color>");
                 return false;
             }
 
@@ -89,7 +89,7 @@ namespace AdvancedWand.Helper
 
             if(wand.limit < blocks_in_selected_area)
             {
-                Pipliz.Chatting.Chat.Send(player, string.Format("<color=red>You are trying to change {0} and the limit is {1}. You can change the limit with //limit <new_limit></color>", blocks_in_selected_area, wand.limit));
+                Pipliz.Chatting.Chat.Send(player, string.Format("<color=orange>You are trying to change {0} and the limit is {1}. You can change the limit with //limit <new_limit></color>", blocks_in_selected_area, wand.limit));
                 return false;
             }
 
