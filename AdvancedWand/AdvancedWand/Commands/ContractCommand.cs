@@ -49,8 +49,8 @@ namespace AdvancedWand.Commands
             else
                 start -= ( direction * quantity );
 
-            wand.area.SetCorner1(start);
-            wand.area.SetCorner2(end);
+            wand.area.SetCorner1(start, player);
+            wand.area.SetCorner2(end, player);
 
             Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Area contracted {0} block {1}</color>", quantity, sdirection));
 

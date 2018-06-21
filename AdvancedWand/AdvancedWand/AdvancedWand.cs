@@ -29,12 +29,33 @@ namespace AdvancedWand
 
             return null;
         }
- 
+
         [ModLoader.ModCallback(ModLoader.EModCallbackType.OnPlayerDisconnected, "Khanx.AdvancedWand.RemoveWandOnPlayerDisconnected")]
         public static void RemoveAdvancedWand(Players.Player player)
         {
             if(player != null)
                 advancedWands.Remove(player);
+        }
+
+        [ModLoader.ModCallback(ModLoader.EModCallbackType.OnSendAreaHighlights, "Khanx.AdvancedWand.ShowArea")]
+        public static void OnSendAreaHighlights(Players.Player player, List<AreaJobTracker.AreaHighlight> list, List<ushort> showWhileHoldingTypes)
+        {
+            if(null != player)
+            {
+                if(advancedWands.ContainsKey(player))
+                {
+                    if(!advancedWands[player].active)
+                        return;
+
+                    SelectedArea area = advancedWands[player].area;
+
+                    if(area.pos1 == Vector3Int.maximum || area.pos2 == Vector3Int.maximum)
+                        return;
+
+                    showWhileHoldingTypes.Add(BlockTypes.Builtin.BuiltinBlocks.BronzeAxe);
+                    list.Add(new AreaJobTracker.AreaHighlight(area.corner1, area.corner2, Shared.EAreaMeshType.AutoSelect, Shared.EAreaType.BuilderArea));
+                }
+            }
         }
     }
 }

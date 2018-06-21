@@ -17,7 +17,7 @@ namespace AdvancedWand
             if(!wand.active || boxedData.item1.typeHit == BuiltinBlocks.Air)
                 return;
 
-            wand.area.SetCorner1(boxedData.item1.VoxelHit);
+            wand.area.SetCorner1(boxedData.item1.VoxelHit, player);
 
             Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Pos 1: {0}</color>", boxedData.item1.VoxelHit));
         }
@@ -29,7 +29,7 @@ namespace AdvancedWand
             if(!wand.active || boxedData.item1.typeHit == BuiltinBlocks.Air)
                 return;
 
-            wand.area.SetCorner2(boxedData.item1.VoxelHit);
+            wand.area.SetCorner2(boxedData.item1.VoxelHit, player);
 
             Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Pos 2: {0}</color>", boxedData.item1.VoxelHit));
         }

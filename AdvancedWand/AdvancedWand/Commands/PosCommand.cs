@@ -37,12 +37,12 @@ namespace AdvancedWand.Commands
 
             if(args[0].Equals("//pos1"))
             {
-                wand.area.SetCorner1(newPos);
+                wand.area.SetCorner1(newPos, player);
                 Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Pos 1: {0}</color>", newPos));
             }
             else //pos2
             {
-                wand.area.SetCorner2(newPos);
+                wand.area.SetCorner2(newPos, player);
                 Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Pos 2: {0}</color>", newPos));
             }
 

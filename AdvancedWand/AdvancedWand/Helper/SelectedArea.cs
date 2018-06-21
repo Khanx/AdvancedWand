@@ -12,18 +12,22 @@ namespace AdvancedWand.Helper
         public bool IsPos1Initialized() { return pos1 != Vector3Int.maximum; }
         public bool IsPos2Initialized() { return pos2 != Vector3Int.maximum; }
 
-        public void SetCorner1(Vector3Int newPos)
+        public void SetCorner1(Vector3Int newPos, Players.Player player)
         {
             pos1 = newPos;
             corner1 = Vector3Int.Min(pos1, pos2);
             corner2 = Vector3Int.Max(pos1, pos2);
+
+            AreaJobTracker.SendData(player);
         }
 
-        public void SetCorner2(Vector3Int newPos)
+        public void SetCorner2(Vector3Int newPos, Players.Player player)
         {
             pos2 = newPos;
             corner1 = Vector3Int.Min(pos1, pos2);
             corner2 = Vector3Int.Max(pos1, pos2);
+
+            AreaJobTracker.SendData(player);
         }
 
         public int GetXSize() { return Math.Abs(pos1.x - pos2.x) + 1; }
