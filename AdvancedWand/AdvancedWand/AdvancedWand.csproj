@@ -51,6 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdvancedWand.cs" />
+    <Compile Include="Commands\RotateCommand.cs" />
+    <Compile Include="Commands\SaveCommand.cs" />
+    <Compile Include="Helper\BlueprintManager.cs" />
     <Compile Include="Helper\CommandHelper.cs" />
     <Compile Include="AdvancedWandType.cs" />
     <Compile Include="Commands\ContractCommand.cs" />

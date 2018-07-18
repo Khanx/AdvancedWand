@@ -29,7 +29,13 @@ namespace AdvancedWand
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
-            wand.copy = new Helper.Blueprint(wand.area, player);
+            wand.copy = new Blueprint(wand.area, player);
+
+            Pipliz.Chatting.Chat.Send(player, "<color=olive>Copied area:</color>");
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>X: {0}</color>", wand.copy.xSize));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Y: {0}</color>", wand.copy.ySize));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Z: {0}</color>", wand.copy.zSize));
+            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Total: {0}</color>", wand.copy.xSize * wand.copy.ySize * wand.copy.zSize));
 
             Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Copied the selected area</color>"));
 
