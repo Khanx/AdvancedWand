@@ -44,29 +44,29 @@ namespace AdvancedWand
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
             //Create a temporal copy
-            Helper.Blueprint tmpCopy = new Helper.Blueprint(wand.area, player);
+            Blueprint tmpCopy = new Blueprint(wand.area, player);
 
             //Remove the selected area
             Vector3Int start = wand.area.corner1;
             Vector3Int end = wand.area.corner2;
 
-            for(int x = start.x; x <= end.x; x++)
-                for(int y = start.y; y <= end.y; y++)
-                    for(int z = start.z; z <= end.z; z++)
+            for(int x = end.x; x >= start.x; x--)
+                for(int y = end.y; y >= start.y; y--)
+                    for(int z = end.z; z >= start.z; z--)
                     {
                         Vector3Int newPos = new Vector3Int(x, y, z);
-                        ServerManager.TryChangeBlock(newPos, BlockTypes.Builtin.BuiltinBlocks.Air);
+                        AdvancedWand.AddAction(newPos, BlockTypes.Builtin.BuiltinBlocks.Air);
                     }
 
             //Paste the temporal copy
             Vector3Int direction = ( CommandHelper.GetDirection(player.Forward, sdirection) * quantity );
 
-            for(int x = 0; x < tmpCopy.xSize; x++)
-                for(int y = 0; y < tmpCopy.ySize; y++)
-                    for(int z = 0; z < tmpCopy.zSize; z++)
+            for(int x = end.x; x >= start.x; x--)
+                for(int y = end.y; y >= start.y; y--)
+                    for(int z = end.z; z >= start.z; z--)
                     {
                         Vector3Int newPosition = new Vector3Int(player.Position) - tmpCopy.playerMod + direction + new Vector3Int(x, y, z);
-                        ServerManager.TryChangeBlock(newPosition, tmpCopy.blocks[x, y, z]);
+                        AdvancedWand.AddAction(newPosition, tmpCopy.blocks[x, y, z]);
                     }
 
             Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Moved {0} {1} the selected area</color>", quantity, sdirection));

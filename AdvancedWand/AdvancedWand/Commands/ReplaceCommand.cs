@@ -39,13 +39,14 @@ namespace AdvancedWand
                 Vector3Int start = wand.area.corner1;
                 Vector3Int end = wand.area.corner2;
 
-                for(int x = start.x; x <= end.x; x++)
-                    for(int y = start.y; y <= end.y; y++)
-                        for(int z = start.z; z <= end.z; z++)
+                for(int x = end.x; x >= start.x; x--)
+                    for(int y = end.y; y >= start.y; y--)
+                        for(int z = end.z; z >= start.z; z--)
                         {
                             Vector3Int newPos = new Vector3Int(x, y, z);
                             if(World.TryGetTypeAt(newPos, out ushort actualType) && ( actualType != BuiltinBlocks.Air && ItemTypes.NotableTypes.Contains(ItemTypes.GetType(actualType)) ))
-                                ServerManager.TryChangeBlock(newPos, newBlock);
+                                AdvancedWand.AddAction(newPos, newBlock);
+
                         }
 
                 Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>ALL -> {0}</color>", args[1]));
@@ -63,13 +64,13 @@ namespace AdvancedWand
                 Vector3Int start = wand.area.corner1;
                 Vector3Int end = wand.area.corner2;
 
-                for(int x = start.x; x <= end.x; x++)
-                    for(int y = start.y; y <= end.y; y++)
-                        for(int z = start.z; z <= end.z; z++)
+                for(int x = end.x; x >= start.x; x--)
+                    for(int y = end.y; y >= start.y; y--)
+                        for(int z = end.z; z >= start.z; z--)
                         {
                             Vector3Int newPos = new Vector3Int(x, y, z);
                             if(World.TryGetTypeAt(newPos, out ushort actualType) && actualType == oldBlock)
-                                ServerManager.TryChangeBlock(newPos, newBlock);
+                                AdvancedWand.AddAction(newPos, newBlock);
                         }
 
                 Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>{0} -> {1}</color>", args[1], args[2]));

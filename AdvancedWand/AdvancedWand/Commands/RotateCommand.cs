@@ -26,12 +26,12 @@ namespace AdvancedWand.Commands
 
             blueprint.Rotate();
 
-            for(int x = 0; x < blueprint.xSize; x++)
-                for(int y = 0; y < blueprint.ySize; y++)
-                    for(int z = 0; z < blueprint.zSize; z++)
+            for(int x = blueprint.xSize; x >= 0; x--)
+                for(int y = blueprint.ySize; y >= 0; y--)
+                    for(int z = blueprint.zSize; z >= 0; z--)
                     {
                         Vector3Int newPosition = new Vector3Int(player.Position) - blueprint.playerMod + new Vector3Int(x, y, z);
-                        ServerManager.TryChangeBlock(newPosition, blueprint.blocks[x, y, z]);
+                        AdvancedWand.AddAction(newPosition, blueprint.blocks[x, y, z]);
                     }
 
             return true;

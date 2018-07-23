@@ -30,6 +30,80 @@ namespace AdvancedWand
             return null;
         }
 
+        private static List<TupleStruct<Vector3Int, List<TupleStruct<Vector3Int, ushort>>>> actions = new List<TupleStruct<Vector3Int, List<TupleStruct<Vector3Int, ushort>>>>();
+        private static long nextUpdate = 0;
+        private static long increment = 750;
+
+        public static void AddAction(Vector3Int position, ushort type)
+        {
+            Vector3Int chunk = position.ToChunk();
+
+            bool found = false;
+            for(int i = 0; i < actions.Count; i++)
+            {
+                if(actions[i].item1 == chunk)
+                {
+                    var action = actions[i];
+                    actions.RemoveAt(i);
+
+                    action.item2.Add(new TupleStruct<Vector3Int, ushort>(position, type));
+                    actions.Insert(0, action);
+
+                    found = true;
+                    break;
+                }
+            }
+
+            if(!found)
+            {
+                TupleStruct<Vector3Int, List<TupleStruct<Vector3Int, ushort>>> tuple = new TupleStruct<Vector3Int, List<TupleStruct<Vector3Int, ushort>>>(chunk, new List<TupleStruct<Vector3Int, ushort>>());
+
+                tuple.item2.Add(new TupleStruct<Vector3Int, ushort>(position, type));
+
+                actions.Insert(0, tuple);
+            }
+        }
+
+        [ModLoader.ModCallback(ModLoader.EModCallbackType.OnLateUpdate, "Khanx.AdvancedWand.OnUpdateAction")]
+        public static void OnUpdate()
+        {
+            if(Time.MillisecondsSinceStart < nextUpdate)
+                return;
+
+            nextUpdate = Time.MillisecondsSinceStart + increment;
+
+            if(actions.Count <= 0)
+                return;
+
+            var chunkChanges = actions[0];
+            actions.RemoveAt(0);
+
+            var chunk = World.GetChunk(chunkChanges.item1);
+
+            if(chunk == null || chunk.DataState != Chunk.ChunkDataState.DataFull)   //chunk NOT loaded || Not posible to modify
+            {
+                actions.Add(chunkChanges);  //Added again to the list
+                return;
+            }
+
+            Pipliz.Threading.ThreadManager.InvokeOnMainThread(() =>
+            {
+                foreach(var change in chunkChanges.item2)
+                {
+                    World.TryGetTypeAt(change.item1, out ushort type);
+
+                    if(type == change.item2)
+                        continue;
+
+                    World.TrySetTypeAt(change.item1, change.item2);
+
+                    ItemTypesServer.OnChange(change.item1, type, change.item2, null);
+
+                    ServerManager.SendBlockChange(change.item1, change.item2);
+                }
+            });
+        }
+
         [ModLoader.ModCallback(ModLoader.EModCallbackType.OnPlayerDisconnected, "Khanx.AdvancedWand.RemoveWandOnPlayerDisconnected")]
         public static void RemoveAdvancedWand(Players.Player player)
         {

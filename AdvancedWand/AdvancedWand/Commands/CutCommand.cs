@@ -35,12 +35,12 @@ namespace AdvancedWand
             Vector3Int start = wand.area.corner1;
             Vector3Int end = wand.area.corner2;
 
-            for(int x = start.x; x <= end.x; x++)
-                for(int y = start.y; y <= end.y; y++)
-                    for(int z = start.z; z <= end.z; z++)
+            for(int x = end.x; x >= start.x; x--)
+                for(int y = end.y; y >= start.y; y--)
+                    for(int z = end.z; z >= start.z; z--)
                     {
                         Vector3Int newPos = new Vector3Int(x, y, z);
-                        ServerManager.TryChangeBlock(newPos, BlockTypes.Builtin.BuiltinBlocks.Air);
+                        AdvancedWand.AddAction(newPos, BlockTypes.Builtin.BuiltinBlocks.Air);
                     }
 
             Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Cutted the selected area</color>"));
