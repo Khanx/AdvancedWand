@@ -55,18 +55,20 @@ namespace AdvancedWand
                     for(int z = end.z; z >= start.z; z--)
                     {
                         Vector3Int newPos = new Vector3Int(x, y, z);
-                        AdvancedWand.AddAction(newPos, BlockTypes.Builtin.BuiltinBlocks.Air);
+                        if(World.TryGetTypeAt(newPos, out ushort actualType) && actualType != BlockTypes.Builtin.BuiltinBlocks.Air)
+                            AdvancedWand.AddAction(newPos, BlockTypes.Builtin.BuiltinBlocks.Air);
                     }
 
             //Paste the temporal copy
             Vector3Int direction = ( CommandHelper.GetDirection(player.Forward, sdirection) * quantity );
 
-            for(int x = end.x; x >= start.x; x--)
-                for(int y = end.y; y >= start.y; y--)
-                    for(int z = end.z; z >= start.z; z--)
+            for(int x = 0; x < tmpCopy.xSize; x++)
+                for(int y = 0; y < tmpCopy.ySize; y++)
+                    for(int z = 0; z < tmpCopy.zSize; z++)
                     {
                         Vector3Int newPosition = new Vector3Int(player.Position) - tmpCopy.playerMod + direction + new Vector3Int(x, y, z);
-                        AdvancedWand.AddAction(newPosition, tmpCopy.blocks[x, y, z]);
+                        if(World.TryGetTypeAt(newPosition, out ushort actualType) && actualType != tmpCopy.blocks[x, y, z])
+                            AdvancedWand.AddAction(newPosition, tmpCopy.blocks[x, y, z]);
                     }
 
             Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Moved {0} {1} the selected area</color>", quantity, sdirection));
