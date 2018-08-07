@@ -30,7 +30,10 @@ namespace AdvancedWand
             return null;
         }
 
-        private static List<TupleStruct<Vector3Int, List<TupleStruct<Vector3Int, ushort>>>> actions = new List<TupleStruct<Vector3Int, List<TupleStruct<Vector3Int, ushort>>>>();
+        private static Dictionary<Vector3Int, List<TupleStruct<Vector3Int, ushort>>> chunkChanges = new Dictionary<Vector3Int, List<TupleStruct<Vector3Int, ushort>>>();
+        private static Stack<Vector3Int> chunkOrder = new Stack<Vector3Int>();
+        private static Queue<Vector3Int> failedChunks = new Queue<Vector3Int>();
+
         private static long nextUpdate = 0;
         private static long increment = 750;
 
@@ -38,30 +41,19 @@ namespace AdvancedWand
         {
             Vector3Int chunk = position.ToChunk();
 
-            bool found = false;
-            for(int i = 0; i < actions.Count; i++)
+            if(chunkChanges.ContainsKey(chunk))
             {
-                if(actions[i].item1 == chunk)
-                {
-                    var action = actions[i];
-                    actions.RemoveAt(i);
-
-                    action.item2.Add(new TupleStruct<Vector3Int, ushort>(position, type));
-                    actions.Insert(0, action);
-
-                    found = true;
-                    break;
-                }
+                chunkChanges[chunk].Add(new TupleStruct<Vector3Int, ushort>(position, type));
+            }
+            else
+            {
+                List<TupleStruct<Vector3Int, ushort>> changes = new List<TupleStruct<Vector3Int, ushort>>();
+                changes.Add(new TupleStruct<Vector3Int, ushort>(position, type));
+                chunkChanges.Add(chunk, changes);
             }
 
-            if(!found)
-            {
-                TupleStruct<Vector3Int, List<TupleStruct<Vector3Int, ushort>>> tuple = new TupleStruct<Vector3Int, List<TupleStruct<Vector3Int, ushort>>>(chunk, new List<TupleStruct<Vector3Int, ushort>>());
-
-                tuple.item2.Add(new TupleStruct<Vector3Int, ushort>(position, type));
-
-                actions.Insert(0, tuple);
-            }
+            if(!chunkOrder.Contains(chunk))
+                chunkOrder.Push(chunk);
         }
 
         [ModLoader.ModCallback(ModLoader.EModCallbackType.OnLateUpdate, "Khanx.AdvancedWand.OnUpdateAction")]
@@ -72,33 +64,33 @@ namespace AdvancedWand
 
             nextUpdate = Time.MillisecondsSinceStart + increment;
 
-            if(actions.Count <= 0)
+            Vector3Int chunk;
+
+            if(chunkOrder.Count > 0)
+            {
+                chunk = chunkOrder.Pop();
+            }
+            else if(failedChunks.Count > 0)
+            {
+                chunk = failedChunks.Dequeue();
+            }
+            else
                 return;
 
-            var chunkChanges = actions[0];
-            actions.RemoveAt(0);
-
-            var chunk = World.GetChunk(chunkChanges.item1);
-
-            if(chunk == null || chunk.DataState != Chunk.ChunkDataState.DataFull)   //chunk NOT loaded || Not posible to modify
-            {
-                actions.Add(chunkChanges);  //Added again to the list
+            if(!chunkChanges.TryGetValue(chunk, out List<TupleStruct<Vector3Int, ushort>> changes))
                 return;
-            }
 
-            foreach(var change in chunkChanges.item2)
+
+            foreach(var change in changes)
             {
-                World.TryGetTypeAt(change.item1, out ushort type);
-
-                if(type == change.item2)
-                    continue;
-
-                World.TrySetTypeAt(change.item1, change.item2);
-
-                ItemTypesServer.OnChange(change.item1, type, change.item2, null);
-
-                ServerManager.SendBlockChange(change.item1, change.item2);
+                if(!ServerManager.TryChangeBlock(change.item1, change.item2))
+                {
+                    failedChunks.Enqueue(chunk);
+                    return;
+                }
             }
+
+            chunkChanges.Remove(chunk);
         }
 
         [ModLoader.ModCallback(ModLoader.EModCallbackType.OnPlayerDisconnected, "Khanx.AdvancedWand.RemoveWandOnPlayerDisconnected")]
