@@ -86,22 +86,19 @@ namespace AdvancedWand
                 return;
             }
 
-            Pipliz.Threading.ThreadManager.InvokeOnMainThread(() =>
+            foreach(var change in chunkChanges.item2)
             {
-                foreach(var change in chunkChanges.item2)
-                {
-                    World.TryGetTypeAt(change.item1, out ushort type);
+                World.TryGetTypeAt(change.item1, out ushort type);
 
-                    if(type == change.item2)
-                        continue;
+                if(type == change.item2)
+                    continue;
 
-                    World.TrySetTypeAt(change.item1, change.item2);
+                World.TrySetTypeAt(change.item1, change.item2);
 
-                    ItemTypesServer.OnChange(change.item1, type, change.item2, null);
+                ItemTypesServer.OnChange(change.item1, type, change.item2, null);
 
-                    ServerManager.SendBlockChange(change.item1, change.item2);
-                }
-            });
+                ServerManager.SendBlockChange(change.item1, change.item2);
+            }
         }
 
         [ModLoader.ModCallback(ModLoader.EModCallbackType.OnPlayerDisconnected, "Khanx.AdvancedWand.RemoveWandOnPlayerDisconnected")]

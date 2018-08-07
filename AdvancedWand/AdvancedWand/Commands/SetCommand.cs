@@ -45,7 +45,7 @@ namespace AdvancedWand
                     for(int z = end.z; z >= start.z; z--)
                     {
                         Vector3Int newPos = new Vector3Int(x, y, z);
-                        if(World.TryGetTypeAt(newPos, out ushort actualType) && actualType != blockIndex)
+                        if(!World.TryGetTypeAt(newPos, out ushort actualType) || actualType != blockIndex)
                             AdvancedWand.AddAction(newPos, blockIndex);
                     }
 

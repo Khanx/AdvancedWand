@@ -40,7 +40,8 @@ namespace AdvancedWand
                     for(int z = end.z; z >= start.z; z--)
                     {
                         Vector3Int newPos = new Vector3Int(x, y, z);
-                        AdvancedWand.AddAction(newPos, BlockTypes.Builtin.BuiltinBlocks.Air);
+                        if(!World.TryGetTypeAt(newPos, out ushort actualType) || actualType != BlockTypes.Builtin.BuiltinBlocks.Air)
+                            AdvancedWand.AddAction(newPos, BlockTypes.Builtin.BuiltinBlocks.Air);
                     }
 
             Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Cutted the selected area</color>"));

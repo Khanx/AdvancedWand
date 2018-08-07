@@ -44,7 +44,7 @@ namespace AdvancedWand
                         for(int z = end.z; z >= start.z; z--)
                         {
                             Vector3Int newPos = new Vector3Int(x, y, z);
-                            if(World.TryGetTypeAt(newPos, out ushort actualType) && ( actualType != BuiltinBlocks.Air && ItemTypes.NotableTypes.Contains(ItemTypes.GetType(actualType)) ))
+                            if(!World.TryGetTypeAt(newPos, out ushort actualType) || ( actualType != BuiltinBlocks.Air && ItemTypes.NotableTypes.Contains(ItemTypes.GetType(actualType)) ))
                                 AdvancedWand.AddAction(newPos, newBlock);
 
                         }
@@ -69,7 +69,7 @@ namespace AdvancedWand
                         for(int z = end.z; z >= start.z; z--)
                         {
                             Vector3Int newPos = new Vector3Int(x, y, z);
-                            if(World.TryGetTypeAt(newPos, out ushort actualType) && actualType == oldBlock)
+                            if(!World.TryGetTypeAt(newPos, out ushort actualType) || actualType == oldBlock)
                                 AdvancedWand.AddAction(newPos, newBlock);
                         }
 

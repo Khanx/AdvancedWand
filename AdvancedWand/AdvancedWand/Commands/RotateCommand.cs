@@ -33,7 +33,7 @@ namespace AdvancedWand.Commands
                     for(int z = end.z; z >= start.z; z--)
                     {
                         Vector3Int newPos = new Vector3Int(x, y, z);
-                        if(World.TryGetTypeAt(newPos, out ushort actualType) && actualType != BlockTypes.Builtin.BuiltinBlocks.Air)
+                        if(!World.TryGetTypeAt(newPos, out ushort actualType) || actualType != BlockTypes.Builtin.BuiltinBlocks.Air)
                             AdvancedWand.AddAction(newPos, BlockTypes.Builtin.BuiltinBlocks.Air);
                     }
 

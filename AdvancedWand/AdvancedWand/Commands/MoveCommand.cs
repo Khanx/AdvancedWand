@@ -55,7 +55,7 @@ namespace AdvancedWand
                     for(int z = end.z; z >= start.z; z--)
                     {
                         Vector3Int newPos = new Vector3Int(x, y, z);
-                        if(World.TryGetTypeAt(newPos, out ushort actualType) && actualType != BlockTypes.Builtin.BuiltinBlocks.Air)
+                        if(!World.TryGetTypeAt(newPos, out ushort actualType) || actualType != BlockTypes.Builtin.BuiltinBlocks.Air)
                             AdvancedWand.AddAction(newPos, BlockTypes.Builtin.BuiltinBlocks.Air);
                     }
 
@@ -67,7 +67,7 @@ namespace AdvancedWand
                     for(int z = 0; z < tmpCopy.zSize; z++)
                     {
                         Vector3Int newPosition = new Vector3Int(player.Position) - tmpCopy.playerMod + direction + new Vector3Int(x, y, z);
-                        if(World.TryGetTypeAt(newPosition, out ushort actualType) && actualType != tmpCopy.blocks[x, y, z])
+                        if(!World.TryGetTypeAt(newPosition, out ushort actualType) || actualType != tmpCopy.blocks[x, y, z])
                             AdvancedWand.AddAction(newPosition, tmpCopy.blocks[x, y, z]);
                     }
 
