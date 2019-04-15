@@ -1,24 +1,24 @@
-﻿using ExtendedAPI.Commands;
+﻿using System.Collections.Generic;
+using AdvancedWand.Helper;
+using Pipliz;
+using Chatting;
 
 namespace AdvancedWand
 {
-    [AutoLoadCommand]
-    public class WandCommand : BaseCommand
+    [ChatCommandAutoLoader]
+    public class WandCommand : IChatCommand
     {
-        public WandCommand()
+        public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            //startWith.Add("//w");
-            equalsTo.Add("//wand");
-        }
+            if(!chat.StartsWith("//wand"))
+                return false;
 
-        public override bool TryDoCommand(Players.Player player, string chat)
-        {
             //Player exists
             if(null == player || NetworkID.Server == player.ID)
                 return true;
 
             //Check permissions
-            if(!Permissions.PermissionsManager.CheckAndWarnPermission(player, "khanx.wand"))
+            if(!PermissionsManager.CheckAndWarnPermission(player, "khanx.wand"))
                 return true;
 
 
@@ -28,10 +28,10 @@ namespace AdvancedWand
             wand.active = !wand.active;
 
             if(wand.active)
-                Pipliz.Chatting.Chat.Send(player, "<color=lime>Wand ON</color>");
+                Chat.Send(player, "<color=lime>Wand ON</color>");
             else
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=lime>Wand OFF</color>");
+                Chat.Send(player, "<color=lime>Wand OFF</color>");
                 AdvancedWand.RemoveAdvancedWand(player);
             }
 

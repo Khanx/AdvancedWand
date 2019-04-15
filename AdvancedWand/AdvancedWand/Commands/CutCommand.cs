@@ -1,27 +1,24 @@
-﻿using AdvancedWand.Helper;
-using ExtendedAPI.Commands;
+﻿using System.Collections.Generic;
+using AdvancedWand.Helper;
 using Pipliz;
+using Chatting;
 
 namespace AdvancedWand
 {
-    [AutoLoadCommand]
-    public class CutCommand : BaseCommand
+    [ChatCommandAutoLoader]
+    public class CutCommand : IChatCommand
     {
-        public CutCommand()
+        public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            startWith.Add("//cut");
-        }
+            if(!chat.StartsWith("//cut"))
+                return false;
 
-        public override bool TryDoCommand(Players.Player player, string arg)
-        {
             if(!CommandHelper.CheckCommand(player))
                 return true;
 
-            string[] args = ChatCommands.CommandManager.SplitCommand(arg);
-
-            if(0 >= args.Length)
+            if(0 >= splits.Count)
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=orange>Wrong Arguments</color>");
+                Chat.Send(player, "<color=orange>Wrong Arguments</color>");
                 return true;
             }
 
@@ -40,11 +37,12 @@ namespace AdvancedWand
                     for(int z = end.z; z >= start.z; z--)
                     {
                         Vector3Int newPos = new Vector3Int(x, y, z);
-                        if(!World.TryGetTypeAt(newPos, out ushort actualType) || actualType != BlockTypes.Builtin.BuiltinBlocks.Air)
-                            AdvancedWand.AddAction(newPos, BlockTypes.Builtin.BuiltinBlocks.Air);
+                        if(!World.TryGetTypeAt(newPos, out ushort actualType) || actualType != BlockTypes.BuiltinBlocks.Indices.air)
+                            AdvancedWand.AddAction(newPos, BlockTypes.BuiltinBlocks.Indices.air);
                     }
 
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Cutted the selected area</color>"));
+            Chat.Send(player, string.Format("<color=lime>Cutted the selected area</color>"));
+
 
             return true;
         }

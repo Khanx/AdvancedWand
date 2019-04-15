@@ -1,28 +1,28 @@
-﻿using AdvancedWand.Helper;
-using ExtendedAPI.Commands;
+﻿using System.Collections.Generic;
+using AdvancedWand.Helper;
+using Pipliz;
+using Chatting;
 
 namespace AdvancedWand.Commands
 {
-    [AutoLoadCommand]
-    public class SizeCommand : BaseCommand
+    [ChatCommandAutoLoader]
+    public class SizeCommand : IChatCommand
     {
-        public SizeCommand()
+        public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            equalsTo.Add("//size");
-        }
+            if(!chat.StartsWith("//size"))
+                return false;
 
-        public override bool TryDoCommand(Players.Player player, string arg)
-        {
             if(!CommandHelper.CheckCommand(player))
                 return true;
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
-            Pipliz.Chatting.Chat.Send(player, "<color=olive>Area size:</color>");
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>x: {0}</color>", wand.area.GetXSize()));
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>y: {0}</color>", wand.area.GetYSize()));
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>z: {0}</color>", wand.area.GetZSize()));
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>total: {0}</color>", wand.area.GetSize()));
+            Chat.Send(player, "<color=olive>Area size:</color>");
+            Chat.Send(player, string.Format("<color=lime>x: {0}</color>", wand.area.GetXSize()));
+            Chat.Send(player, string.Format("<color=lime>y: {0}</color>", wand.area.GetYSize()));
+            Chat.Send(player, string.Format("<color=lime>z: {0}</color>", wand.area.GetZSize()));
+            Chat.Send(player, string.Format("<color=lime>total: {0}</color>", wand.area.GetSize()));
 
             return true;
         }

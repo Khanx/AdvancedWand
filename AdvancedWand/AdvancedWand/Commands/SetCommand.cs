@@ -1,38 +1,34 @@
-﻿using AdvancedWand.Helper;
-using BlockTypes.Builtin;
-using ExtendedAPI.Commands;
+﻿using System.Collections.Generic;
+using AdvancedWand.Helper;
 using Pipliz;
+using Chatting;
 
 namespace AdvancedWand
 {
-    [AutoLoadCommand]
-    public class SetCommand : BaseCommand
+    [ChatCommandAutoLoader]
+    public class SetCommand : IChatCommand
     {
-        public SetCommand()
+        public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            startWith.Add("//set");
-        }
+            if(!chat.StartsWith("//set"))
+                return false;
 
-        public override bool TryDoCommand(Players.Player player, string arg)
-        {
             if(!CommandHelper.CheckCommand(player))
                 return true;
 
-            string[] args = ChatCommands.CommandManager.SplitCommand(arg);
-
-            if(0 >= args.Length)
+            if(0 >= splits.Count)
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=orange>Wrong Arguments</color>");
+                Chat.Send(player, "<color=orange>Wrong Arguments</color>");
                 return true;
             }
 
             if(!CommandHelper.CheckLimit(player))
                 return true;
 
-            ushort blockIndex = BuiltinBlocks.Air;  //Default: Set 0
+            ushort blockIndex = BlockTypes.BuiltinBlocks.Indices.air;  //Default: Set 0
 
-            if(2 <= args.Length)
-                if(!CommandHelper.GetBlockIndex(player, args[1], out blockIndex))
+            if(2 <= splits.Count)
+                if(!CommandHelper.GetBlockIndex(player, splits[1], out blockIndex))
                     return true;
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
@@ -49,7 +45,7 @@ namespace AdvancedWand
                             AdvancedWand.AddAction(newPos, blockIndex);
                     }
 
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Set: {0}</color>", blockIndex));
+            Chat.Send(player, string.Format("<color=lime>Set: {0}</color>", blockIndex));
 
             return true;
         }

@@ -1,4 +1,5 @@
-﻿using Pipliz;
+﻿//using Pipliz;
+using Pipliz;
 using UnityEngine;
 
 namespace AdvancedWand.Helper
@@ -13,7 +14,7 @@ namespace AdvancedWand.Helper
                 return false;
 
             //Player has permission
-            if(!Permissions.PermissionsManager.CheckAndWarnPermission(player, "khanx.wand"))
+            if(!PermissionsManager.CheckAndWarnPermission(player, "khanx.wand"))
                 return true;
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
@@ -21,21 +22,21 @@ namespace AdvancedWand.Helper
             //Wand is OFF
             if(!wand.active)
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=orange>Wand is OFF, use //wand to activate</color>");
+                Chatting.Chat.Send(player, "<color=orange>Wand is OFF, use //wand to activate</color>");
                 return false;
             }
 
             //Pos1 initialized
             if(!wand.area.IsPos1Initialized())
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=orange>Pos 1 not initialized</color>");
+                Chatting.Chat.Send(player, "<color=orange>Pos 1 not initialized</color>");
                 return false;
             }
 
             //Pos2 initialized
             if(!wand.area.IsPos2Initialized())
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=orange>Pos 2 not initialized</color>");
+                Chatting.Chat.Send(player, "<color=orange>Pos 2 not initialized</color>");
                 return false;
             }
 
@@ -50,13 +51,13 @@ namespace AdvancedWand.Helper
 
             if(!ItemTypes.TryGetType(block, out ItemTypes.ItemType type))
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=orange>Block not found</color>");
+                Chatting.Chat.Send(player, "<color=orange>Block not found</color>");
                 return false;
             }
 
             if(!type.IsPlaceable || type.NeedsBase || !ItemTypes.NotableTypes.Contains(type))
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=orange>You can't place this block</color>");
+                Chatting.Chat.Send(player, "<color=orange>You can't place this block</color>");
                 return false;
             }
 
@@ -72,7 +73,7 @@ namespace AdvancedWand.Helper
                 blockIndex = (ushort)IDBlock;
             else if(!ItemTypes.IndexLookup.TryGetIndex(block, out blockIndex))
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=orange>Block not found</color>");
+                Chatting.Chat.Send(player, "<color=orange>Block not found</color>");
                 return false;
             }
 
@@ -89,7 +90,7 @@ namespace AdvancedWand.Helper
 
             if(wand.limit < blocks_in_selected_area)
             {
-                Pipliz.Chatting.Chat.Send(player, string.Format("<color=orange>You are trying to change {0} and the limit is {1}. You can change the limit with //limit <new_limit></color>", blocks_in_selected_area, wand.limit));
+                Chatting.Chat.Send(player, string.Format("<color=orange>You are trying to change {0} and the limit is {1}. You can change the limit with //limit <new_limit></color>", blocks_in_selected_area, wand.limit));
                 return false;
             }
 
@@ -98,7 +99,7 @@ namespace AdvancedWand.Helper
         }
 
         //Thanks to Zun for this method
-        public static Vector3Int GetDirection(Vector3 playerForward, string direction)
+        public static Pipliz.Vector3Int GetDirection(Vector3 playerForward, string direction)
         {
             Vector3 testVector;
             // testVector will be the "local" player direction intended. It rotates as the player rotates
@@ -126,12 +127,12 @@ namespace AdvancedWand.Helper
                 case "up":
                 case "u":
                 //testVector = Vector3.up;
-                return new Vector3Int(0, 1, 0);
+                return new Pipliz.Vector3Int(0, 1, 0);
                 break;
                 case "down":
                 case "d":
                 //testVector = Vector3.down;
-                return new Vector3Int(0, -1, 0);
+                return new Pipliz.Vector3Int(0, -1, 0);
                 break;
             }
 
@@ -141,9 +142,9 @@ namespace AdvancedWand.Helper
             {
                 // so the largest part of the direction is the x-axis
                 if(testVectorMax >= 0f)
-                    return new Vector3Int(1, 0, 0);
+                    return new Pipliz.Vector3Int(1, 0, 0);
                 else
-                    return new Vector3Int(-1, 0, 0);
+                    return new Pipliz.Vector3Int(-1, 0, 0);
             }
             /*else if(testVectorMax == testVector.y)
                 {
@@ -155,9 +156,9 @@ namespace AdvancedWand.Helper
             else
             {
                 if(testVectorMax >= 0)
-                    return new Vector3Int(0, 0, 1);
+                    return new Pipliz.Vector3Int(0, 0, 1);
                 else
-                    return new Vector3Int(0, 0, -1);
+                    return new Pipliz.Vector3Int(0, 0, -1);
             }
         }
     }

@@ -1,37 +1,33 @@
-﻿using AdvancedWand.Helper;
-using BlockTypes.Builtin;
-using ExtendedAPI.Commands;
+﻿using System.Collections.Generic;
+using AdvancedWand.Helper;
 using Pipliz;
+using Chatting;
 
 namespace AdvancedWand
 {
-    [AutoLoadCommand]
-    public class ReplaceCommand : BaseCommand
+    [ChatCommandAutoLoader]
+    public class ReplaceCommand : IChatCommand
     {
-        public ReplaceCommand()
+        public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            startWith.Add("//replace");
-        }
+            if(!chat.StartsWith("//replace"))
+                return false;
 
-        public override bool TryDoCommand(Players.Player player, string arg)
-        {
             if(!CommandHelper.CheckCommand(player))
                 return true;
 
-            string[] args = ChatCommands.CommandManager.SplitCommand(arg);
-
-            if(1 >= args.Length)
+            if(1 >= splits.Count)
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=orange>Wrong Arguments</color>");
+                Chat.Send(player, "<color=orange>Wrong Arguments</color>");
                 return true;
             }
 
             if(!CommandHelper.CheckLimit(player))
                 return true;
 
-            if(2 == args.Length) //Default replace ALL ?
+            if(2 == splits.Count) //Default replace ALL ?
             {
-                if(!CommandHelper.GetBlockIndex(player, args[1], out ushort newBlock))
+                if(!CommandHelper.GetBlockIndex(player, splits[1], out ushort newBlock))
                     return true;
 
                 AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
@@ -44,19 +40,19 @@ namespace AdvancedWand
                         for(int z = end.z; z >= start.z; z--)
                         {
                             Vector3Int newPos = new Vector3Int(x, y, z);
-                            if(!World.TryGetTypeAt(newPos, out ushort actualType) || ( actualType != BuiltinBlocks.Air && ItemTypes.NotableTypes.Contains(ItemTypes.GetType(actualType)) ))
+                            if(!World.TryGetTypeAt(newPos, out ushort actualType) || ( actualType != BlockTypes.BuiltinBlocks.Indices.air && ItemTypes.NotableTypes.Contains(ItemTypes.GetType(actualType)) ))
                                 AdvancedWand.AddAction(newPos, newBlock);
 
                         }
 
-                Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>ALL -> {0}</color>", args[1]));
+                Chat.Send(player, string.Format("<color=lime>ALL -> {0}</color>", splits[1]));
             }
             else
             {
-                if(!CommandHelper.GetBlockIndex(player, args[1], out ushort oldBlock))
+                if(!CommandHelper.GetBlockIndex(player, splits[1], out ushort oldBlock))
                     return true;
 
-                if(!CommandHelper.GetBlockIndex(player, args[2], out ushort newBlock))
+                if(!CommandHelper.GetBlockIndex(player, splits[2], out ushort newBlock))
                     return true;
 
                 AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
@@ -73,7 +69,7 @@ namespace AdvancedWand
                                 AdvancedWand.AddAction(newPos, newBlock);
                         }
 
-                Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>{0} -> {1}</color>", args[1], args[2]));
+                Chat.Send(player, string.Format("<color=lime>{0} -> {1}</color>", splits[1], splits[2]));
             }
 
             return true;

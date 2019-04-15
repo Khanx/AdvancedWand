@@ -1,32 +1,31 @@
-﻿using AdvancedWand.Helper;
-using ExtendedAPI.Commands;
+﻿using System.Collections.Generic;
+using AdvancedWand.Helper;
 using Pipliz;
+using Chatting;
 
 namespace AdvancedWand.Commands
 {
-    [AutoLoadCommand]
-    class SaveCommand : BaseCommand
+    [ChatCommandAutoLoader]
+    class SaveCommand : IChatCommand
     {
-        public SaveCommand()
+        public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            startWith.Add("//save");
-        }
+            if(!chat.StartsWith("//save"))
+                return false;
 
-        public override bool TryDoCommand(Players.Player player, string arg)
-        {
             if(!CommandHelper.CheckCommand(player))
                 return true;
 
             if(!CommandHelper.CheckLimit(player))
                 return true;
 
-            if(!arg.Contains(" "))
+            if(!chat.Contains(" "))
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=orange>Wrong Arguments</color>");
+                Chat.Send(player, "<color=orange>Wrong Arguments</color>");
                 return true;
             }
 
-            string blueprintName = arg.Substring(arg.IndexOf(" ") + 1).Trim();
+            string blueprintName = chat.Substring(chat.IndexOf(" ") + 1).Trim();
 
             blueprintName = blueprintName.Replace(" ", "_");
 
@@ -35,13 +34,13 @@ namespace AdvancedWand.Commands
 
             if(blueprint == null)
             {
-                Pipliz.Chatting.Chat.Send(player, string.Format("<color=orange>There is nothing to save.</color>"));
+                Chat.Send(player, string.Format("<color=orange>There is nothing to save.</color>"));
                 return true;
             }
 
             if(BlueprintManager._blueprints.ContainsKey(blueprintName))
             {
-                Pipliz.Chatting.Chat.Send(player, string.Format("<color=orange>A blueprint with that name already exists.</color>"));
+                Chat.Send(player, string.Format("<color=orange>A blueprint with that name already exists.</color>"));
                 return true;
             }
 
@@ -49,7 +48,7 @@ namespace AdvancedWand.Commands
 
             BlueprintManager._blueprints.Add(blueprintName, blueprint);
 
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Blueprint saved as: {0}</color>", blueprintName));
+            Chat.Send(player, string.Format("<color=lime>Blueprint saved as: {0}</color>", blueprintName));
 
             return true;
         }

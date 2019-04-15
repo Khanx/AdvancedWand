@@ -1,42 +1,39 @@
-﻿using AdvancedWand.Helper;
-using ExtendedAPI.Commands;
+﻿using System.Collections.Generic;
+using AdvancedWand.Helper;
 using Pipliz;
+using Chatting;
 
 namespace AdvancedWand.Commands
 {
-    [AutoLoadCommand]
-    public class ContractCommand : BaseCommand
+    [ChatCommandAutoLoader]
+    public class ContractCommand : IChatCommand
     {
-        public ContractCommand()
+        public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            startWith.Add("//contract");
-        }
+            if(!chat.StartsWith("//contract"))
+                return false;
 
-        public override bool TryDoCommand(Players.Player player, string arg)
-        {
             if(!CommandHelper.CheckCommand(player))
                 return true;
 
-            string[] args = ChatCommands.CommandManager.SplitCommand(arg);
-
-            if(1 >= args.Length)
+            if(1 >= splits.Count)
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=orange>Wrong Arguments</color>");
+                Chat.Send(player, "<color=orange>Wrong Arguments</color>");
                 return true;
             }
 
-            if(!int.TryParse(args[1], out int quantity))
+            if(!int.TryParse(splits[1], out int quantity))
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=orange>Not number</color>");
+                Chat.Send(player, "<color=orange>Not number</color>");
                 return true;
             }
 
             string sdirection;
 
-            if(2 == args.Length)    //Default: Contract ? FORWARD
+            if(2 == splits.Count)    //Default: Contract ? FORWARD
                 sdirection = "forward";
             else
-                sdirection = args[2];
+                sdirection = splits[2];
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
             Vector3Int direction = CommandHelper.GetDirection(player.Forward, sdirection);
@@ -52,7 +49,7 @@ namespace AdvancedWand.Commands
             wand.area.SetCorner1(start, player);
             wand.area.SetCorner2(end, player);
 
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Area contracted {0} block {1}</color>", quantity, sdirection));
+            Chat.Send(player, string.Format("<color=lime>Area contracted {0} block {1}</color>", quantity, sdirection));
 
             return true;
         }

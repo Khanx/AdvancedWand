@@ -83,7 +83,7 @@ namespace AdvancedWand
 
             foreach(var change in changes)
             {
-                if(!ServerManager.TryChangeBlock(change.item1, change.item2))
+                if(ServerManager.TryChangeBlock(change.item1, change.item2) == EServerChangeBlockResult.ChunkNotReady)
                 {
                     failedChunks.Enqueue(chunk);
                     return;
@@ -115,8 +115,8 @@ namespace AdvancedWand
                     if(area.pos1 == Vector3Int.maximum || area.pos2 == Vector3Int.maximum)
                         return;
 
-                    showWhileHoldingTypes.Add(BlockTypes.Builtin.BuiltinBlocks.BronzeAxe);
-                    list.Add(new AreaJobTracker.AreaHighlight(area.corner1, area.corner2, Shared.EAreaMeshType.AutoSelect, Shared.EAreaType.BuilderArea));
+                    showWhileHoldingTypes.Add(BlockTypes.BuiltinBlocks.Indices.bronzeaxe);
+                    list.Add(new AreaJobTracker.AreaHighlight(area.corner1, area.corner2, Shared.EAreaMeshType.AutoSelect, Shared.EServerAreaType.ConstructionArea));
                 }
             }
         }

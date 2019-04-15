@@ -1,20 +1,18 @@
-﻿using AdvancedWand.Helper;
-using ExtendedAPI.Commands;
+﻿using System.Collections.Generic;
+using AdvancedWand.Helper;
 using Pipliz;
-using System.Collections.Generic;
+using Chatting;
 
 namespace AdvancedWand.Commands
 {
-    [AutoLoadCommand]
-    public class InfoCommand : BaseCommand
+    [ChatCommandAutoLoader]
+    public class InfoCommand : IChatCommand
     {
-        public InfoCommand()
+        public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            equalsTo.Add("//info");
-        }
+            if(!chat.StartsWith("//info"))
+                return false;
 
-        public override bool TryDoCommand(Players.Player player, string arg)
-        {
             if(!CommandHelper.CheckCommand(player))
                 return true;
 
@@ -55,14 +53,14 @@ namespace AdvancedWand.Commands
             if(info.ContainsKey(ItemTypes.IndexLookup.GetIndex("bed")))
                 info[ItemTypes.IndexLookup.GetIndex("bed")] /= 2;
 
-            Pipliz.Chatting.Chat.Send(player, "<color=olive>Area info:</color>");
+            Chat.Send(player, "<color=olive>Area info:</color>");
 
             foreach(ushort key in info.Keys)
             {
                 if(key == 0)
                     continue;
                 string name = ItemTypes.IndexLookup.GetName(key);
-                Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>{0}: {1}</color>", name, info[key]));
+                Chat.Send(player, string.Format("<color=lime>{0}: {1}</color>", name, info[key]));
             }
 
             return true;
