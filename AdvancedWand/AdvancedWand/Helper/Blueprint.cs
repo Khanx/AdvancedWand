@@ -1,4 +1,5 @@
 ﻿using Pipliz;
+using System.Collections.Generic;
 using System.IO;
 
 namespace AdvancedWand.Helper
@@ -8,6 +9,7 @@ namespace AdvancedWand.Helper
         public int xSize { get; internal set; }
         public int ySize { get; internal set; }
         public int zSize { get; internal set; }
+        public Dictionary<ushort, string> types = new Dictionary<ushort, string>();
         public ushort[,,] blocks { get; internal set; }
         public Vector3Int playerMod { get; internal set; }
 
@@ -36,19 +38,17 @@ namespace AdvancedWand.Helper
                     {
                         Vector3Int newPos = new Vector3Int(x, y, z);
                         if(World.TryGetTypeAt(newPos, out ushort type) && ItemTypes.NotableTypes.Contains(ItemTypes.GetType(type)))
+                        {
+                            if(!types.ContainsKey(type))
+                                types.Add(type, ItemTypes.IndexLookup.GetName(type));
+
                             blocks[x - start.x, y - start.y, z - start.z] = type;
+                        }
                     }
                 }
             }
 
             playerMod = new Vector3Int(player.Position) - start;
-            /*
-            Pipliz.Chatting.Chat.Send(player, "<color=olive>Copied area:</color>");
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>X: {0}</color>", xSize));
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Y: {0}</color>", ySize));
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Z: {0}</color>", zSize));
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Total: {0}</color>", xSize* ySize* zSize));
-            */
         }
 
         public void Rotate()
@@ -78,16 +78,34 @@ namespace AdvancedWand.Helper
 
         public Blueprint(byte[] binaryBlueprint)
         {
-            using(ByteReader compressed = ByteReader.Get(binaryBlueprint))
+            using(ByteReader raw = ByteReader.Get(binaryBlueprint))
             {
-                playerMod = compressed.ReadVariableVector3Int();
+                playerMod = raw.ReadVariableVector3Int();
+                int typesC = raw.ReadVariableInt();
 
-                xSize = compressed.ReadVariableInt();
-                ySize = compressed.ReadVariableInt();
-                zSize = compressed.ReadVariableInt();
+                xSize = raw.ReadVariableInt();
+                ySize = raw.ReadVariableInt();
+                zSize = raw.ReadVariableInt();
 
-                using(ByteReader raw = compressed.ReadCompressed())
+                //From one world to another
+                Dictionary<ushort, ushort> typesTransformation = new Dictionary<ushort, ushort>();
+
+                using(ByteReader compressed = raw.ReadCompressed())
                 {
+                    for(int i = 0; i < typesC; i++)
+                    {
+                        ushort type_index = compressed.ReadVariableUShort();
+                        string type_name = compressed.ReadString();
+
+                        ushort new_type_index;
+
+                        if(!ItemTypes.IndexLookup.TryGetIndex(type_name, out new_type_index))
+                            new_type_index = BlockTypes.Builtin.BuiltinBlocks.Air;
+
+                        typesTransformation.Add(type_index, new_type_index);
+                        types.Add(new_type_index, type_name);
+                    }
+
                     blocks = new ushort[xSize, ySize, zSize];
 
                     for(int x = 0; x < xSize; x++)
@@ -96,7 +114,7 @@ namespace AdvancedWand.Helper
                         {
                             for(int z = 0; z < zSize; z++)
                             {
-                                blocks[x, y, z] = raw.ReadVariableUShort();
+                                blocks[x, y, z] = typesTransformation.GetValueOrDefault(compressed.ReadVariableUShort(), BlockTypes.Builtin.BuiltinBlocks.Air);
                             }
                         }
                     }
@@ -111,12 +129,20 @@ namespace AdvancedWand.Helper
             {
                 builder.WriteVariable(playerMod);
 
+                builder.WriteVariable(types.Count);
+
                 builder.WriteVariable(xSize);
                 builder.WriteVariable(ySize);
                 builder.WriteVariable(zSize);
 
                 using(ByteBuilder compressed = ByteBuilder.Get())
                 {
+                    foreach(var key in types.Keys)
+                    {
+                        compressed.WriteVariable(key);
+                        compressed.Write(types[key]);
+                    }
+
                     for(int x = 0; x < xSize; x++)
                     {
                         for(int y = 0; y < ySize; y++)

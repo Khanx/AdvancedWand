@@ -33,8 +33,6 @@ namespace AdvancedWand.Helper
                     string blueprint_name = filename.Substring(filename.LastIndexOf("/")+1);
                     blueprint_name = blueprint_name.Substring(0, blueprint_name.Length - 2);
 
-                    Blueprint b = new Blueprint(File.ReadAllBytes(filename));
-
                     _blueprints.Add(blueprint_name, new Blueprint(File.ReadAllBytes(filename)));
 
                     Log.Write(string.Format("<color=blue>Loaded blueprint: {0}</color>", blueprint_name));
