@@ -35,7 +35,7 @@ namespace AdvancedWand
         private static Queue<Vector3Int> failedChunks = new Queue<Vector3Int>();
 
         private static long nextUpdate = 0;
-        private static long increment = 750;
+        private static long increment = 250;
 
         public static void AddAction(Vector3Int position, ushort type)
         {
