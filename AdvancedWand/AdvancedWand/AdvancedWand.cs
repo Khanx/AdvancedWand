@@ -30,7 +30,7 @@ namespace AdvancedWand
             return null;
         }
 
-        private static Dictionary<Vector3Int, List<TupleStruct<Vector3Int, ushort>>> chunkChanges = new Dictionary<Vector3Int, List<TupleStruct<Vector3Int, ushort>>>();
+        private static Dictionary<Vector3Int, List<(Vector3Int, ushort)>> chunkChanges = new Dictionary<Vector3Int, List<(Vector3Int, ushort)>>();
         private static Stack<Vector3Int> chunkOrder = new Stack<Vector3Int>();
         private static Queue<Vector3Int> failedChunks = new Queue<Vector3Int>();
 
@@ -43,12 +43,12 @@ namespace AdvancedWand
 
             if(chunkChanges.ContainsKey(chunk))
             {
-                chunkChanges[chunk].Add(new TupleStruct<Vector3Int, ushort>(position, type));
+                chunkChanges[chunk].Add((position, type));
             }
             else
             {
-                List<TupleStruct<Vector3Int, ushort>> changes = new List<TupleStruct<Vector3Int, ushort>>();
-                changes.Add(new TupleStruct<Vector3Int, ushort>(position, type));
+                List<(Vector3Int, ushort)> changes = new List<(Vector3Int, ushort)>();
+                changes.Add((position, type));
                 chunkChanges.Add(chunk, changes);
             }
 
@@ -77,13 +77,13 @@ namespace AdvancedWand
             else
                 return;
 
-            if(!chunkChanges.TryGetValue(chunk, out List<TupleStruct<Vector3Int, ushort>> changes))
+            if(!chunkChanges.TryGetValue(chunk, out List<(Vector3Int, ushort)> changes))
                 return;
 
 
             foreach(var change in changes)
             {
-                if(ServerManager.TryChangeBlock(change.item1, change.item2) == EServerChangeBlockResult.ChunkNotReady)
+                if(ServerManager.TryChangeBlock(change.Item1, change.Item2) == EServerChangeBlockResult.ChunkNotReady)
                 {
                     failedChunks.Enqueue(chunk);
                     return;
