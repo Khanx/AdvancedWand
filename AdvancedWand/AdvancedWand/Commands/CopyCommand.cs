@@ -1,26 +1,24 @@
-﻿using AdvancedWand.Helper;
-using ExtendedAPI.Commands;
+﻿using System.Collections.Generic;
+using AdvancedWand.Helper;
+using Pipliz;
+using Chatting;
 
 namespace AdvancedWand
 {
-    [AutoLoadCommand]
-    public class CopyCommand : BaseCommand
+    [ChatCommandAutoLoader]
+    public class CopyCommand : IChatCommand
     {
-        public CopyCommand()
+        public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            startWith.Add("//copy");
-        }
+            if(!chat.StartsWith("//copy"))
+                return false;
 
-        public override bool TryDoCommand(Players.Player player, string arg)
-        {
             if(!CommandHelper.CheckCommand(player))
                 return true;
 
-            string[] args = ChatCommands.CommandManager.SplitCommand(arg);
-
-            if(0 >= args.Length)
+            if(0 >= splits.Count)
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=orange>Wrong Arguments</color>");
+                Chat.Send(player, "<color=orange>Wrong Arguments</color>");
                 return true;
             }
 
@@ -31,13 +29,13 @@ namespace AdvancedWand
 
             wand.copy = new Blueprint(wand.area, player);
 
-            Pipliz.Chatting.Chat.Send(player, "<color=olive>Copied area:</color>");
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>X: {0}</color>", wand.copy.xSize));
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Y: {0}</color>", wand.copy.ySize));
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Z: {0}</color>", wand.copy.zSize));
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Total: {0}</color>", wand.copy.xSize * wand.copy.ySize * wand.copy.zSize));
+            Chat.Send(player, "<color=olive>Copied area:</color>");
+            Chat.Send(player, string.Format("<color=lime>X: {0}</color>", wand.copy.xSize));
+            Chat.Send(player, string.Format("<color=lime>Y: {0}</color>", wand.copy.ySize));
+            Chat.Send(player, string.Format("<color=lime>Z: {0}</color>", wand.copy.zSize));
+            Chat.Send(player, string.Format("<color=lime>Total: {0}</color>", wand.copy.xSize * wand.copy.ySize * wand.copy.zSize));
 
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Copied the selected area</color>"));
+            Chat.Send(player, string.Format("<color=lime>Copied the selected area</color>"));
 
             return true;
         }

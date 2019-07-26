@@ -1,45 +1,42 @@
-﻿using AdvancedWand.Helper;
-using ExtendedAPI.Commands;
+﻿using System.Collections.Generic;
+using AdvancedWand.Helper;
 using Pipliz;
+using Chatting;
 
 namespace AdvancedWand
 {
-    [AutoLoadCommand]
-    public class MoveCommand : BaseCommand
+    [ChatCommandAutoLoader]
+    public class MoveCommand : IChatCommand
     {
-        public MoveCommand()
+        public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            startWith.Add("//move");
-        }
+            if(!chat.StartsWith("//move"))
+                return false;
 
-        public override bool TryDoCommand(Players.Player player, string arg)
-        {
             if(!CommandHelper.CheckCommand(player))
                 return true;
 
-            string[] args = ChatCommands.CommandManager.SplitCommand(arg);
-
-            if(1 >= args.Length)
+            if(1 >= splits.Count)
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=orange>Wrong Arguments</color>");
+                Chat.Send(player, "<color=orange>Wrong Arguments</color>");
                 return true;
             }
 
             if(!CommandHelper.CheckLimit(player))
                 return true;
 
-            if(!int.TryParse(args[1], out int quantity))
+            if(!int.TryParse(splits[1], out int quantity))
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=orange>Not number</color>");
+                Chat.Send(player, "<color=orange>Not number</color>");
                 return true;
             }
 
             string sdirection;
 
-            if(2 == args.Length)    //Default: Contract ? FORWARD
+            if(2 == splits.Count)    //Default: Contract ? FORWARD
                 sdirection = "forward";
             else
-                sdirection = args[2];
+                sdirection = splits[2];
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
@@ -55,8 +52,8 @@ namespace AdvancedWand
                     for(int z = end.z; z >= start.z; z--)
                     {
                         Vector3Int newPos = new Vector3Int(x, y, z);
-                        if(!World.TryGetTypeAt(newPos, out ushort actualType) || actualType != BlockTypes.Builtin.BuiltinBlocks.Air)
-                            AdvancedWand.AddAction(newPos, BlockTypes.Builtin.BuiltinBlocks.Air);
+                        if(!World.TryGetTypeAt(newPos, out ushort actualType) || actualType != BlockTypes.BuiltinBlocks.Indices.air)
+                            AdvancedWand.AddAction(newPos, BlockTypes.BuiltinBlocks.Indices.air);
                     }
 
             //Paste the temporal copy
@@ -72,7 +69,7 @@ namespace AdvancedWand
                             AdvancedWand.AddAction(newPosition, tmpCopy.blocks[x, y, z]);
                     }
 
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Moved {0} {1} the selected area</color>", quantity, sdirection));
+            Chat.Send(player, string.Format("<color=lime>Moved {0} {1} the selected area</color>", quantity, sdirection));
 
             return true;
         }

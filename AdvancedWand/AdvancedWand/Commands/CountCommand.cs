@@ -1,27 +1,24 @@
-﻿using AdvancedWand.Helper;
-using ExtendedAPI.Commands;
+﻿using System.Collections.Generic;
+using AdvancedWand.Helper;
 using Pipliz;
+using Chatting;
 
 namespace AdvancedWand.Commands
 {
-    [AutoLoadCommand]
-    public class CountCommand : BaseCommand
+    [ChatCommandAutoLoader]
+    public class CountCommand : IChatCommand
     {
-        public CountCommand()
+        public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            startWith.Add("//count");
-        }
+            if(!chat.StartsWith("//count"))
+                return false;
 
-        public override bool TryDoCommand(Players.Player player, string arg)
-        {
             if(!CommandHelper.CheckCommand(player))
                 return true;
 
-            string[] args = ChatCommands.CommandManager.SplitCommand(arg);
-
-            if(2 != args.Length)
+            if(2 != splits.Count)
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=orange>Wrong Arguments</color>");
+                Chat.Send(player, "<color=orange>Wrong Arguments</color>");
                 return true;
             }
 
@@ -34,16 +31,16 @@ namespace AdvancedWand.Commands
 
             try
             {
-                bool isNumeric = int.TryParse(args[1], out int IDBlock);
+                bool isNumeric = int.TryParse(splits[1], out int IDBlock);
 
                 if(isNumeric)
                     blockIndex = (ushort)IDBlock;
                 else
-                    blockIndex = ItemTypes.IndexLookup.GetIndex(args[1]);
+                    blockIndex = ItemTypes.IndexLookup.GetIndex(splits[1]);
             }
             catch(System.ArgumentException)
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=orange>Block not found</color>");
+                Chat.Send(player, "<color=orange>Block not found</color>");
                 return true;
             }
 
@@ -72,7 +69,7 @@ namespace AdvancedWand.Commands
             if(blockIndex == ItemTypes.IndexLookup.GetIndex("bed"))
                 count /= 2;
 
-            Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>{0}: {1}</color>", args[1], count));
+            Chat.Send(player, string.Format("<color=lime>{0}: {1}</color>", splits[1], count));
 
             return true;
         }

@@ -100,7 +100,7 @@ namespace AdvancedWand.Helper
                         ushort new_type_index;
 
                         if(!ItemTypes.IndexLookup.TryGetIndex(type_name, out new_type_index))
-                            new_type_index = BlockTypes.Builtin.BuiltinBlocks.Air;
+                            new_type_index = BlockTypes.BuiltinBlocks.Indices.air;
 
                         typesTransformation.Add(type_index, new_type_index);
                         types.Add(new_type_index, type_name);
@@ -114,7 +114,7 @@ namespace AdvancedWand.Helper
                         {
                             for(int z = 0; z < zSize; z++)
                             {
-                                blocks[x, y, z] = typesTransformation.GetValueOrDefault(compressed.ReadVariableUShort(), BlockTypes.Builtin.BuiltinBlocks.Air);
+                                blocks[x, y, z] = typesTransformation.GetValueOrDefault(compressed.ReadVariableUShort(), BlockTypes.BuiltinBlocks.Indices.air);
                             }
                         }
                     }

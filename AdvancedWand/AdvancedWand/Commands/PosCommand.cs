@@ -1,25 +1,24 @@
-﻿using ExtendedAPI.Commands;
+﻿using System.Collections.Generic;
+using AdvancedWand.Helper;
 using Pipliz;
+using Chatting;
 
 namespace AdvancedWand.Commands
 {
-    [AutoLoadCommand]
-    public class PosCommand : BaseCommand
+    [ChatCommandAutoLoader]
+    public class PosCommand : IChatCommand
     {
-        public PosCommand()
+        public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            equalsTo.Add("//pos1");
-            equalsTo.Add("//pos2");
-        }
+            if(!chat.Equals("//pos1") && !chat.Equals("//pos2"))
+                return false;
 
-        public override bool TryDoCommand(Players.Player player, string arg)
-        {
             //Player exists
             if(null == player || NetworkID.Server == player.ID)
                 return false;
 
             //Check permissions
-            if(!Permissions.PermissionsManager.CheckAndWarnPermission(player, "khanx.wand"))
+            if(!PermissionsManager.CheckAndWarnPermission(player, "khanx.wand"))
                 return true;
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
@@ -27,23 +26,21 @@ namespace AdvancedWand.Commands
             //Wand is OFF
             if(!wand.active)
             {
-                Pipliz.Chatting.Chat.Send(player, "<color=orange>Wand is OFF, use //wand to activate</color>");
+                Chat.Send(player, "<color=orange>Wand is OFF, use //wand to activate</color>");
                 return false;
             }
 
-            string[] args = ChatCommands.CommandManager.SplitCommand(arg);
-
             Vector3Int newPos = new Vector3Int(player.Position);
 
-            if(args[0].Equals("//pos1"))
+            if(splits[0].Equals("//pos1"))
             {
                 wand.area.SetCorner1(newPos, player);
-                Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Pos 1: {0}</color>", newPos));
+                Chat.Send(player, string.Format("<color=lime>Pos 1: {0}</color>", newPos));
             }
             else //pos2
             {
                 wand.area.SetCorner2(newPos, player);
-                Pipliz.Chatting.Chat.Send(player, string.Format("<color=lime>Pos 2: {0}</color>", newPos));
+                Chat.Send(player, string.Format("<color=lime>Pos 2: {0}</color>", newPos));
             }
 
             return true;

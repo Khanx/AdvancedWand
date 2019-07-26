@@ -30,12 +30,12 @@ namespace AdvancedWand
             return null;
         }
 
-        private static Dictionary<Vector3Int, List<TupleStruct<Vector3Int, ushort>>> chunkChanges = new Dictionary<Vector3Int, List<TupleStruct<Vector3Int, ushort>>>();
+        private static Dictionary<Vector3Int, List<(Vector3Int, ushort)>> chunkChanges = new Dictionary<Vector3Int, List<(Vector3Int, ushort)>>();
         private static Stack<Vector3Int> chunkOrder = new Stack<Vector3Int>();
         private static Queue<Vector3Int> failedChunks = new Queue<Vector3Int>();
 
         private static long nextUpdate = 0;
-        private static long increment = 750;
+        private static long increment = 250;
 
         public static void AddAction(Vector3Int position, ushort type)
         {
@@ -43,12 +43,12 @@ namespace AdvancedWand
 
             if(chunkChanges.ContainsKey(chunk))
             {
-                chunkChanges[chunk].Add(new TupleStruct<Vector3Int, ushort>(position, type));
+                chunkChanges[chunk].Add((position, type));
             }
             else
             {
-                List<TupleStruct<Vector3Int, ushort>> changes = new List<TupleStruct<Vector3Int, ushort>>();
-                changes.Add(new TupleStruct<Vector3Int, ushort>(position, type));
+                List<(Vector3Int, ushort)> changes = new List<(Vector3Int, ushort)>();
+                changes.Add((position, type));
                 chunkChanges.Add(chunk, changes);
             }
 
@@ -77,13 +77,13 @@ namespace AdvancedWand
             else
                 return;
 
-            if(!chunkChanges.TryGetValue(chunk, out List<TupleStruct<Vector3Int, ushort>> changes))
+            if(!chunkChanges.TryGetValue(chunk, out List<(Vector3Int, ushort)> changes))
                 return;
 
 
             foreach(var change in changes)
             {
-                if(!ServerManager.TryChangeBlock(change.item1, change.item2))
+                if(ServerManager.TryChangeBlock(change.Item1, change.Item2) == EServerChangeBlockResult.ChunkNotReady)
                 {
                     failedChunks.Enqueue(chunk);
                     return;
@@ -115,8 +115,8 @@ namespace AdvancedWand
                     if(area.pos1 == Vector3Int.maximum || area.pos2 == Vector3Int.maximum)
                         return;
 
-                    showWhileHoldingTypes.Add(BlockTypes.Builtin.BuiltinBlocks.BronzeAxe);
-                    list.Add(new AreaJobTracker.AreaHighlight(area.corner1, area.corner2, Shared.EAreaMeshType.AutoSelect, Shared.EAreaType.BuilderArea));
+                    showWhileHoldingTypes.Add(BlockTypes.BuiltinBlocks.Indices.bronzeaxe);
+                    list.Add(new AreaJobTracker.AreaHighlight(area.corner1, area.corner2, Shared.EAreaMeshType.AutoSelect, Shared.EServerAreaType.ConstructionArea));
                 }
             }
         }

@@ -1,19 +1,18 @@
-﻿using AdvancedWand.Helper;
-using ExtendedAPI.Commands;
+﻿using System.Collections.Generic;
+using AdvancedWand.Helper;
 using Pipliz;
+using Chatting;
 
 namespace AdvancedWand.Commands
 {
-    [AutoLoadCommand]
-    class RotateCommand : BaseCommand
+    [ChatCommandAutoLoader]
+    class RotateCommand : IChatCommand
     {
-        public RotateCommand()
+        public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            startWith.Add("//rotate");
-        }
+            if(!chat.StartsWith("//rotate"))
+                return false;
 
-        public override bool TryDoCommand(Players.Player player, string arg)
-        {
             if(!CommandHelper.CheckCommand(player))
                 return true;
 
@@ -33,8 +32,8 @@ namespace AdvancedWand.Commands
                     for(int z = end.z; z >= start.z; z--)
                     {
                         Vector3Int newPos = new Vector3Int(x, y, z);
-                        if(!World.TryGetTypeAt(newPos, out ushort actualType) || actualType != BlockTypes.Builtin.BuiltinBlocks.Air)
-                            AdvancedWand.AddAction(newPos, BlockTypes.Builtin.BuiltinBlocks.Air);
+                        if(!World.TryGetTypeAt(newPos, out ushort actualType) || actualType != BlockTypes.BuiltinBlocks.Indices.air)
+                            AdvancedWand.AddAction(newPos, BlockTypes.BuiltinBlocks.Indices.air);
                     }
 
 
