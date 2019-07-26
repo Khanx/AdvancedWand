@@ -12,9 +12,7 @@ namespace AdvancedWand
         [ModLoader.ModCallback(ModLoader.EModCallbackType.OnPlayerClicked, "Khanx.ExtendedAPI.OnPlayerClickedType")]
         public static void OnPlayerClicked(Players.Player player, Shared.PlayerClickedData playerClickedData)
         {
-            ItemTypes.ItemType typeWith = null;
-
-            if(playerClickedData.TypeSelected != wandType.ItemIndex)
+            if (playerClickedData.TypeSelected != wandType.ItemIndex)
                 return;
 
                 if(playerClickedData.ClickType == EClickType.Left)
