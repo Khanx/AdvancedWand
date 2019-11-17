@@ -55,7 +55,7 @@ namespace AdvancedWand.Helper
                 return false;
             }
 
-            if(!type.IsPlaceable || type.NeedsBase || !ItemTypes.NotableTypes.Contains(type))
+            if(!type.IsPlaceable || type.NeedsBase || (AdvancedWand.security && !ItemTypes.NotableTypes.Contains(type)))
             {
                 Chatting.Chat.Send(player, "<color=orange>You can't place this block</color>");
                 return false;

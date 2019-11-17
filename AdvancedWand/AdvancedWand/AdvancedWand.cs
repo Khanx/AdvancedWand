@@ -10,12 +10,15 @@ namespace AdvancedWand
         private static readonly Dictionary<Players.Player, AdvancedWand> advancedWands = new Dictionary<Players.Player, AdvancedWand>();
         //It's a Dictionary because in a server can be more than one player
 
+        public static int default_limit = 100000;
+        public static bool security = false;
+
         public bool active = false;
-        public int limit = 100000;
+        public int limit;
         public SelectedArea area = new SelectedArea();
         public Blueprint copy;
 
-        private AdvancedWand() { }
+        private AdvancedWand() { limit = default_limit; }
 
         public static AdvancedWand GetAdvancedWand(Players.Player player)
         {
@@ -35,7 +38,7 @@ namespace AdvancedWand
         private static Queue<Vector3Int> failedChunks = new Queue<Vector3Int>();
 
         private static long nextUpdate = 0;
-        private static long increment = 250;
+        public static long increment = 250;
 
         public static void AddAction(Vector3Int position, ushort type)
         {

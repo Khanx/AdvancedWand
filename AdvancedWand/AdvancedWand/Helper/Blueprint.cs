@@ -37,7 +37,7 @@ namespace AdvancedWand.Helper
                     for(int z = start.z; z <= end.z; z++)
                     {
                         Vector3Int newPos = new Vector3Int(x, y, z);
-                        if(World.TryGetTypeAt(newPos, out ushort type) && ItemTypes.NotableTypes.Contains(ItemTypes.GetType(type)))
+                        if(World.TryGetTypeAt(newPos, out ushort type) && (!AdvancedWand.security || ItemTypes.NotableTypes.Contains(ItemTypes.GetType(type))))
                         {
                             if(!types.ContainsKey(type))
                                 types.Add(type, ItemTypes.IndexLookup.GetName(type));

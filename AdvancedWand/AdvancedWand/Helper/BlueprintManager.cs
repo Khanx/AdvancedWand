@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 
 using Pipliz;
+using Pipliz.JSON;
 
 namespace AdvancedWand.Helper
 {
@@ -17,6 +18,31 @@ namespace AdvancedWand.Helper
         public static void GetModPath(string path)
         {
             MODPATH = Path.GetDirectoryName(path).Replace("\\", "/");
+        }
+
+        [ModLoader.ModCallback(ModLoader.EModCallbackType.AfterWorldLoad, "Khanx.AdvancedWand.LoadSettings")]
+        public static void LoadSettigns()
+        {
+
+            if (!File.Exists(MODPATH + "/settings.json"))
+            {
+                Log.Write("<color=red>AdvancedWand: Settings not found</color>");
+                return;
+            }
+
+            JSONNode json = JSON.Deserialize(MODPATH + "/settings.json");
+
+            AdvancedWand.default_limit = json.GetAsOrDefault<int>("default_limit", 100000);
+            int increment = json.GetAsOrDefault<int>("speed", 250);
+
+            if (increment <= 100)
+                increment = 100;
+            else if (increment >= 1000)
+                increment = 1000;
+
+            AdvancedWand.increment = (1010-increment);
+
+            AdvancedWand.security = json.GetAsOrDefault<bool>("security", true);
         }
 
         [ModLoader.ModCallback(ModLoader.EModCallbackType.AfterWorldLoad, "Khanx.AdvancedWand.LoadBlueprints")]
