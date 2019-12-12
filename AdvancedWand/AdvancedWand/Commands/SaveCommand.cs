@@ -10,7 +10,7 @@ namespace AdvancedWand.Commands
     {
         public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            if(!chat.StartsWith("//save"))
+            if(!chat.Trim().ToLower().StartsWith("//save"))
                 return false;
 
             if(!CommandHelper.CheckCommand(player))

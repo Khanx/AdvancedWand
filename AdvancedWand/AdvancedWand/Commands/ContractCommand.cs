@@ -10,7 +10,7 @@ namespace AdvancedWand.Commands
     {
         public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            if(!chat.StartsWith("//contract"))
+            if(!chat.Trim().ToLower().StartsWith("//contract"))
                 return false;
 
             if(!CommandHelper.CheckCommand(player))

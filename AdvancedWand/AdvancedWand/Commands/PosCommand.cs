@@ -10,7 +10,7 @@ namespace AdvancedWand.Commands
     {
         public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            if(!chat.Equals("//pos1") && !chat.Equals("//pos2"))
+            if(!chat.Trim().ToLower().Equals("//pos1") && !chat.Trim().ToLower().Equals("//pos2"))
                 return false;
 
             //Player exists

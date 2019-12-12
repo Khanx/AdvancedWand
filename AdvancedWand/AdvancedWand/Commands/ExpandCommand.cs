@@ -11,7 +11,7 @@ namespace AdvancedWand
     {
         public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            if(!chat.StartsWith("//expand"))
+            if(!chat.Trim().ToLower().StartsWith("//expand"))
                 return false;
 
             if(!CommandHelper.CheckCommand(player))

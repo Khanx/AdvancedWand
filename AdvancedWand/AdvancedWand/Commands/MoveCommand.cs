@@ -10,7 +10,7 @@ namespace AdvancedWand
     {
         public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            if(!chat.StartsWith("//move"))
+            if(!chat.Trim().ToLower().StartsWith("//move"))
                 return false;
 
             if(!CommandHelper.CheckCommand(player))

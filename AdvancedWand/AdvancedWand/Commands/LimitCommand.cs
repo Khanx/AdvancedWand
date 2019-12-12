@@ -10,7 +10,7 @@ namespace AdvancedWand.Commands
     {
         public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            if(!chat.StartsWith("//limit"))
+            if(!chat.Trim().ToLower().StartsWith("//limit"))
                 return false;
 
             //Player exists

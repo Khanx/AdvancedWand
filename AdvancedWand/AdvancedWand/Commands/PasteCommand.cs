@@ -10,7 +10,7 @@ namespace AdvancedWand
     {
         public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            if(!chat.StartsWith("//paste"))
+            if(!chat.Trim().ToLower().StartsWith("//paste"))
                 return false;
 
             if(null == player || NetworkID.Server == player.ID)
