@@ -15,7 +15,7 @@ namespace AdvancedWand.Helper
 
             //Player has permission
             if(!PermissionsManager.CheckAndWarnPermission(player, "khanx.wand"))
-                return true;
+                return false;
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
