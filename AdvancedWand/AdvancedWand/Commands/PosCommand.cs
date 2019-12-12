@@ -27,7 +27,7 @@ namespace AdvancedWand.Commands
             if(!wand.active)
             {
                 Chat.Send(player, "<color=orange>Wand is OFF, use //wand to activate</color>");
-                return false;
+                return true;
             }
 
             Vector3Int newPos = new Vector3Int(player.Position);

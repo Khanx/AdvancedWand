@@ -26,7 +26,7 @@ namespace AdvancedWand
             if(!wand.active)
             {
                 Chat.Send(player, "<color=orange>Wand is OFF, use //wand to activate</color>");
-                return false;
+                return true;
             }
 
             Blueprint blueprint = null;
