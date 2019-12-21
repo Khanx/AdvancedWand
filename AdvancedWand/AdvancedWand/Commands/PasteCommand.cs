@@ -2,6 +2,7 @@
 using AdvancedWand.Helper;
 using Pipliz;
 using Chatting;
+using Pandaros.SchematicBuilder.NBT;
 
 namespace AdvancedWand
 {
@@ -29,15 +30,15 @@ namespace AdvancedWand
                 return true;
             }
 
-            Blueprint blueprint = null;
+             Schematic schematic = null;
 
             if(chat.Trim().Equals("//paste"))  //Paste from copy
             {
-                blueprint = wand.copy;
+                schematic = wand.copy;
 
-                if(blueprint == null)
+                if(schematic == null)
                 {
-                    Chat.Send(player, string.Format("<color=orange>There is nothing copied</color>"));
+                    Chat.Send(player, string.Format("<color=orangewww>There is nothing copied</color>"));
                     return true;
                 }
             }
@@ -45,7 +46,9 @@ namespace AdvancedWand
             {
                 string blueprintName = chat.Substring(chat.IndexOf(" ") + 1).Trim();
 
-                if(!BlueprintManager._blueprints.TryGetValue(blueprintName, out blueprint))
+                if (SchematicReader.TryGetSchematic(blueprintName, Vector3Int.zero, out Schematic sch))
+                    schematic = sch;
+                else
                 {
                     Chat.Send(player, string.Format("<color=orange>There is not a bluerpint with that name.</color>"));
                     return true;
@@ -54,14 +57,18 @@ namespace AdvancedWand
 
             Chat.Send(player, string.Format("<color=lime>Pasting...</color>"));
 
-            for(int x = 0; x < blueprint.xSize; x++)
-                for(int y = 0; y < blueprint.ySize; y++)
-                    for(int z = 0; z < blueprint.zSize; z++)
+            for (int Y = 0; Y < schematic.YMax; Y++)
+            {
+                for (int Z = 0; Z < schematic.ZMax; Z++)
+                {
+                    for (int X = 0; X < schematic.XMax; X++)
                     {
-                        Vector3Int newPosition = new Vector3Int(player.Position) - blueprint.playerMod + new Vector3Int(x, y, z);
-                        if(!World.TryGetTypeAt(newPosition, out ushort actualType) || actualType != blueprint.blocks[x, y, z])
-                            AdvancedWand.AddAction(newPosition, blueprint.blocks[x, y, z]);
+                        Vector3Int newPosition = new Vector3Int(player.Position) + new Vector3Int(X,Y,Z);
+                        AdvancedWand.AddAction(newPosition, ItemTypes.IndexLookup.GetIndex(schematic.Blocks[X,Y,Z].BlockID));
                     }
+                }
+            }
+
 
             return true;
         }

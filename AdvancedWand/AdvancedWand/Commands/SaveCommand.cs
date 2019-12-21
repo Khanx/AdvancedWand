@@ -2,6 +2,8 @@
 using AdvancedWand.Helper;
 using Pipliz;
 using Chatting;
+using Pandaros.SchematicBuilder.NBT;
+using System.IO;
 
 namespace AdvancedWand.Commands
 {
@@ -30,23 +32,23 @@ namespace AdvancedWand.Commands
             blueprintName = blueprintName.Replace(" ", "_");
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
-            Blueprint blueprint = wand.copy;
 
-            if(blueprint == null)
+            if (wand.copy == null)
             {
                 Chat.Send(player, string.Format("<color=orange>There is nothing to save.</color>"));
                 return true;
             }
 
-            if(BlueprintManager._blueprints.ContainsKey(blueprintName))
+            if (File.Exists(GameLoader.Schematic_FOLDER + blueprintName + ".csschematic"))
             {
                 Chat.Send(player, string.Format("<color=orange>A blueprint with that name already exists.</color>"));
                 return true;
             }
 
-            blueprint.saveBlueprint(blueprintName);
 
-            BlueprintManager._blueprints.Add(blueprintName, blueprint);
+            Schematic schematic = wand.copy;
+            schematic.Name = blueprintName;
+            SchematicReader.SaveSchematic(schematic);
 
             Chat.Send(player, string.Format("<color=lime>Blueprint saved as: {0}</color>", blueprintName));
 

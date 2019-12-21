@@ -2,6 +2,7 @@
 using AdvancedWand.Helper;
 using Pipliz;
 using Chatting;
+using Pandaros.SchematicBuilder.NBT;
 
 namespace AdvancedWand
 {
@@ -27,7 +28,7 @@ namespace AdvancedWand
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
-            wand.copy = new Helper.Blueprint(wand.area, player);
+            wand.copy = new Schematic(player.Name + "tmpcopy", wand.area.GetXSize(), wand.area.GetYSize(), wand.area.GetZSize(), wand.area.corner1);
 
             Vector3Int start = wand.area.corner1;
             Vector3Int end = wand.area.corner2;

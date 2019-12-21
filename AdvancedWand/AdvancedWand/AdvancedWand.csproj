@@ -37,6 +37,12 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Colony Survival\colonyserver_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="fNbt, Version=0.6.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\fNbt.0.6.4\lib\net35-client\fNbt.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,7 +50,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Colony Survival\colonyserver_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
@@ -55,7 +60,6 @@
     <Compile Include="AdvancedWand.cs" />
     <Compile Include="Commands\RotateCommand.cs" />
     <Compile Include="Commands\SaveCommand.cs" />
-    <Compile Include="Helper\BlueprintManager.cs" />
     <Compile Include="Helper\CommandHelper.cs" />
     <Compile Include="AdvancedWandType.cs" />
     <Compile Include="Commands\ContractCommand.cs" />
@@ -69,13 +73,23 @@
     <Compile Include="Commands\PasteCommand.cs" />
     <Compile Include="Commands\PosCommand.cs" />
     <Compile Include="Commands\SizeCommand.cs" />
-    <Compile Include="Helper\Blueprint.cs" />
+    <Compile Include="Helper\GameLoader.cs" />
     <Compile Include="Helper\SelectedArea.cs" />
+    <Compile Include="NBT\Block.cs" />
+    <Compile Include="NBT\BlockMapping.cs" />
+    <Compile Include="NBT\RawSchematic.cs" />
+    <Compile Include="NBT\Schematic.cs" />
+    <Compile Include="NBT\SchematicMetadata.cs" />
+    <Compile Include="NBT\SchematicReader.cs" />
+    <Compile Include="NBT\TileEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Commands\ReplaceCommand.cs" />
     <Compile Include="Commands\SetCommand.cs" />
     <Compile Include="Commands\WallCommand.cs" />
     <Compile Include="Commands\WandCommand.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

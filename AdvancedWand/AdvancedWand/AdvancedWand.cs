@@ -1,6 +1,7 @@
 ﻿using AdvancedWand.Helper;
 using Pipliz;
 using System.Collections.Generic;
+using Pandaros.SchematicBuilder.NBT;
 
 namespace AdvancedWand
 {
@@ -8,7 +9,7 @@ namespace AdvancedWand
     public class AdvancedWand
     {
         private static readonly Dictionary<Players.Player, AdvancedWand> advancedWands = new Dictionary<Players.Player, AdvancedWand>();
-        //It's a Dictionary because in a server can be more than one player
+        //It is a Dictionary because in a server can be more than one player
 
         public static int default_limit = 100000;
         public static bool security = false;
@@ -16,7 +17,7 @@ namespace AdvancedWand
         public bool active = false;
         public int limit;
         public SelectedArea area = new SelectedArea();
-        public Blueprint copy;
+        public Schematic copy;
 
         private AdvancedWand() { limit = default_limit; }
 

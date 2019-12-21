@@ -2,6 +2,7 @@
 using AdvancedWand.Helper;
 using Pipliz;
 using Chatting;
+using Pandaros.SchematicBuilder.NBT;
 
 namespace AdvancedWand
 {
@@ -27,14 +28,16 @@ namespace AdvancedWand
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
-            wand.copy = new Blueprint(wand.area, player);
+            wand.copy = new Schematic(player.Name + "tmpcopy", wand.area.GetXSize(), wand.area.GetYSize(), wand.area.GetZSize(), wand.area.corner1);
 
+            /*
             Chat.Send(player, "<color=olive>Copied area:</color>");
-            Chat.Send(player, string.Format("<color=lime>X: {0}</color>", wand.copy.xSize));
-            Chat.Send(player, string.Format("<color=lime>Y: {0}</color>", wand.copy.ySize));
-            Chat.Send(player, string.Format("<color=lime>Z: {0}</color>", wand.copy.zSize));
-            Chat.Send(player, string.Format("<color=lime>Total: {0}</color>", wand.copy.xSize * wand.copy.ySize * wand.copy.zSize));
-
+            
+            Chat.Send(player, string.Format("<color=lime>X: {0}</color>", wand.copy.XMax));
+            Chat.Send(player, string.Format("<color=lime>Y: {0}</color>", wand.copy.YMax));
+            Chat.Send(player, string.Format("<color=lime>Z: {0}</color>", wand.copy.ZMax));
+            Chat.Send(player, string.Format("<color=lime>Total: {0}</color>", wand.copy.XMax* wand.copy.YMax* wand.copy.ZMax));
+            */
             Chat.Send(player, string.Format("<color=lime>Copied the selected area</color>"));
 
             return true;

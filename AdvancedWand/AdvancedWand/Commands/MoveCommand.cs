@@ -2,6 +2,7 @@
 using AdvancedWand.Helper;
 using Pipliz;
 using Chatting;
+using Pandaros.SchematicBuilder.NBT;
 
 namespace AdvancedWand
 {
@@ -41,7 +42,7 @@ namespace AdvancedWand
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
             //Create a temporal copy
-            Blueprint tmpCopy = new Blueprint(wand.area, player);
+            Schematic tmpCopy = new Schematic(player.Name + "tmpcopy", wand.area.GetXSize(), wand.area.GetYSize(), wand.area.GetZSize(), wand.area.corner1);
 
             //Remove the selected area
             Vector3Int start = wand.area.corner1;
@@ -59,15 +60,17 @@ namespace AdvancedWand
             //Paste the temporal copy
             Vector3Int direction = ( CommandHelper.GetDirection(player.Forward, sdirection) * quantity );
 
-            for(int x = 0; x < tmpCopy.xSize; x++)
-                for(int y = 0; y < tmpCopy.ySize; y++)
-                    for(int z = 0; z < tmpCopy.zSize; z++)
+            for (int Y = 0; Y < tmpCopy.YMax; Y++)
+            {
+                for (int Z = 0; Z < tmpCopy.ZMax; Z++)
+                {
+                    for (int X = 0; X < tmpCopy.XMax; X++)
                     {
-                        Vector3Int newPosition = new Vector3Int(player.Position) - tmpCopy.playerMod + direction + new Vector3Int(x, y, z);
-                        //DONT USE THIS IF CAN CAUSE PROBLEMS!!!
-                        //if(!World.TryGetTypeAt(newPosition, out ushort actualType) || actualType != tmpCopy.blocks[x, y, z])
-                            AdvancedWand.AddAction(newPosition, tmpCopy.blocks[x, y, z]);
+                        Vector3Int newPosition = wand.area.corner1 + direction + new Vector3Int(X, Y, Z);
+                        AdvancedWand.AddAction(newPosition, ItemTypes.IndexLookup.GetIndex(tmpCopy.Blocks[X, Y, Z].BlockID));
                     }
+                }
+            }
 
             Chat.Send(player, string.Format("<color=lime>Moved {0} {1} the selected area</color>", quantity, sdirection));
 
