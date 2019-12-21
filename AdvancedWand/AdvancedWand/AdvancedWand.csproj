@@ -44,7 +44,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Colony Survival\colonyserver_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
@@ -53,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdvancedWand.cs" />
+    <Compile Include="Commands\Tree.cs" />
     <Compile Include="Commands\RotateCommand.cs" />
     <Compile Include="Commands\SaveCommand.cs" />
     <Compile Include="Helper\BlueprintManager.cs" />
