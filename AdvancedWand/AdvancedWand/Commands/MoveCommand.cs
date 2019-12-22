@@ -42,7 +42,7 @@ namespace AdvancedWand
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
             //Create a temporal copy
-            Schematic tmpCopy = new Schematic(player.Name + "tmpcopy", wand.area.GetXSize(), wand.area.GetYSize(), wand.area.GetZSize(), wand.area.corner1);
+            Schematic tmpCopy = new Schematic(player.Name + "tmpcopy", wand.area.GetXMax(), wand.area.GetYMax(), wand.area.GetZMax(), wand.area.corner1);
 
             //Remove the selected area
             Vector3Int start = wand.area.corner1;
@@ -60,11 +60,11 @@ namespace AdvancedWand
             //Paste the temporal copy
             Vector3Int direction = ( CommandHelper.GetDirection(player.Forward, sdirection) * quantity );
 
-            for (int Y = 0; Y < tmpCopy.YMax; Y++)
+            for (int Y = 0; Y <= tmpCopy.YMax; Y++)
             {
-                for (int Z = 0; Z < tmpCopy.ZMax; Z++)
+                for (int Z = 0; Z <= tmpCopy.ZMax; Z++)
                 {
-                    for (int X = 0; X < tmpCopy.XMax; X++)
+                    for (int X = 0; X <= tmpCopy.XMax; X++)
                     {
                         Vector3Int newPosition = wand.area.corner1 + direction + new Vector3Int(X, Y, Z);
                         AdvancedWand.AddAction(newPosition, ItemTypes.IndexLookup.GetIndex(tmpCopy.Blocks[X, Y, Z].BlockID));

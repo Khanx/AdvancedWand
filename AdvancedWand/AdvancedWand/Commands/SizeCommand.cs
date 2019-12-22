@@ -19,10 +19,10 @@ namespace AdvancedWand.Commands
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
             Chat.Send(player, "<color=olive>Area size:</color>");
-            Chat.Send(player, string.Format("<color=lime>x: {0}</color>", wand.area.GetXSize()));
-            Chat.Send(player, string.Format("<color=lime>y: {0}</color>", wand.area.GetYSize()));
-            Chat.Send(player, string.Format("<color=lime>z: {0}</color>", wand.area.GetZSize()));
-            Chat.Send(player, string.Format("<color=lime>total: {0}</color>", wand.area.GetSize()));
+            Chat.Send(player, string.Format("<color=lime>x: {0}</color>", wand.area.GetXMax()+1));
+            Chat.Send(player, string.Format("<color=lime>y: {0}</color>", wand.area.GetYMax()+1));
+            Chat.Send(player, string.Format("<color=lime>z: {0}</color>", wand.area.GetZMax()+1));
+            Chat.Send(player, string.Format("<color=lime>total: {0}</color>", (wand.area.GetXMax() + 1) * (wand.area.GetYMax() + 1) * (wand.area.GetZMax() + 1)));
 
             return true;
         }

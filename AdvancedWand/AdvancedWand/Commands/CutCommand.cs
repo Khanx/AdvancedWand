@@ -28,7 +28,7 @@ namespace AdvancedWand
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
-            wand.copy = new Schematic(player.Name + "tmpcopy", wand.area.GetXSize(), wand.area.GetYSize(), wand.area.GetZSize(), wand.area.corner1);
+            wand.copy = new Schematic(player.Name + "tmpcopy", wand.area.GetXMax(), wand.area.GetYMax(), wand.area.GetZMax(), wand.area.corner1);
 
             Vector3Int start = wand.area.corner1;
             Vector3Int end = wand.area.corner2;

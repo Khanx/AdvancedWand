@@ -30,9 +30,8 @@ namespace AdvancedWand.Helper
             AreaJobTracker.SendData(player);
         }
 
-        public int GetXSize() { return Math.Abs(pos1.x - pos2.x) + 1; }
-        public int GetYSize() { return Math.Abs(pos1.y - pos2.y) + 1; }
-        public int GetZSize() { return Math.Abs(pos1.z - pos2.z) + 1; }
-        public int GetSize() { return GetXSize() * GetYSize() * GetZSize(); }
+        public int GetXMax() { return Math.Abs(pos1.x - pos2.x); }
+        public int GetYMax() { return Math.Abs(pos1.y - pos2.y); }
+        public int GetZMax() { return Math.Abs(pos1.z - pos2.z); }
     }
 }

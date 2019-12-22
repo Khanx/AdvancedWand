@@ -57,11 +57,11 @@ namespace AdvancedWand
 
             Chat.Send(player, string.Format("<color=lime>Pasting...</color>"));
 
-            for (int Y = 0; Y < schematic.YMax; Y++)
+            for (int Y = 0; Y <= schematic.YMax; Y++)
             {
-                for (int Z = 0; Z < schematic.ZMax; Z++)
+                for (int Z = 0; Z <= schematic.ZMax; Z++)
                 {
-                    for (int X = 0; X < schematic.XMax; X++)
+                    for (int X = 0; X <= schematic.XMax; X++)
                     {
                         Vector3Int newPosition = new Vector3Int(player.Position) + new Vector3Int(X,Y,Z);
                         AdvancedWand.AddAction(newPosition, ItemTypes.IndexLookup.GetIndex(schematic.Blocks[X,Y,Z].BlockID));

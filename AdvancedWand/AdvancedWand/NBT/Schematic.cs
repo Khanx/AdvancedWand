@@ -40,13 +40,13 @@ namespace Pandaros.SchematicBuilder.NBT
 
         public Schematic(string name, int x, int y, int z, Vector3Int corner1) : this(name, x, y, z)
         {
-            Blocks = new SchematicBlock[x,y,z];
+            Blocks = new SchematicBlock[x+1,y+1,z+1];
 
-            for (int Y = 0; Y < YMax; Y++)
+            for (int Y = 0; Y <= YMax; Y++)
             {
-                for (int Z = 0; Z < ZMax; Z++)
+                for (int Z = 0; Z <= ZMax; Z++)
                 {
-                    for (int X = 0; X < XMax; X++)
+                    for (int X = 0; X <= XMax; X++)
                     {
                         string blockid;
                         if (World.TryGetTypeAt(corner1 + new Vector3Int(X, Y, Z), out ItemTypes.ItemType type))
