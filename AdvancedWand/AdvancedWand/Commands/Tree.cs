@@ -122,7 +122,7 @@ namespace AdvancedWand
 
             JSON.Serialize(BlueprintManager.MODPATH + "/blueprints/" + filename + ".json", json, 2);
 
-            Chat.Send(player, "<color=olive>Saved tree:" + filename + "</color>");
+            Chat.Send(player, "<color=olive>Saved tree: " + filename + "</color>");
 
             return true;
         }
