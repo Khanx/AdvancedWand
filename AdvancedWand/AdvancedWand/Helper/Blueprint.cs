@@ -64,7 +64,26 @@ namespace AdvancedWand.Helper
                         int newX = z;
                         int newZ = zSize - ( x + 1 );
 
-                        newBlocks[newZ, y, newX] = blocks[z, y, x];
+                        string type = ItemTypes.IndexLookup.GetName(blocks[z, y, x]);
+                        switch (type.Substring(type.Length - 2))
+                        {
+                            case "x+":
+                                type = type.Replace("x+", "z+");
+                                break;
+                            case "x-":
+                                type = type.Replace("x-", "z-");
+                                break;
+                            case "z+":
+                                type = type.Replace("z+", "x-");
+                                break;
+                            case "z-":
+                                type = type.Replace("z-", "x+");
+                                break;
+                            default:
+                                break;
+                        }
+
+                        newBlocks[newZ, y, newX] = ItemTypes.GetType(type).ItemIndex;
                     }
                 }
             }

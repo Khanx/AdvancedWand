@@ -44,7 +44,7 @@ namespace AdvancedWand.Commands
                     for(int z = 0; z < blueprint.zSize; z++)
                     {
                         Vector3Int newPosition = new Vector3Int(player.Position) - blueprint.playerMod + new Vector3Int(x, y, z);
-                        //DONT USE THIS IF CAN CAUSE PROBLEMS!!!
+                        //DONT USE THIS IT CAN CAUSE PROBLEMS!!!
                         //if(!World.TryGetTypeAt(newPosition, out ushort actualType) || actualType != blueprint.blocks[x, y, z])
                         AdvancedWand.AddAction(newPosition, blueprint.blocks[x, y, z]);
                     }
