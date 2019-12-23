@@ -59,7 +59,7 @@ namespace AdvancedWand.Commands
                             {
                                 ItemTypes.ItemType type = ItemTypes.GetType(actualType);
 
-                                if((!AdvancedWand.security && !ItemTypes.NotableTypes.Contains(type)) && type.ParentItemType != null && type.ParentItemType.ItemIndex == blockIndex)
+                                if(type.ParentItemType != null && type.ParentItemType.ItemIndex == blockIndex)
                                     count++;
                             }
                         }

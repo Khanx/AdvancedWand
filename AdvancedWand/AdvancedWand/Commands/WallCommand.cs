@@ -46,13 +46,13 @@ namespace AdvancedWand
                         {
                             Vector3Int newPos = new Vector3Int(x, y, z);
                             if(!World.TryGetTypeAt(newPos, out ushort actualType) || actualType != blockIndex)
-                                AdvancedWand.AddAction(newPos, blockIndex);
+                                AdvancedWand.AddAction(newPos, blockIndex, player);
                         }
                         else if(inner != BlockTypes.BuiltinBlocks.Indices.air)
                         {
                             Vector3Int newPos = new Vector3Int(x, y, z);
                             if(!World.TryGetTypeAt(newPos, out ushort actualType) || actualType != blockIndex)
-                                AdvancedWand.AddAction(newPos, inner);
+                                AdvancedWand.AddAction(newPos, inner, player);
                         }
                     }
 

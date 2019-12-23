@@ -11,7 +11,6 @@ namespace AdvancedWand
         //It's a Dictionary because in a server can be more than one player
 
         public static int default_limit = 100000;
-        public static bool security = false;
 
         public bool active = false;
         public int limit;
@@ -33,25 +32,25 @@ namespace AdvancedWand
             return null;
         }
 
-        private static Dictionary<Vector3Int, List<(Vector3Int, ushort)>> chunkChanges = new Dictionary<Vector3Int, List<(Vector3Int, ushort)>>();
+        private static Dictionary<Vector3Int, List<(Vector3Int, ushort, BlockChangeRequestOrigin)>> chunkChanges = new Dictionary<Vector3Int, List<(Vector3Int, ushort, BlockChangeRequestOrigin)>>();
         private static Stack<Vector3Int> chunkOrder = new Stack<Vector3Int>();
         private static Queue<Vector3Int> failedChunks = new Queue<Vector3Int>();
 
         private static long nextUpdate = 0;
         public static long increment = 250;
 
-        public static void AddAction(Vector3Int position, ushort type)
+        public static void AddAction(Vector3Int position, ushort type, Players.Player player)
         {
             Vector3Int chunk = position.ToChunk();
 
             if(chunkChanges.ContainsKey(chunk))
             {
-                chunkChanges[chunk].Add((position, type));
+                chunkChanges[chunk].Add((position, type, new BlockChangeRequestOrigin(player)));
             }
             else
             {
-                List<(Vector3Int, ushort)> changes = new List<(Vector3Int, ushort)>();
-                changes.Add((position, type));
+                List<(Vector3Int, ushort,  BlockChangeRequestOrigin)> changes = new List<(Vector3Int, ushort, BlockChangeRequestOrigin)>();
+                changes.Add((position, type, new BlockChangeRequestOrigin(player)));
                 chunkChanges.Add(chunk, changes);
             }
 
@@ -80,13 +79,16 @@ namespace AdvancedWand
             else
                 return;
 
-            if(!chunkChanges.TryGetValue(chunk, out List<(Vector3Int, ushort)> changes))
+            if(!chunkChanges.TryGetValue(chunk, out List<(Vector3Int, ushort, BlockChangeRequestOrigin)> changes))
                 return;
 
 
             foreach(var change in changes)
             {
-                if(ServerManager.TryChangeBlock(change.Item1, change.Item2) == EServerChangeBlockResult.ChunkNotReady)
+                if (ItemTypes.GetType(change.Item2).Name.Contains("bedend"))
+                    continue;
+
+                if(ServerManager.TryChangeBlock(change.Item1, change.Item2, change.Item3) == EServerChangeBlockResult.ChunkNotReady)
                 {
                     failedChunks.Enqueue(chunk);
                     return;

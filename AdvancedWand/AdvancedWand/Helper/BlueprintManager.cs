@@ -41,8 +41,6 @@ namespace AdvancedWand.Helper
                 increment = 1000;
 
             AdvancedWand.increment = (1010-increment);
-
-            AdvancedWand.security = json.GetAsOrDefault<bool>("security", true);
         }
 
         [ModLoader.ModCallback(ModLoader.EModCallbackType.AfterWorldLoad, "Khanx.AdvancedWand.LoadBlueprints")]

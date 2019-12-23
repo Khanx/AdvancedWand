@@ -38,7 +38,7 @@ namespace AdvancedWand
                     {
                         Vector3Int newPos = new Vector3Int(x, y, z);
                         if(!World.TryGetTypeAt(newPos, out ushort actualType) || actualType != BlockTypes.BuiltinBlocks.Indices.air)
-                            AdvancedWand.AddAction(newPos, BlockTypes.BuiltinBlocks.Indices.air);
+                            AdvancedWand.AddAction(newPos, BlockTypes.BuiltinBlocks.Indices.air, player);
                     }
 
             Chat.Send(player, string.Format("<color=lime>Cutted the selected area</color>"));

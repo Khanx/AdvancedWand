@@ -60,7 +60,7 @@ namespace AdvancedWand
                     {
                         Vector3Int newPosition = new Vector3Int(player.Position) - blueprint.playerMod + new Vector3Int(x, y, z);
                         if(!World.TryGetTypeAt(newPosition, out ushort actualType) || actualType != blueprint.blocks[x, y, z])
-                            AdvancedWand.AddAction(newPosition, blueprint.blocks[x, y, z]);
+                            AdvancedWand.AddAction(newPosition, blueprint.blocks[x, y, z], player);
                     }
 
             return true;

@@ -40,8 +40,8 @@ namespace AdvancedWand
                         for(int z = end.z; z >= start.z; z--)
                         {
                             Vector3Int newPos = new Vector3Int(x, y, z);
-                            if(!World.TryGetTypeAt(newPos, out ushort actualType) || ( actualType != BlockTypes.BuiltinBlocks.Indices.air && (!AdvancedWand.security || ItemTypes.NotableTypes.Contains(ItemTypes.GetType(actualType))) ))
-                                AdvancedWand.AddAction(newPos, newBlock);
+                            if(!World.TryGetTypeAt(newPos, out ushort actualType) || ( actualType != BlockTypes.BuiltinBlocks.Indices.air))
+                                AdvancedWand.AddAction(newPos, newBlock, player);
 
                         }
 
@@ -66,7 +66,7 @@ namespace AdvancedWand
                         {
                             Vector3Int newPos = new Vector3Int(x, y, z);
                             if(!World.TryGetTypeAt(newPos, out ushort actualType) || actualType == oldBlock)
-                                AdvancedWand.AddAction(newPos, newBlock);
+                                AdvancedWand.AddAction(newPos, newBlock, player);
                         }
 
                 Chat.Send(player, string.Format("<color=lime>{0} -> {1}</color>", splits[1], splits[2]));

@@ -19,6 +19,37 @@ namespace AdvancedWand.Commands
             if(!CommandHelper.CheckLimit(player))
                 return true;
 
+            //LEFT
+            int direction = 1;
+
+            if (2 <= splits.Count)
+            {
+                switch (splits[1].Trim().ToLower())
+                {
+                    case "l":
+                    case "left":
+                    case "270":
+                        direction = 3;
+                        break;
+                    case "r":
+                    case "right":
+                    case "90":
+                        direction = 1;
+                        break;
+                    case "b":
+                    case "back":
+                    case "f":
+                    case "flip":
+                    case "180":
+                        direction = 2;
+                        break;
+                    default:
+                        direction = 1;
+                        break;
+                }
+            }
+
+
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
             Blueprint blueprint = new Blueprint(wand.area, player);
@@ -33,11 +64,11 @@ namespace AdvancedWand.Commands
                     {
                         Vector3Int newPos = new Vector3Int(x, y, z);
                         if(!World.TryGetTypeAt(newPos, out ushort actualType) || actualType != BlockTypes.BuiltinBlocks.Indices.air)
-                            AdvancedWand.AddAction(newPos, BlockTypes.BuiltinBlocks.Indices.air);
+                            AdvancedWand.AddAction(newPos, BlockTypes.BuiltinBlocks.Indices.air, player);
                     }
 
-
-            blueprint.Rotate();
+            for(int i =0;i< direction;i++)
+                blueprint.Rotate();
 
             for(int x = 0; x < blueprint.xSize; x++)
                 for(int y = 0; y < blueprint.ySize; y++)
@@ -46,7 +77,7 @@ namespace AdvancedWand.Commands
                         Vector3Int newPosition = new Vector3Int(player.Position) - blueprint.playerMod + new Vector3Int(x, y, z);
                         //DONT USE THIS IT CAN CAUSE PROBLEMS!!!
                         //if(!World.TryGetTypeAt(newPosition, out ushort actualType) || actualType != blueprint.blocks[x, y, z])
-                        AdvancedWand.AddAction(newPosition, blueprint.blocks[x, y, z]);
+                        AdvancedWand.AddAction(newPosition, blueprint.blocks[x, y, z], player);
                     }
 
             return true;

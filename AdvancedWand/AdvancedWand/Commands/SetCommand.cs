@@ -42,7 +42,7 @@ namespace AdvancedWand
                     {
                         Vector3Int newPos = new Vector3Int(x, y, z);
                         if(!World.TryGetTypeAt(newPos, out ushort actualType) || actualType != blockIndex)
-                            AdvancedWand.AddAction(newPos, blockIndex);
+                            AdvancedWand.AddAction(newPos, blockIndex, player);
                     }
 
             Chat.Send(player, string.Format("<color=lime>Set: {0}</color>", blockIndex));

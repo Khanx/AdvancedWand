@@ -53,7 +53,7 @@ namespace AdvancedWand
                     {
                         Vector3Int newPos = new Vector3Int(x, y, z);
                         if(!World.TryGetTypeAt(newPos, out ushort actualType) || actualType != BlockTypes.BuiltinBlocks.Indices.air)
-                            AdvancedWand.AddAction(newPos, BlockTypes.BuiltinBlocks.Indices.air);
+                            AdvancedWand.AddAction(newPos, BlockTypes.BuiltinBlocks.Indices.air, player);
                     }
 
             //Paste the temporal copy
@@ -66,7 +66,7 @@ namespace AdvancedWand
                         Vector3Int newPosition = new Vector3Int(player.Position) - tmpCopy.playerMod + direction + new Vector3Int(x, y, z);
                         //DONT USE THIS IF CAN CAUSE PROBLEMS!!!
                         //if(!World.TryGetTypeAt(newPosition, out ushort actualType) || actualType != tmpCopy.blocks[x, y, z])
-                            AdvancedWand.AddAction(newPosition, tmpCopy.blocks[x, y, z]);
+                            AdvancedWand.AddAction(newPosition, tmpCopy.blocks[x, y, z], player);
                     }
 
             Chat.Send(player, string.Format("<color=lime>Moved {0} {1} the selected area</color>", quantity, sdirection));
