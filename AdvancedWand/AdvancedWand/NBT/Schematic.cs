@@ -89,16 +89,16 @@ namespace Pandaros.SchematicBuilder.NBT
 
         public void Rotate()
         {
-            SchematicBlock[,,] newBlocks = new SchematicBlock[ZMax, YMax, XMax];
+            SchematicBlock[,,] newBlocks = new SchematicBlock[ZMax+1, YMax+1, XMax+1];
 
-            for (int y = 0; y < YMax; y++)
+            for (int y = 0; y <= YMax; y++)
             {
-                for (int z = 0; z < ZMax; z++)
+                for (int z = 0; z <= ZMax; z++)
                 {
-                    for (int x = 0; x < XMax; x++)
+                    for (int x = 0; x <= XMax; x++)
                     {
                         int newX = x;
-                        int newZ = ZMax - (z + 1);
+                        int newZ = (ZMax+1) - (z + 1);
 
                         if (Blocks[x, y, z].BlockID.Contains("z+"))
                         {

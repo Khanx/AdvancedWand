@@ -24,17 +24,6 @@ namespace AdvancedWand.Commands
 
             Schematic tmpCopy = new Schematic(player.Name + "tmpcopy", wand.area.GetXMax(), wand.area.GetYMax(), wand.area.GetZMax(), wand.area.corner1);
 
-            /*
-            Chat.Send(player, "Size before rotating = " + tmpCopy.Blocks.GetLength(0) + ", " + tmpCopy.Blocks.GetLength(1) + ", " + tmpCopy.Blocks.GetLength(2));
-            Chat.Send(player, "Size before rotating = " + tmpCopy.XMax + ", " + tmpCopy.YMax + ", " + tmpCopy.ZMax);
-            */
-            tmpCopy.Rotate();
-
-            /*
-            Chat.Send(player, "Size after rotating = " + tmpCopy.Blocks.GetLength(0) + ", " + tmpCopy.Blocks.GetLength(1) + ", " + tmpCopy.Blocks.GetLength(2));
-            Chat.Send(player, "Size after rotating = " + tmpCopy.XMax + ", " + tmpCopy.YMax + ", " + tmpCopy.ZMax);
-            Chat.Send(player, "0,0,0: " + tmpCopy.Blocks[0, 0, 0].BlockID);
-            */
             Vector3Int start = wand.area.corner1;
             Vector3Int end = wand.area.corner2;
 
@@ -46,6 +35,9 @@ namespace AdvancedWand.Commands
                         if (!World.TryGetTypeAt(newPos, out ushort actualType) || actualType != BlockTypes.BuiltinBlocks.Indices.air)
                             AdvancedWand.AddAction(newPos, BlockTypes.BuiltinBlocks.Indices.air);
                     }
+
+            tmpCopy.Rotate();
+
 
             for (int Y = 0; Y <= tmpCopy.YMax; Y++)
             {
