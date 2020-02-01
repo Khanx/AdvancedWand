@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using AdvancedWand.Helper;
+using AdvancedWand.Persistence;
 using Chatting;
 using Pipliz;
 using Pipliz.JSON;
@@ -120,7 +121,7 @@ namespace AdvancedWand
             jsonTree.SetAs("blocks", jsonBlocks1);
             json.AddToArray(jsonTree);
 
-            JSON.Serialize(BlueprintManager.MODPATH + "/blueprints/" + filename + ".json", json, 2);
+            JSON.Serialize(StructureManager.Blueprint_FOLDER + filename + ".json", json, 2);
 
             Chat.Send(player, "<color=olive>Saved tree: " + filename + "</color>");
 

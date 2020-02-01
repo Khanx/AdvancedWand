@@ -2,6 +2,7 @@
 using AdvancedWand.Helper;
 using Pipliz;
 using Chatting;
+using AdvancedWand.Persistence;
 
 namespace AdvancedWand
 {
@@ -27,7 +28,7 @@ namespace AdvancedWand
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
-            wand.copy = new Helper.Blueprint(wand.area, player);
+            wand.copy = new Blueprint(wand.area, player);
 
             Vector3Int start = wand.area.corner1;
             Vector3Int end = wand.area.corner2;

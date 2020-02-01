@@ -2,6 +2,7 @@
 using AdvancedWand.Helper;
 using Pipliz;
 using Chatting;
+using AdvancedWand.Persistence;
 
 namespace AdvancedWand
 {
@@ -59,14 +60,14 @@ namespace AdvancedWand
             //Paste the temporal copy
             Vector3Int direction = ( CommandHelper.GetDirection(player.Forward, sdirection) * quantity );
 
-            for(int x = 0; x < tmpCopy.xSize; x++)
-                for(int y = 0; y < tmpCopy.ySize; y++)
-                    for(int z = 0; z < tmpCopy.zSize; z++)
+            for(int x = 0; x <= tmpCopy.GetMaxX(); x++)
+                for(int y = 0; y <= tmpCopy.GetMaxY(); y++)
+                    for(int z = 0; z <= tmpCopy.GetMaxZ(); z++)
                     {
                         Vector3Int newPosition = new Vector3Int(player.Position) - tmpCopy.playerMod + direction + new Vector3Int(x, y, z);
                         //DONT USE THIS IF CAN CAUSE PROBLEMS!!!
                         //if(!World.TryGetTypeAt(newPosition, out ushort actualType) || actualType != tmpCopy.blocks[x, y, z])
-                            AdvancedWand.AddAction(newPosition, tmpCopy.blocks[x, y, z], player);
+                            AdvancedWand.AddAction(newPosition, tmpCopy.GetBlock(x,y,z), player);
                     }
 
             Chat.Send(player, string.Format("<color=lime>Moved {0} {1} the selected area</color>", quantity, sdirection));

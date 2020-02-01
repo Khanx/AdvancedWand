@@ -2,6 +2,7 @@
 using AdvancedWand.Helper;
 using Pipliz;
 using Chatting;
+using AdvancedWand.Persistence;
 
 namespace AdvancedWand.Commands
 {
@@ -30,7 +31,7 @@ namespace AdvancedWand.Commands
             blueprintName = blueprintName.Replace(" ", "_");
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
-            Blueprint blueprint = wand.copy;
+            Blueprint blueprint = (Blueprint)wand.copy; //KHANX: STRUCTURE PROBLEM
 
             if(blueprint == null)
             {
@@ -38,15 +39,14 @@ namespace AdvancedWand.Commands
                 return true;
             }
 
-            if(BlueprintManager._blueprints.ContainsKey(blueprintName))
+            if(StructureManager._structures.ContainsKey(blueprintName))
             {
                 Chat.Send(player, string.Format("<color=orange>A blueprint with that name already exists.</color>"));
                 return true;
             }
 
-            blueprint.saveBlueprint(blueprintName);
+            StructureManager.SaveStructure(blueprint, blueprintName);
 
-            BlueprintManager._blueprints.Add(blueprintName, blueprint);
 
             Chat.Send(player, string.Format("<color=lime>Blueprint saved as: {0}</color>", blueprintName));
 

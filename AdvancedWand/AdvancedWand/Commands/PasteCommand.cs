@@ -2,6 +2,7 @@
 using AdvancedWand.Helper;
 using Pipliz;
 using Chatting;
+using AdvancedWand.Persistence;
 
 namespace AdvancedWand
 {
@@ -29,13 +30,13 @@ namespace AdvancedWand
                 return true;
             }
 
-            Blueprint blueprint = null;
+            Structure structure = null;
 
             if(chat.Trim().Equals("//paste"))  //Paste from copy
             {
-                blueprint = wand.copy;
+                structure = (Blueprint)wand.copy;   //KHANX: STRUCTURE PROBLEM
 
-                if(blueprint == null)
+                if(structure == null)
                 {
                     Chat.Send(player, string.Format("<color=orange>There is nothing copied</color>"));
                     return true;
@@ -43,24 +44,28 @@ namespace AdvancedWand
             }
             else    //Paste from loaded blueprint
             {
-                string blueprintName = chat.Substring(chat.IndexOf(" ") + 1).Trim();
+                string structureName = chat.Substring(chat.IndexOf(" ") + 1).Trim().ToLower();
 
-                if(!BlueprintManager._blueprints.TryGetValue(blueprintName, out blueprint))
+                if(!StructureManager._structures.ContainsKey(structureName))
                 {
                     Chat.Send(player, string.Format("<color=orange>There is not a bluerpint with that name.</color>"));
+
                     return true;
                 }
+
+                structure =  StructureManager.GetStructure(structureName);
             }
 
             Chat.Send(player, string.Format("<color=lime>Pasting...</color>"));
 
-            for(int x = 0; x < blueprint.xSize; x++)
-                for(int y = 0; y < blueprint.ySize; y++)
-                    for(int z = 0; z < blueprint.zSize; z++)
+            for(int x = 0; x <= structure.GetMaxX(); x++)
+                for(int y = 0; y <= structure.GetMaxY(); y++)
+                    for(int z = 0; z <= structure.GetMaxZ(); z++)
                     {
-                        Vector3Int newPosition = new Vector3Int(player.Position) - blueprint.playerMod + new Vector3Int(x, y, z);
-                        if(!World.TryGetTypeAt(newPosition, out ushort actualType) || actualType != blueprint.blocks[x, y, z])
-                            AdvancedWand.AddAction(newPosition, blueprint.blocks[x, y, z], player);
+                        Vector3Int newPosition = new Vector3Int(player.Position) + new Vector3Int(x, y, z);
+                        //Vector3Int newPosition = new Vector3Int(player.Position) - structure.playerMod + new Vector3Int(x, y, z);
+                        if (!World.TryGetTypeAt(newPosition, out ushort actualType) || actualType != structure.GetBlock(x, y, z))
+                            AdvancedWand.AddAction(newPosition, structure.GetBlock(x,y,z), player);
                     }
 
             return true;

@@ -1,6 +1,7 @@
 ﻿using AdvancedWand.Helper;
 using Pipliz;
 using System.Collections.Generic;
+using AdvancedWand.Persistence;
 
 namespace AdvancedWand
 {
@@ -15,7 +16,7 @@ namespace AdvancedWand
         public bool active = false;
         public int limit;
         public SelectedArea area = new SelectedArea();
-        public Blueprint copy;
+        public Structure copy;
 
         private AdvancedWand() { limit = default_limit; }
 

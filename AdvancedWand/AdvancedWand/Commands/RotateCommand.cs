@@ -2,6 +2,7 @@
 using AdvancedWand.Helper;
 using Pipliz;
 using Chatting;
+using AdvancedWand.Persistence;
 
 namespace AdvancedWand.Commands
 {
@@ -70,14 +71,14 @@ namespace AdvancedWand.Commands
             for(int i =0;i< direction;i++)
                 blueprint.Rotate();
 
-            for(int x = 0; x < blueprint.xSize; x++)
-                for(int y = 0; y < blueprint.ySize; y++)
-                    for(int z = 0; z < blueprint.zSize; z++)
+            for(int x = 0; x <= blueprint.GetMaxX(); x++)
+                for(int y = 0; y <= blueprint.GetMaxY(); y++)
+                    for(int z = 0; z <= blueprint.GetMaxZ(); z++)
                     {
                         Vector3Int newPosition = new Vector3Int(player.Position) - blueprint.playerMod + new Vector3Int(x, y, z);
                         //DONT USE THIS IT CAN CAUSE PROBLEMS!!!
                         //if(!World.TryGetTypeAt(newPosition, out ushort actualType) || actualType != blueprint.blocks[x, y, z])
-                        AdvancedWand.AddAction(newPosition, blueprint.blocks[x, y, z], player);
+                        AdvancedWand.AddAction(newPosition, blueprint.GetBlock(x,y,z), player);
                     }
 
             return true;
