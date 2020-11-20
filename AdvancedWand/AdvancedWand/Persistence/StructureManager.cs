@@ -26,6 +26,8 @@ namespace AdvancedWand.Persistence
         [ModLoader.ModCallback(ModLoader.EModCallbackType.AfterWorldLoad, "Khanx.AdvancedWand.LoadStructures")]
         public static void LoadStructures()
         {
+            _structures.Clear();
+
             if (Directory.Exists(Blueprint_FOLDER))
             {
                 string[] prefixFiles = Directory.GetFiles(Blueprint_FOLDER, "*.b", SearchOption.AllDirectories);
@@ -54,12 +56,13 @@ namespace AdvancedWand.Persistence
                     string schematic_name = file.Substring(file.LastIndexOf("/") + 1).Trim().ToLower();
                     schematic_name = schematic_name.Substring(0, schematic_name.Length - 12);
 
-                    if(_structures.ContainsKey(schematic_name))
+                    if (_structures.ContainsKey(schematic_name))
                     {
                         Log.Write(string.Format("<color=red>The {0} schematic has not been added since a blueprint with the same name already exists.</color>", schematic_name));
                         continue;
                     }
-                    _structures.Add(schematic_name, file);
+                    else
+                        _structures.Add(schematic_name, file);
 
                     Log.Write(string.Format("<color=blue>Loaded blueprint: {0}</color>", schematic_name));
                 }
@@ -82,7 +85,7 @@ namespace AdvancedWand.Persistence
                 return new Schematic(file);
 
             return new Blueprint(file);
-            
+
         }
 
         public static bool SaveStructure(Structure structure, string name)
@@ -90,13 +93,8 @@ namespace AdvancedWand.Persistence
             if (_structures.ContainsKey(name))
                 return false;
 
-            if(structure is Blueprint)
-            {
-
-            }
-
-            _structures.Add(name, name + "");
             structure.Save(name);
+            LoadStructures();
 
             return true;
         }

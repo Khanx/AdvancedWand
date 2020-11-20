@@ -62,8 +62,12 @@ namespace AdvancedWand
                 for(int y = 0; y <= structure.GetMaxY(); y++)
                     for(int z = 0; z <= structure.GetMaxZ(); z++)
                     {
-                        Vector3Int newPosition = new Vector3Int(player.Position) + new Vector3Int(x, y, z);
-                        //Vector3Int newPosition = new Vector3Int(player.Position) - structure.playerMod + new Vector3Int(x, y, z);
+                        Vector3Int newPosition;
+                        if(structure is Blueprint)
+                            newPosition = new Vector3Int(player.Position) - ((Blueprint)structure).playerMod + new Vector3Int(x, y, z);
+                        else
+                            newPosition = new Vector3Int(player.Position) + new Vector3Int(x, y, z);
+
                         if (!World.TryGetTypeAt(newPosition, out ushort actualType) || actualType != structure.GetBlock(x, y, z))
                             AdvancedWand.AddAction(newPosition, structure.GetBlock(x,y,z), player);
                     }

@@ -10,6 +10,7 @@ namespace AdvancedWand.Persistence
         private int xSize;
         private int ySize;
         private int zSize;
+        public Dictionary<ushort, string> types = new Dictionary<ushort, string>();
         private ushort[,,] blocks;
         public Vector3Int playerMod;
 
@@ -23,14 +24,14 @@ namespace AdvancedWand.Persistence
         {
             ushort[,,] newBlocks = new ushort[zSize + 1, ySize + 1, xSize + 1];
 
-            for(int y = 0; y < ySize; y++)
+            for (int y = 0; y < ySize; y++)
             {
-                for(int x = 0; x < zSize; x++)
+                for (int x = 0; x < zSize; x++)
                 {
-                    for(int z = 0; z < xSize; z++)
+                    for (int z = 0; z < xSize; z++)
                     {
                         int newX = z;
-                        int newZ = zSize - ( x + 1 );
+                        int newZ = zSize - (x + 1);
 
                         string type = ItemTypes.IndexLookup.GetName(blocks[z, y, x]);
                         switch (type.Substring(type.Length - 2))
@@ -65,7 +66,7 @@ namespace AdvancedWand.Persistence
 
         public override ushort GetBlock(int x, int y, int z)
         {
-            return blocks[x,y,z];
+            return blocks[x, y, z];
         }
 
         public Blueprint(Helper.SelectedArea area, Players.Player player)
@@ -94,6 +95,9 @@ namespace AdvancedWand.Persistence
                         Vector3Int newPos = new Vector3Int(x, y, z);
                         if (World.TryGetTypeAt(newPos, out ushort type))
                         {
+                            if (!types.ContainsKey(type))
+                                types.Add(type, ItemTypes.IndexLookup.GetName(type));
+
                             blocks[x - start.x, y - start.y, z - start.z] = type;
                         }
                     }
@@ -119,28 +123,29 @@ namespace AdvancedWand.Persistence
                 //From one world to another
                 Dictionary<ushort, ushort> typesTransformation = new Dictionary<ushort, ushort>();
 
-                using(ByteReader compressed = raw.ReadCompressed())
+                using (ByteReader compressed = raw.ReadCompressed())
                 {
-                    for(int i = 0; i < typesC; i++)
+                    for (int i = 0; i < typesC; i++)
                     {
                         ushort type_index = compressed.ReadVariableUShort();
                         string type_name = compressed.ReadString();
 
                         ushort new_type_index;
 
-                        if(!ItemTypes.IndexLookup.TryGetIndex(type_name, out new_type_index))
+                        if (!ItemTypes.IndexLookup.TryGetIndex(type_name, out new_type_index))
                             new_type_index = BuiltinBlocks.Indices.missingerror;
 
                         typesTransformation.Add(type_index, new_type_index);
+                        types.Add(new_type_index, type_name);
                     } //type
 
                     blocks = new ushort[xSize, ySize, zSize];
 
-                    for(int x = 0; x < xSize; x++)
+                    for (int x = 0; x < xSize; x++)
                     {
-                        for(int y = 0; y < ySize; y++)
+                        for (int y = 0; y < ySize; y++)
                         {
-                            for(int z = 0; z < zSize; z++)
+                            for (int z = 0; z < zSize; z++)
                             {
                                 blocks[x, y, z] = typesTransformation.GetValueOrDefault(compressed.ReadVariableUShort(), BuiltinBlocks.Indices.missingerror);
                             }
@@ -153,7 +158,41 @@ namespace AdvancedWand.Persistence
 
         public override void Save(string name)
         {
-            throw new System.NotImplementedException();
+            using (ByteBuilder builder = ByteBuilder.Get())
+            {
+                builder.WriteVariable(playerMod);
+
+                builder.WriteVariable(types.Count);
+
+                builder.WriteVariable(xSize);
+                builder.WriteVariable(ySize);
+                builder.WriteVariable(zSize);
+
+                using (ByteBuilder compressed = ByteBuilder.Get())
+                {
+                    foreach (var key in types.Keys)
+                    {
+                        compressed.WriteVariable(key);
+                        compressed.Write(types[key]);
+                    }
+
+                    for (int x = 0; x < xSize; x++)
+                    {
+                        for (int y = 0; y < ySize; y++)
+                        {
+                            for (int z = 0; z < zSize; z++)
+                            {
+                                compressed.WriteVariable(blocks[x, y, z]);
+                            }
+                        }
+                    }
+
+                    builder.WriteCompressed(compressed);
+                }
+
+                //return builder.ToArray();
+                File.WriteAllBytes(StructureManager.MOD_FOLDER + "/blueprints/" + name + ".b", builder.ToArray());
+            }
         }
     }
 }
