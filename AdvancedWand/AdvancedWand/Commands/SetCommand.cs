@@ -45,7 +45,7 @@ namespace AdvancedWand
                             AdvancedWand.AddAction(newPos, blockIndex, player);
                     }
 
-            Chat.Send(player, string.Format("<color=lime>Set: {0}</color>", blockIndex));
+            Chat.Send(player, string.Format("<color=green>Set: {0}</color>", blockIndex));
 
             return true;
         }

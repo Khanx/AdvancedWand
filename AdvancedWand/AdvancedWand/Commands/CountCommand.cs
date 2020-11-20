@@ -69,7 +69,7 @@ namespace AdvancedWand.Commands
             if(blockIndex == ItemTypes.IndexLookup.GetIndex("bed"))
                 count /= 2;
 
-            Chat.Send(player, string.Format("<color=lime>{0}({1}): {2}</color>", splits[1], blockIndex, count));
+            Chat.Send(player, string.Format("<color=green>{0}({1}): {2}</color>", splits[1], blockIndex, count));
 
             return true;
         }

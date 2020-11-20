@@ -45,7 +45,7 @@ namespace AdvancedWand
 
                         }
 
-                Chat.Send(player, string.Format("<color=lime>ALL -> {0}</color>", splits[1]));
+                Chat.Send(player, string.Format("<color=green>ALL -> {0}</color>", splits[1]));
             }
             else
             {
@@ -69,7 +69,7 @@ namespace AdvancedWand
                                 AdvancedWand.AddAction(newPos, newBlock, player);
                         }
 
-                Chat.Send(player, string.Format("<color=lime>{0} -> {1}</color>", splits[1], splits[2]));
+                Chat.Send(player, string.Format("<color=green>{0} -> {1}</color>", splits[1], splits[2]));
             }
 
             return true;

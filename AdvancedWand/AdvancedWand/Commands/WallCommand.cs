@@ -56,7 +56,7 @@ namespace AdvancedWand
                         }
                     }
 
-            Chat.Send(player, string.Format("<color=lime>Wall: {0} {1}</color>", splits[1], inner));
+            Chat.Send(player, string.Format("<color=green>Wall: {0} {1}</color>", splits[1], inner));
 
             return true;
         }

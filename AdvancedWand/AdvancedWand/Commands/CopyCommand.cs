@@ -31,12 +31,12 @@ namespace AdvancedWand
             wand.copy = new Blueprint(wand.area, player);
 
             Chat.Send(player, "<color=olive>Copied area:</color>");
-            Chat.Send(player, string.Format("<color=lime>X: {0}</color>", wand.copy.GetMaxX()+1));
-            Chat.Send(player, string.Format("<color=lime>Y: {0}</color>", wand.copy.GetMaxY()+1));
-            Chat.Send(player, string.Format("<color=lime>Z: {0}</color>", wand.copy.GetMaxZ()+1));
-            Chat.Send(player, string.Format("<color=lime>Total: {0}</color>", (wand.copy.GetMaxX() + 1) * wand.copy.GetMaxY() + 1 * wand.copy.GetMaxZ() + 1));
+            Chat.Send(player, string.Format("<color=green>X: {0}</color>", wand.copy.GetMaxX()+1));
+            Chat.Send(player, string.Format("<color=green>Y: {0}</color>", wand.copy.GetMaxY()+1));
+            Chat.Send(player, string.Format("<color=green>Z: {0}</color>", wand.copy.GetMaxZ()+1));
+            Chat.Send(player, string.Format("<color=green>Total: {0}</color>", (wand.copy.GetMaxX() + 1) * wand.copy.GetMaxY() + 1 * wand.copy.GetMaxZ() + 1));
 
-            Chat.Send(player, string.Format("<color=lime>Copied the selected area</color>"));
+            Chat.Send(player, string.Format("<color=green>Copied the selected area</color>"));
 
             return true;
         }

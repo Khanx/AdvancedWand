@@ -32,7 +32,7 @@ namespace AdvancedWand.Commands
 
             if(1 == splits.Count)
             {
-                Chat.Send(player, string.Format("<color=lime>Limit: {0}</color>", wand.limit));
+                Chat.Send(player, string.Format("<color=green>Limit: {0}</color>", wand.limit));
                 return true;
             }
 
@@ -49,7 +49,7 @@ namespace AdvancedWand.Commands
             }
 
             wand.limit = newLimit;
-            Chat.Send(player, string.Format("<color=lime>Limit: {0}</color>", newLimit));
+            Chat.Send(player, string.Format("<color=green>Limit: {0}</color>", newLimit));
 
             return true;
         }

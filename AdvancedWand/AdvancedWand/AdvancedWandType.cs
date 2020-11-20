@@ -31,7 +31,7 @@ namespace AdvancedWand
 
             wand.area.SetCorner1(boxedData.GetVoxelHit().BlockHit, player);
 
-            Chat.Send(player, string.Format("<color=lime>Pos 1: {0}</color>", boxedData.GetVoxelHit().BlockHit));
+            Chat.Send(player, string.Format("<color=green>Pos 1: {0}</color>", boxedData.GetVoxelHit().BlockHit));
         }
 
         public static void OnRightClickWith(Players.Player player, Shared.PlayerClickedData boxedData)
@@ -43,7 +43,7 @@ namespace AdvancedWand
 
             wand.area.SetCorner2(boxedData.GetVoxelHit().BlockHit, player);
 
-            Chat.Send(player, string.Format("<color=lime>Pos 2: {0}</color>", boxedData.GetVoxelHit().BlockHit));
+            Chat.Send(player, string.Format("<color=green>Pos 2: {0}</color>", boxedData.GetVoxelHit().BlockHit));
         }
     }
 }

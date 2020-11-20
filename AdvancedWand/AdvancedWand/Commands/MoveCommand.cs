@@ -70,7 +70,7 @@ namespace AdvancedWand
                             AdvancedWand.AddAction(newPosition, tmpCopy.GetBlock(x,y,z), player);
                     }
 
-            Chat.Send(player, string.Format("<color=lime>Moved {0} {1} the selected area</color>", quantity, sdirection));
+            Chat.Send(player, string.Format("<color=green>Moved {0} {1} the selected area</color>", quantity, sdirection));
 
             return true;
         }

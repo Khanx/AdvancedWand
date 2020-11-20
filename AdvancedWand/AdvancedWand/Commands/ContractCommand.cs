@@ -49,7 +49,7 @@ namespace AdvancedWand.Commands
             wand.area.SetCorner1(start, player);
             wand.area.SetCorner2(end, player);
 
-            Chat.Send(player, string.Format("<color=lime>Area contracted {0} block {1}</color>", quantity, sdirection));
+            Chat.Send(player, string.Format("<color=green>Area contracted {0} block {1}</color>", quantity, sdirection));
 
             return true;
         }

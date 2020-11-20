@@ -48,7 +48,7 @@ namespace AdvancedWand.Commands
             StructureManager.SaveStructure(blueprint, blueprintName);
 
 
-            Chat.Send(player, string.Format("<color=lime>Blueprint saved as: {0}</color>", blueprintName));
+            Chat.Send(player, string.Format("<color=green>Blueprint saved as: {0}</color>", blueprintName));
 
             return true;
         }

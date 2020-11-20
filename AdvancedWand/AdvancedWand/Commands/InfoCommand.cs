@@ -60,7 +60,7 @@ namespace AdvancedWand.Commands
                 if(key == 0)
                     continue;
                 string name = ItemTypes.IndexLookup.GetName(key);
-                Chat.Send(player, string.Format("<color=lime>{0}({1}): {2}</color>", name, key, info[key]));
+                Chat.Send(player, string.Format("<color=green>{0}({1}): {2}</color>", name, key, info[key]));
             }
 
             return true;

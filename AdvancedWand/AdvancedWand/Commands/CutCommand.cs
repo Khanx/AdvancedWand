@@ -42,7 +42,7 @@ namespace AdvancedWand
                             AdvancedWand.AddAction(newPos, BlockTypes.BuiltinBlocks.Indices.air, player);
                     }
 
-            Chat.Send(player, string.Format("<color=lime>Cutted the selected area</color>"));
+            Chat.Send(player, string.Format("<color=green>Cutted the selected area</color>"));
 
 
             return true;

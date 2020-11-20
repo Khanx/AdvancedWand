@@ -35,12 +35,12 @@ namespace AdvancedWand.Commands
             if(splits[0].Equals("//pos1"))
             {
                 wand.area.SetCorner1(newPos, player);
-                Chat.Send(player, string.Format("<color=lime>Pos 1: {0}</color>", newPos));
+                Chat.Send(player, string.Format("<color=green>Pos 1: {0}</color>", newPos));
             }
             else //pos2
             {
                 wand.area.SetCorner2(newPos, player);
-                Chat.Send(player, string.Format("<color=lime>Pos 2: {0}</color>", newPos));
+                Chat.Send(player, string.Format("<color=green>Pos 2: {0}</color>", newPos));
             }
 
             return true;

@@ -56,7 +56,7 @@ namespace AdvancedWand
                 structure =  StructureManager.GetStructure(structureName);
             }
 
-            Chat.Send(player, string.Format("<color=lime>Pasting...</color>"));
+            Chat.Send(player, string.Format("<color=green>Pasting...</color>"));
 
             for(int x = 0; x <= structure.GetMaxX(); x++)
                 for(int y = 0; y <= structure.GetMaxY(); y++)
