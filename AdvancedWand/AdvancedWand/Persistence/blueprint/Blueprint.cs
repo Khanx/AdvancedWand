@@ -190,8 +190,7 @@ namespace AdvancedWand.Persistence
                     builder.WriteCompressed(compressed);
                 }
 
-                //return builder.ToArray();
-                File.WriteAllBytes(StructureManager.MOD_FOLDER + "/blueprints/" + name + ".b", builder.ToArray());
+                File.WriteAllBytes(StructureManager.Blueprint_FOLDER + name + ".b", builder.ToArray());
             }
         }
     }

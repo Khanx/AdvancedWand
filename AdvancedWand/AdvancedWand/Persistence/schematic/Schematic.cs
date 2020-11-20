@@ -2,6 +2,7 @@
 using BlockTypes;
 using fNbt;
 using System.IO;
+using System.Collections.Generic;
 
 namespace AdvancedWand.Persistence
 {
@@ -155,7 +156,41 @@ namespace AdvancedWand.Persistence
 
         public override void Save(string name)
         {
-            throw new System.NotImplementedException();
+            List<NbtTag> tags = new List<NbtTag>();
+
+            tags.Add(new NbtInt("Width", XMax));
+            tags.Add(new NbtInt("Height", YMax));
+            tags.Add(new NbtInt("Length", ZMax));
+
+            List<NbtTag> blocks = new List<NbtTag>();
+
+            for (int Y = 0; Y < YMax; Y++)
+            {
+                for (int Z = 0; Z < ZMax; Z++)
+                {
+                    for (int X = 0; X < XMax; X++)
+                    {
+                        NbtCompound compTag = new NbtCompound();
+                        compTag.Add(new NbtInt("x", X));
+                        compTag.Add(new NbtInt("y", Y));
+                        compTag.Add(new NbtInt("z", Z));
+                        compTag.Add(new NbtString("id", Blocks[X, Y, Z].BlockID));
+                        blocks.Add(compTag);
+                    }
+                }
+            }
+
+            NbtList nbtList = new NbtList("CSBlocks", blocks);
+            tags.Add(nbtList);
+
+            NbtFile nbtFile = new NbtFile(new NbtCompound("CompoundTag", tags));
+            var fileSave = Path.Combine(StructureManager.Schematic_FOLDER + name + ".csschematic");
+
+            if (File.Exists(fileSave))
+                File.Delete(fileSave);
+
+            nbtFile.SaveToFile(fileSave, NbtCompression.GZip);
+
         }
     }
 }
