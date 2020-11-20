@@ -53,7 +53,7 @@ namespace AdvancedWand.Commands
             if(info.ContainsKey(ItemTypes.IndexLookup.GetIndex("bed")))
                 info[ItemTypes.IndexLookup.GetIndex("bed")] /= 2;
 
-            Chat.Send(player, "<color=olive>Area info:</color>");
+            Chat.Send(player, "<color=green>Area info:</color>");
 
             foreach(ushort key in info.Keys)
             {

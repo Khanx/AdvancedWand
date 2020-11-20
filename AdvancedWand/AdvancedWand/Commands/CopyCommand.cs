@@ -30,7 +30,7 @@ namespace AdvancedWand
 
             wand.copy = new Blueprint(wand.area, player);
 
-            Chat.Send(player, "<color=olive>Copied area:</color>");
+            Chat.Send(player, "<color=green>Copied area:</color>");
             Chat.Send(player, string.Format("<color=green>X: {0}</color>", wand.copy.GetMaxX()+1));
             Chat.Send(player, string.Format("<color=green>Y: {0}</color>", wand.copy.GetMaxY()+1));
             Chat.Send(player, string.Format("<color=green>Z: {0}</color>", wand.copy.GetMaxZ()+1));
