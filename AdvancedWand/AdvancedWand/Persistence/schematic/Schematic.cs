@@ -17,6 +17,47 @@ namespace AdvancedWand.Persistence
         /// <summary>Contains TileEntities such as hoppers and chests</summary>
         public Vector3Int StartPos { get; set; }
 
+        public Schematic(Structure structure)
+        {
+            Name = "";
+            if (structure is Blueprint)
+            {
+                XMax = structure.GetMaxX() + 1;
+                YMax = structure.GetMaxY() + 1;
+                ZMax = structure.GetMaxZ() + 1;
+            }
+            else
+            {
+                XMax = structure.GetMaxX();
+                YMax = structure.GetMaxY();
+                ZMax = structure.GetMaxZ();
+            }
+
+            Blocks = new SchematicBlock[XMax + 1, YMax + 1, ZMax + 1];
+
+            for (int Y = 0; Y <= YMax; Y++)
+            {
+                for (int Z = 0; Z <= ZMax; Z++)
+                {
+                    for (int X = 0; X <= XMax; X++)
+                    {
+                        string blockid;
+                        if (!ItemTypes.IndexLookup.TryGetName(structure.GetBlock(new Vector3Int(X, Y, Z)), out blockid))
+                            blockid = "air";
+
+                        Blocks[X, Y, Z] = new SchematicBlock()
+                        {
+                            X = X,
+                            Y = Y,
+                            Z = Z,
+                            BlockID = blockid
+                        };
+                    }
+                }
+            }
+
+        }
+
         public Schematic(string name, int x, int y, int z, Vector3Int corner1)
         {
             Name = name;

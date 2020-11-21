@@ -107,6 +107,34 @@ namespace AdvancedWand.Persistence
             playerMod = new Vector3Int(player.Position) - start;
         }
 
+        public Blueprint(Structure structure)
+        {
+            xSize = structure.GetMaxX();
+            ySize = structure.GetMaxY();
+            zSize = structure.GetMaxZ();
+
+            blocks = new ushort[xSize + 1, ySize + 1, zSize + 1];
+
+            for (int x = 0; x <= xSize; x++)
+            {
+                for (int y = 0; y <= ySize; y++)
+                {
+                    for (int z = 0; z <= zSize; z++)
+                    {
+                        Vector3Int newPos = new Vector3Int(x, y, z);
+                        ushort type = structure.GetBlock(x,y,z);
+                        
+                        if (!types.ContainsKey(type))
+                            types.Add(type, ItemTypes.IndexLookup.GetName(type));
+
+                        blocks[x, y, z] = type;
+                    }
+                }
+            }
+
+            playerMod = new Vector3Int(0, 0, 0);
+        }
+
         public Blueprint(string file) : base(file)
         {
             byte[] binaryBlueprint = File.ReadAllBytes(file);
