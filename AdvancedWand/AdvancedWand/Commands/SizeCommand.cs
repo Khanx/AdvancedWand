@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using AdvancedWand.Helper;
-using Pipliz;
 using Chatting;
 
 namespace AdvancedWand.Commands
@@ -10,10 +9,10 @@ namespace AdvancedWand.Commands
     {
         public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            if(!chat.Trim().ToLower().StartsWith("//size"))
+            if (!chat.Trim().ToLower().StartsWith("//size"))
                 return false;
 
-            if(!CommandHelper.CheckCommand(player))
+            if (!CommandHelper.CheckCommand(player))
                 return true;
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using AdvancedWand.Helper;
 using Pipliz;
 using Chatting;
 
@@ -10,29 +9,29 @@ namespace AdvancedWand.Commands
     {
         public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            if(!chat.Trim().ToLower().Equals("//pos1") && !chat.Trim().ToLower().Equals("//pos2"))
+            if (!chat.Trim().ToLower().Equals("//pos1") && !chat.Trim().ToLower().Equals("//pos2"))
                 return false;
 
             //Player exists
-            if(null == player || NetworkID.Server == player.ID)
+            if (null == player || NetworkID.Server == player.ID)
                 return false;
 
             //Check permissions
-            if(!PermissionsManager.CheckAndWarnPermission(player, "khanx.wand"))
+            if (!PermissionsManager.CheckAndWarnPermission(player, "khanx.wand"))
                 return true;
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
             //Wand is OFF
-            if(!wand.active)
+            if (!wand.active)
             {
                 Chat.Send(player, "<color=orange>Wand is OFF, use //wand to activate</color>");
                 return true;
             }
 
-            Vector3Int newPos = new Vector3Int(player.Position);
+            Vector3Int newPos = new(player.Position);
 
-            if(splits[0].Equals("//pos1"))
+            if (splits[0].Equals("//pos1"))
             {
                 wand.area.SetCorner1(newPos, player);
                 Chat.Send(player, string.Format("<color=green>Pos 1: {0}</color>", newPos));

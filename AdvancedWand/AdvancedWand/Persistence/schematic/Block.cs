@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace AdvancedWand.Persistence
+﻿namespace AdvancedWand.Persistence
 {
     public class SchematicBlock
     {

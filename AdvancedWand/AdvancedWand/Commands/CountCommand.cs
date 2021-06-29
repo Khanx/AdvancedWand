@@ -10,13 +10,13 @@ namespace AdvancedWand.Commands
     {
         public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            if(!chat.Trim().ToLower().StartsWith("//count"))
+            if (!chat.Trim().ToLower().StartsWith("//count"))
                 return false;
 
-            if(!CommandHelper.CheckCommand(player))
+            if (!CommandHelper.CheckCommand(player))
                 return true;
 
-            if(2 != splits.Count)
+            if (2 != splits.Count)
             {
                 Chat.Send(player, "<color=orange>Wrong Arguments</color>");
                 return true;
@@ -24,21 +24,20 @@ namespace AdvancedWand.Commands
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
-            Vector3Int start = wand.area.corner1;
-            Vector3Int end = wand.area.corner2;
+            Vector3Int start = wand.area.Corner1;
+            Vector3Int end = wand.area.Corner2;
 
-            ushort blockIndex = 0;
-
+            ushort blockIndex;
             try
             {
                 bool isNumeric = int.TryParse(splits[1], out int IDBlock);
 
-                if(isNumeric)
+                if (isNumeric)
                     blockIndex = (ushort)IDBlock;
                 else
                     blockIndex = ItemTypes.IndexLookup.GetIndex(splits[1]);
             }
-            catch(System.ArgumentException)
+            catch (System.ArgumentException)
             {
                 Chat.Send(player, "<color=orange>Block not found</color>");
                 return true;
@@ -46,27 +45,27 @@ namespace AdvancedWand.Commands
 
             int count = 0;
 
-            for(int x = start.x; x <= end.x; x++)
-                for(int y = start.y; y <= end.y; y++)
-                    for(int z = start.z; z <= end.z; z++)
+            for (int x = start.x; x <= end.x; x++)
+                for (int y = start.y; y <= end.y; y++)
+                    for (int z = start.z; z <= end.z; z++)
                     {
-                        Vector3Int newPos = new Vector3Int(x, y, z);
-                        if(World.TryGetTypeAt(newPos, out ushort actualType))
+                        Vector3Int newPos = new(x, y, z);
+                        if (World.TryGetTypeAt(newPos, out ushort actualType))
                         {
-                            if(actualType == blockIndex)
+                            if (actualType == blockIndex)
                                 count++;
                             else
                             {
                                 ItemTypes.ItemType type = ItemTypes.GetType(actualType);
 
-                                if(type.ParentItemType != null && type.ParentItemType.ItemIndex == blockIndex)
+                                if (type.ParentItemType != null && type.ParentItemType.ItemIndex == blockIndex)
                                     count++;
                             }
                         }
                     }
 
             //Las camas son de dos bloques
-            if(blockIndex == ItemTypes.IndexLookup.GetIndex("bed"))
+            if (blockIndex == ItemTypes.IndexLookup.GetIndex("bed"))
                 count /= 2;
 
             Chat.Send(player, string.Format("<color=green>{0}({1}): {2}</color>", splits[1], blockIndex, count));

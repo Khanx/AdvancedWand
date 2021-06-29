@@ -10,7 +10,7 @@ namespace AdvancedWand.Persistence
         private int xSize;
         private int ySize;
         private int zSize;
-        public Dictionary<ushort, string> types = new Dictionary<ushort, string>();
+        public Dictionary<ushort, string> types = new();
         private ushort[,,] blocks;
         public Vector3Int playerMod;
 
@@ -83,8 +83,8 @@ namespace AdvancedWand.Persistence
 
             blocks = new ushort[area.GetXSize() + 1, area.GetYSize() + 1, area.GetZSize() + 1];
 
-            Vector3Int start = area.corner1;
-            Vector3Int end = area.corner2;
+            Vector3Int start = area.Corner1;
+            Vector3Int end = area.Corner2;
 
             for (int x = start.x; x <= end.x; x++)
             {
@@ -92,7 +92,7 @@ namespace AdvancedWand.Persistence
                 {
                     for (int z = start.z; z <= end.z; z++)
                     {
-                        Vector3Int newPos = new Vector3Int(x, y, z);
+                        Vector3Int newPos = new(x, y, z);
                         if (World.TryGetTypeAt(newPos, out ushort type))
                         {
                             if (!types.ContainsKey(type))
@@ -121,9 +121,8 @@ namespace AdvancedWand.Persistence
                 {
                     for (int z = 0; z <= zSize; z++)
                     {
-                        Vector3Int newPos = new Vector3Int(x, y, z);
-                        ushort type = structure.GetBlock(x,y,z);
-                        
+                        ushort type = structure.GetBlock(x, y, z);
+
                         if (!types.ContainsKey(type))
                             types.Add(type, ItemTypes.IndexLookup.GetName(type));
 
@@ -139,87 +138,82 @@ namespace AdvancedWand.Persistence
         {
             byte[] binaryBlueprint = File.ReadAllBytes(file);
 
-            using (ByteReader raw = ByteReader.Get(binaryBlueprint))
+            using ByteReader raw = ByteReader.Get(binaryBlueprint);
+
+            playerMod = raw.ReadVariableVector3Int();
+            int typesC = raw.ReadVariableInt();
+
+            xSize = raw.ReadVariableInt();
+            ySize = raw.ReadVariableInt();
+            zSize = raw.ReadVariableInt();
+
+            //From one world to another
+            Dictionary<ushort, ushort> typesTransformation = new();
+
+            using ByteReader compressed = raw.ReadCompressed();
+
+            for (int i = 0; i < typesC; i++)
             {
-                playerMod = raw.ReadVariableVector3Int();
-                int typesC = raw.ReadVariableInt();
+                ushort type_index = compressed.ReadVariableUShort();
+                string type_name = compressed.ReadString();
 
-                xSize = raw.ReadVariableInt();
-                ySize = raw.ReadVariableInt();
-                zSize = raw.ReadVariableInt();
+                if (!ItemTypes.IndexLookup.TryGetIndex(type_name, out ushort new_type_index))
+                    new_type_index = BuiltinBlocks.Indices.missingerror;
 
-                //From one world to another
-                Dictionary<ushort, ushort> typesTransformation = new Dictionary<ushort, ushort>();
+                typesTransformation.Add(type_index, new_type_index);
+                types.Add(new_type_index, type_name);
+            } //type
 
-                using (ByteReader compressed = raw.ReadCompressed())
+            blocks = new ushort[xSize, ySize, zSize];
+
+            for (int x = 0; x < xSize; x++)
+            {
+                for (int y = 0; y < ySize; y++)
                 {
-                    for (int i = 0; i < typesC; i++)
+                    for (int z = 0; z < zSize; z++)
                     {
-                        ushort type_index = compressed.ReadVariableUShort();
-                        string type_name = compressed.ReadString();
-
-                        ushort new_type_index;
-
-                        if (!ItemTypes.IndexLookup.TryGetIndex(type_name, out new_type_index))
-                            new_type_index = BuiltinBlocks.Indices.missingerror;
-
-                        typesTransformation.Add(type_index, new_type_index);
-                        types.Add(new_type_index, type_name);
-                    } //type
-
-                    blocks = new ushort[xSize, ySize, zSize];
-
-                    for (int x = 0; x < xSize; x++)
-                    {
-                        for (int y = 0; y < ySize; y++)
-                        {
-                            for (int z = 0; z < zSize; z++)
-                            {
-                                blocks[x, y, z] = typesTransformation.GetValueOrDefault(compressed.ReadVariableUShort(), BuiltinBlocks.Indices.missingerror);
-                            }
-                        }
+                        blocks[x, y, z] = typesTransformation.GetValueOrDefault(compressed.ReadVariableUShort(), BuiltinBlocks.Indices.missingerror);
                     }
-
-                } //ByteReader compressed 
+                }
             }
+            //ByteReader compressed 
         }
 
         public override void Save(string name)
         {
-            using (ByteBuilder builder = ByteBuilder.Get())
+            using ByteBuilder builder = ByteBuilder.Get();
+
+            builder.WriteVariable(playerMod);
+
+            builder.WriteVariable(types.Count);
+
+            builder.WriteVariable(xSize);
+            builder.WriteVariable(ySize);
+            builder.WriteVariable(zSize);
+
+            using (ByteBuilder compressed = ByteBuilder.Get())
             {
-                builder.WriteVariable(playerMod);
-
-                builder.WriteVariable(types.Count);
-
-                builder.WriteVariable(xSize);
-                builder.WriteVariable(ySize);
-                builder.WriteVariable(zSize);
-
-                using (ByteBuilder compressed = ByteBuilder.Get())
+                foreach (var key in types.Keys)
                 {
-                    foreach (var key in types.Keys)
-                    {
-                        compressed.WriteVariable(key);
-                        compressed.Write(types[key]);
-                    }
-
-                    for (int x = 0; x < xSize; x++)
-                    {
-                        for (int y = 0; y < ySize; y++)
-                        {
-                            for (int z = 0; z < zSize; z++)
-                            {
-                                compressed.WriteVariable(blocks[x, y, z]);
-                            }
-                        }
-                    }
-
-                    builder.WriteCompressed(compressed);
+                    compressed.WriteVariable(key);
+                    compressed.Write(types[key]);
                 }
 
-                File.WriteAllBytes(StructureManager.Blueprint_FOLDER + name + ".b", builder.ToArray());
+                for (int x = 0; x < xSize; x++)
+                {
+                    for (int y = 0; y < ySize; y++)
+                    {
+                        for (int z = 0; z < zSize; z++)
+                        {
+                            compressed.WriteVariable(blocks[x, y, z]);
+                        }
+                    }
+                }
+
+                builder.WriteCompressed(compressed);
             }
+
+            File.WriteAllBytes(StructureManager.Blueprint_FOLDER + name + ".b", builder.ToArray());
         }
     }
 }

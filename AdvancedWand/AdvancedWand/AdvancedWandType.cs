@@ -1,5 +1,4 @@
-﻿using Pipliz;
-using Chatting;
+﻿using Chatting;
 using static Shared.PlayerClickedData;
 
 namespace AdvancedWand
@@ -15,18 +14,18 @@ namespace AdvancedWand
             if (playerClickedData.TypeSelected != wandType.ItemIndex)
                 return;
 
-                if(playerClickedData.ClickType == EClickType.Left)
-                    OnLeftClickWith(player, playerClickedData);
-                else if(playerClickedData.ClickType == EClickType.Right)
-                    OnRightClickWith(player, playerClickedData);
+            if (playerClickedData.ClickType == EClickType.Left)
+                OnLeftClickWith(player, playerClickedData);
+            else if (playerClickedData.ClickType == EClickType.Right)
+                OnRightClickWith(player, playerClickedData);
         }
-    
 
-    public static void OnLeftClickWith(Players.Player player, Shared.PlayerClickedData boxedData)
+
+        public static void OnLeftClickWith(Players.Player player, Shared.PlayerClickedData boxedData)
         {
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
-            if(!wand.active || boxedData.HitType != EHitType.Block || boxedData.GetVoxelHit().TypeHit == BlockTypes.BuiltinBlocks.Indices.air)
+            if (!wand.active || boxedData.HitType != EHitType.Block || boxedData.GetVoxelHit().TypeHit == BlockTypes.BuiltinBlocks.Indices.air)
                 return;
 
             wand.area.SetCorner1(boxedData.GetVoxelHit().BlockHit, player);
@@ -38,7 +37,7 @@ namespace AdvancedWand
         {
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
-            if(!wand.active || boxedData.HitType != EHitType.Block || boxedData.GetVoxelHit().TypeHit == BlockTypes.BuiltinBlocks.Indices.air)
+            if (!wand.active || boxedData.HitType != EHitType.Block || boxedData.GetVoxelHit().TypeHit == BlockTypes.BuiltinBlocks.Indices.air)
                 return;
 
             wand.area.SetCorner2(boxedData.GetVoxelHit().BlockHit, player);

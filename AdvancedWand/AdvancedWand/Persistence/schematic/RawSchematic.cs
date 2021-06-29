@@ -66,9 +66,7 @@ namespace AdvancedWand.Persistence
 
         private static SchematicBlock[,,] GetCSBlocks(RawSchematic raw, NbtTag csBlockTag, SchematicBlock[,,] list)
         {
-            NbtList csBlocks = csBlockTag as NbtList;
-
-            if (csBlocks != null)
+            if (csBlockTag is NbtList csBlocks)
             {
                 foreach (NbtCompound compTag in csBlocks)
                 {
@@ -76,7 +74,7 @@ namespace AdvancedWand.Persistence
                     NbtTag yTag = compTag["y"];
                     NbtTag zTag = compTag["z"];
                     NbtTag idTag = compTag["id"];
-                    SchematicBlock block = new SchematicBlock()
+                    SchematicBlock block = new()
                     {
                         X = xTag.IntValue,
                         Y = yTag.IntValue,

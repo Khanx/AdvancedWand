@@ -41,8 +41,7 @@ namespace AdvancedWand.Persistence
                 {
                     for (int X = 0; X <= XMax; X++)
                     {
-                        string blockid;
-                        if (!ItemTypes.IndexLookup.TryGetName(structure.GetBlock(new Vector3Int(X, Y, Z)), out blockid))
+                        if (!ItemTypes.IndexLookup.TryGetName(structure.GetBlock(new Vector3Int(X, Y, Z)), out string blockid))
                             blockid = "air";
 
                         Blocks[X, Y, Z] = new SchematicBlock()
@@ -93,9 +92,9 @@ namespace AdvancedWand.Persistence
 
         public Schematic(string file) : base(file)
         {
-            NbtFile nbtFile = new NbtFile(file);
+            NbtFile nbtFile = new(file);
 
-            RawSchematic raw = new RawSchematic(nbtFile);
+            RawSchematic raw = new(nbtFile);
 
             Name = Path.GetFileNameWithoutExtension(nbtFile.FileName);
             XMax = raw.XMax;
@@ -106,7 +105,7 @@ namespace AdvancedWand.Persistence
 
         public SchematicBlock GetSBlock(int X, int Y, int Z)
         {
-            SchematicBlock block = default(SchematicBlock);
+            SchematicBlock block = default;
 
             if (Y < YMax &&
                 X < XMax &&
@@ -121,7 +120,7 @@ namespace AdvancedWand.Persistence
 
         public override void Rotate()
         {
-            SchematicBlock[,,] newBlocks = new SchematicBlock[ZMax+1, YMax+1, XMax+1];
+            SchematicBlock[,,] newBlocks = new SchematicBlock[ZMax + 1, YMax + 1, XMax + 1];
 
             for (int y = 0; y <= YMax; y++)
             {
@@ -130,7 +129,7 @@ namespace AdvancedWand.Persistence
                     for (int x = 0; x <= XMax; x++)
                     {
                         int newX = x;
-                        int newZ = (ZMax+1) - (z + 1);
+                        int newZ = (ZMax + 1) - (z + 1);
 
                         if (Blocks[x, y, z].BlockID.Contains("z+"))
                         {
@@ -185,9 +184,8 @@ namespace AdvancedWand.Persistence
         {
             var b = GetSBlock(x, y, z);
 
-            ItemTypes.ItemType itemType;
 
-            if (!ItemTypes.TryGetType(b.BlockID, out itemType))
+            if (!ItemTypes.TryGetType(b.BlockID, out ItemTypes.ItemType itemType))
             {
                 itemType = BuiltinBlocks.Types.air;
             }
@@ -197,13 +195,13 @@ namespace AdvancedWand.Persistence
 
         public override void Save(string name)
         {
-            List<NbtTag> tags = new List<NbtTag>();
+            List<NbtTag> tags = new();
 
             tags.Add(new NbtInt("Width", XMax));
             tags.Add(new NbtInt("Height", YMax));
             tags.Add(new NbtInt("Length", ZMax));
 
-            List<NbtTag> blocks = new List<NbtTag>();
+            List<NbtTag> blocks = new();
 
             for (int Y = 0; Y < YMax; Y++)
             {
@@ -211,7 +209,7 @@ namespace AdvancedWand.Persistence
                 {
                     for (int X = 0; X < XMax; X++)
                     {
-                        NbtCompound compTag = new NbtCompound();
+                        NbtCompound compTag = new();
                         compTag.Add(new NbtInt("x", X));
                         compTag.Add(new NbtInt("y", Y));
                         compTag.Add(new NbtInt("z", Z));
@@ -221,10 +219,10 @@ namespace AdvancedWand.Persistence
                 }
             }
 
-            NbtList nbtList = new NbtList("CSBlocks", blocks);
+            NbtList nbtList = new("CSBlocks", blocks);
             tags.Add(nbtList);
 
-            NbtFile nbtFile = new NbtFile(new NbtCompound("CompoundTag", tags));
+            NbtFile nbtFile = new(new NbtCompound("CompoundTag", tags));
             var fileSave = Path.Combine(StructureManager.Schematic_FOLDER + name + ".csschematic");
 
             if (File.Exists(fileSave))

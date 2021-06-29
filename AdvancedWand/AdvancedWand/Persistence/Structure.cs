@@ -26,7 +26,7 @@ namespace AdvancedWand.Persistence
             return GetBlock(pos.x, pos.y, pos.z);
         }
 
-        public abstract void Rotate(); 
+        public abstract void Rotate();
 
         public void Rotate(Rotation r)
         {

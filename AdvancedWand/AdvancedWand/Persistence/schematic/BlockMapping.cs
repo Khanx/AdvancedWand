@@ -1,8 +1,4 @@
-﻿using Pipliz.JSON;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using Pipliz;
+﻿using Pipliz;
 
 namespace AdvancedWand.Persistence
 {
@@ -22,7 +18,7 @@ namespace AdvancedWand.Persistence
                 if (_index == ushort.MaxValue)
                 {
                     var newType = BlockTypes.BuiltinBlocks.Indices.air;
-                    
+
                     if (!string.IsNullOrWhiteSpace(CSType))
                     {
                         if (ItemTypes.IndexLookup.TryGetIndex(CSType, out ushort index))
