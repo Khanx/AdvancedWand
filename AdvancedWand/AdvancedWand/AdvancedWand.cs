@@ -123,7 +123,7 @@ namespace AdvancedWand
                     if (area.pos1 == Vector3Int.maximum || area.pos2 == Vector3Int.maximum)
                         return;
 
-                    showWhileHoldingTypes.Add(BlockTypes.BuiltinBlocks.Indices.bronzeaxe);
+                    showWhileHoldingTypes.Add(AdvancedWandType.wandType.ItemIndex);
                     list.Add(new AreaJobTracker.AreaHighlight(area.Corner1, area.Corner2, Shared.EAreaMeshType.AutoSelect, Shared.EServerAreaType.ConstructionArea));
                 }
             }
