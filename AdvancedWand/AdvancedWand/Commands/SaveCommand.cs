@@ -31,6 +31,9 @@ namespace AdvancedWand.Commands
             char stype = (splits.Count == 3) ? splits[2][0] : 'b';
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
+
+            wand.copy = new Blueprint(wand.area, player);
+
             Structure structure;
             if (stype.Equals('b'))
                 structure = (Blueprint)wand.copy;
