@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using AdvancedWand.Helper;
 using AdvancedWand.Persistence;
 using Chatting;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Pipliz;
-using Pipliz.JSON;
 
 namespace AdvancedWand
 {
@@ -90,37 +92,37 @@ namespace AdvancedWand
                 }
             }
 
-            JSONNode json = new(NodeType.Array);
-            JSONNode jsonTree = new(NodeType.Object);
-            JSONNode jsonBlocks1 = new(NodeType.Array);
+            JObject jTree = new JObject();
+            JArray jBlocksOut = new JArray();
 
-            foreach (var i in tree.Keys)
+            foreach (var typeName in tree.Keys)
             {
-                if (i.Equals("air"))
+                if (typeName.Equals("air"))
                     continue;
 
-                JSONNode jsonNodeTree2 = new(NodeType.Object);
-                JSONNode jsonBlocks = new(NodeType.Array);
+                JObject jBlocks = new JObject();
+                JArray jBlocksPositions = new JArray();
 
-                foreach (var j in tree[i])
+                foreach (var j in tree[typeName])
                 {
-                    JSONNode vector = new(NodeType.Object);
+                    JObject vector = new JObject();
                     vector.SetAs("x", j.x);
                     vector.SetAs("y", j.y);
                     vector.SetAs("z", j.z);
 
-                    jsonBlocks.AddToArray(vector);
+                    jBlocksPositions.Add(vector);
                 }
 
-                jsonNodeTree2.SetAs("blocks", jsonBlocks);
-                jsonNodeTree2.SetAs("type", i);
-                jsonBlocks1.AddToArray(jsonNodeTree2);
+                jBlocks.SetAs("blocks", jBlocksPositions);
+                jBlocks.SetAs("type", typeName);
+                jBlocksOut.Add(jBlocks);
             }
 
-            jsonTree.SetAs("blocks", jsonBlocks1);
-            json.AddToArray(jsonTree);
+            jTree.Add("blocks", jBlocksOut);
 
-            JSON.Serialize(StructureManager.Blueprint_FOLDER + filename + ".json", json, 2);
+            string jsonF = JsonConvert.SerializeObject(jTree, Formatting.Indented); ;
+
+            File.WriteAllText(StructureManager.Blueprint_FOLDER + filename + ".json", jsonF);
 
             Chat.Send(player, "<color=green>Saved tree: " + filename + "</color>");
 

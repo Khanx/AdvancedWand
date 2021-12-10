@@ -6,7 +6,7 @@ namespace AdvancedWand
     [ModLoader.ModManager]
     public static class AdvancedWandType
     {
-        public static ItemTypes.ItemType wandType = BlockTypes.BuiltinBlocks.Types.bronzeaxe;
+        public static ItemTypes.ItemType wandType = BlockTypes.BuiltinBlocks.Types.bronzetools;
 
         [ModLoader.ModCallback(ModLoader.EModCallbackType.OnPlayerClicked, "Khanx.AdvancedWand.OnPlayerClicked")]
         public static void OnPlayerClicked(Players.Player player, Shared.PlayerClickedData playerClickedData)

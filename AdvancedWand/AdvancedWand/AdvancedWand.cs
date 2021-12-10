@@ -61,7 +61,7 @@ namespace AdvancedWand
                 chunkOrder.Push(chunk);
         }
 
-        [ModLoader.ModCallback(ModLoader.EModCallbackType.OnLateUpdate, "Khanx.AdvancedWand.OnUpdateAction")]
+        [ModLoader.ModCallback(ModLoader.EModCallbackType.OnUpdate, "Khanx.AdvancedWand.OnUpdate")]
         public static void OnUpdate()
         {
             if (Time.MillisecondsSinceStart < nextUpdate)
@@ -124,7 +124,16 @@ namespace AdvancedWand
                         return;
 
                     showWhileHoldingTypes.Add(AdvancedWandType.wandType.ItemIndex);
-                    list.Add(new AreaJobTracker.AreaHighlight(area.Corner1, area.Corner2, Shared.EAreaMeshType.AutoSelect, Shared.EServerAreaType.ConstructionArea));
+
+                    var areaH = new AreaJobTracker.AreaHighlight
+                    {
+                        Minimum = area.Corner1,
+                        Maximum = area.Corner2,
+                        MeshType = Shared.EAreaMeshType.AutoSelect,
+                        AreaType = Shared.EServerAreaType.ConstructionArea
+                    };
+
+                    list.Add(areaH);
                 }
             }
         }
