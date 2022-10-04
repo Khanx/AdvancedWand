@@ -160,8 +160,11 @@ namespace AdvancedWand.Persistence
                 if (!ItemTypes.IndexLookup.TryGetIndex(type_name, out ushort new_type_index))
                     new_type_index = BuiltinBlocks.Indices.missingerror;
 
-                typesTransformation.Add(type_index, new_type_index);
-                types.Add(new_type_index, type_name);
+                if(!typesTransformation.ContainsKey(type_index))
+                    typesTransformation.Add(type_index, new_type_index);
+
+                if (!types.ContainsKey(new_type_index))
+                    types.Add(new_type_index, type_name);
             } //type
 
             blocks = new ushort[xSize, ySize, zSize];
@@ -172,7 +175,10 @@ namespace AdvancedWand.Persistence
                 {
                     for (int z = 0; z < zSize; z++)
                     {
-                        blocks[x, y, z] = typesTransformation.GetValueOrDefault(compressed.ReadVariableUShort(), BuiltinBlocks.Indices.missingerror);
+                        if (typesTransformation.TryGetValue(compressed.ReadVariableUShort(), out ushort type))
+                            blocks[x, y, z] = type;
+                        else
+                            blocks[x, y, z] = BuiltinBlocks.Indices.missingerror;
                     }
                 }
             }

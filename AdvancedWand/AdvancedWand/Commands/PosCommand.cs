@@ -12,9 +12,11 @@ namespace AdvancedWand.Commands
             if (!chat.Trim().ToLower().Equals("//pos1") && !chat.Trim().ToLower().Equals("//pos2"))
                 return false;
 
+            //KHANX: 0.9
+
             //Player exists
-            if (null == player || NetworkID.Server == player.ID)
-                return false;
+            if (null == player)// || NetworkID.Server == player.ID)
+                return true;
 
             //Check permissions
             if (!PermissionsManager.CheckAndWarnPermission(player, "khanx.wand"))

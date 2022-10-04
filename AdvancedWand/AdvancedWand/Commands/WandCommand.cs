@@ -11,8 +11,10 @@ namespace AdvancedWand
             if (!chat.Trim().ToLower().StartsWith("//wand"))
                 return false;
 
+            //KHANX: 0.9
+
             //Player exists
-            if (null == player || NetworkID.Server == player.ID)
+            if (null == player)// || NetworkID.Server == player.ID)
                 return true;
 
             //Check permissions

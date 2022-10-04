@@ -13,8 +13,11 @@ namespace AdvancedWand
             if (!chat.Trim().ToLower().StartsWith("//paste"))
                 return false;
 
-            if (null == player || NetworkID.Server == player.ID)
-                return false;
+            //KHANX: 0.9
+
+            //Player exists
+            if (null == player)// || NetworkID.Server == player.ID)
+                return true;
 
             //Player has permission
             if (!PermissionsManager.CheckAndWarnPermission(player, "khanx.wand"))

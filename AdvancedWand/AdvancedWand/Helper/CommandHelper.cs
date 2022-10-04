@@ -8,9 +8,11 @@ namespace AdvancedWand.Helper
         //Misc checks to call a command
         public static bool CheckCommand(Players.Player player)
         {
+            //KHANX: 0.9
+
             //Player exists
-            if (null == player || NetworkID.Server == player.ID)
-                return false;
+            if (null == player)// || NetworkID.Server == player.ID)
+                return true;
 
             //Player has permission
             if (!PermissionsManager.CheckAndWarnPermission(player, "khanx.wand"))
