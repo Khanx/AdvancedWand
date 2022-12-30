@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using AdvancedWand.Helper;
+using AdvancedWand.Persistence;
 using Chatting;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Pipliz;
-using Pipliz.JSON;
 
 namespace AdvancedWand
 {
@@ -12,19 +14,19 @@ namespace AdvancedWand
     {
         public bool TryDoCommand(Players.Player player, string chat, List<string> splits)
         {
-            if(!chat.Trim().ToLower().StartsWith("//tree"))
+            if (!chat.Trim().ToLower().StartsWith("//tree"))
                 return false;
 
-            if(!CommandHelper.CheckCommand(player))
+            if (!CommandHelper.CheckCommand(player))
                 return true;
 
-            if(0 >= splits.Count)
+            if (0 >= splits.Count)
             {
                 Chat.Send(player, "<color=orange>Wrong Arguments</color>");
                 return true;
             }
 
-            if(!CommandHelper.CheckLimit(player))
+            if (!CommandHelper.CheckLimit(player))
                 return true;
 
             if (!chat.Contains(" "))
@@ -39,7 +41,7 @@ namespace AdvancedWand
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
-            Dictionary<string, List<Vector3Int>> tree = new Dictionary<string, List<Vector3Int>>();
+            Dictionary<string, List<Vector3Int>> tree = new();
 
 
             if (wand.area == null)
@@ -54,13 +56,13 @@ namespace AdvancedWand
                 return true;
             }
 
-            Vector3Int start = wand.area.corner1;
-            Vector3Int end = wand.area.corner2;
+            Vector3Int start = wand.area.Corner1;
+            Vector3Int end = wand.area.Corner2;
 
 
-            Vector3Int center = new Vector3Int((int)System.Math.Ceiling((start.x + end.x)/2.0), start.y, (int)System.Math.Ceiling((start.z + end.z)/2.0));
+            Vector3Int center = new((int)System.Math.Ceiling((start.x + end.x) / 2.0), start.y, (int)System.Math.Ceiling((start.z + end.z) / 2.0));
 
-            Chat.Send(player, "<color=blue>Center: "+ center + "</color>");
+            Chat.Send(player, "<color=blue>Center: " + center + "</color>");
 
             for (int x = start.x; x <= end.x; x++)
             {
@@ -68,7 +70,7 @@ namespace AdvancedWand
                 {
                     for (int z = start.z; z <= end.z; z++)
                     {
-                        Vector3Int newPos = new Vector3Int(x, y, z);
+                        Vector3Int newPos = new(x, y, z);
                         if (World.TryGetTypeAt(newPos, out ItemTypes.ItemType type))
                         {
 
@@ -81,7 +83,7 @@ namespace AdvancedWand
                             }
                             else
                             {
-                                List<Vector3Int> l = new List<Vector3Int>();
+                                List<Vector3Int> l = new();
                                 l.Add(newPos - center);
                                 tree.Add(type.Name, l);
                             }
@@ -90,39 +92,39 @@ namespace AdvancedWand
                 }
             }
 
-            JSONNode json = new JSONNode(NodeType.Array);
-            JSONNode jsonTree = new JSONNode(NodeType.Object);
-            JSONNode jsonBlocks1 = new JSONNode(NodeType.Array);
+            JObject jTree = new JObject();
+            JArray jBlocksOut = new JArray();
 
-            foreach(var i in tree.Keys)
+            foreach (var typeName in tree.Keys)
             {
-                if (i.Equals("air"))
+                if (typeName.Equals("air"))
                     continue;
 
-                JSONNode jsonNodeTree2 = new JSONNode(NodeType.Object);
-                JSONNode jsonBlocks = new JSONNode(NodeType.Array);
-                
-                foreach(var j in tree[i])
+                JObject jBlocks = new JObject();
+                JArray jBlocksPositions = new JArray();
+
+                foreach (var j in tree[typeName])
                 {
-                    JSONNode vector = new JSONNode(NodeType.Object);
+                    JObject vector = new JObject();
                     vector.SetAs("x", j.x);
                     vector.SetAs("y", j.y);
                     vector.SetAs("z", j.z);
 
-                    jsonBlocks.AddToArray(vector);
+                    jBlocksPositions.Add(vector);
                 }
 
-                jsonNodeTree2.SetAs("blocks", jsonBlocks);
-                jsonNodeTree2.SetAs("type", i);
-                jsonBlocks1.AddToArray(jsonNodeTree2);
+                jBlocks.SetAs("blocks", jBlocksPositions);
+                jBlocks.SetAs("type", typeName);
+                jBlocksOut.Add(jBlocks);
             }
 
-            jsonTree.SetAs("blocks", jsonBlocks1);
-            json.AddToArray(jsonTree);
+            jTree.Add("blocks", jBlocksOut);
 
-            JSON.Serialize(BlueprintManager.MODPATH + "/blueprints/" + filename + ".json", json, 2);
+            string jsonF = JsonConvert.SerializeObject(jTree, Formatting.Indented); ;
 
-            Chat.Send(player, "<color=olive>Saved tree: " + filename + "</color>");
+            File.WriteAllText(StructureManager.Blueprint_FOLDER + filename + ".json", jsonF);
+
+            Chat.Send(player, "<color=green>Saved tree: " + filename + "</color>");
 
             return true;
         }
