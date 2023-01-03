@@ -21,14 +21,14 @@ namespace AdvancedWand.Commands
             Vector3Int start = wand.area.Corner1;
             Vector3Int end = wand.area.Corner2;
 
-            Dictionary<ushort, int> info = new();
+            Dictionary<ushort, int> info = new Dictionary<ushort, int>();
 
 
             for (int x = start.x; x <= end.x; x++)
                 for (int y = start.y; y <= end.y; y++)
                     for (int z = start.z; z <= end.z; z++)
                     {
-                        Vector3Int newPos = new(x, y, z);
+                        Vector3Int newPos = new Vector3Int(x, y, z);
                         if (World.TryGetTypeAt(newPos, out ushort actualType))
                         {
 

@@ -10,7 +10,7 @@ namespace AdvancedWand.Persistence
         private int xSize;
         private int ySize;
         private int zSize;
-        public Dictionary<ushort, string> types = new();
+        public Dictionary<ushort, string> types = new Dictionary<ushort, string>();
         private ushort[,,] blocks;
         public Vector3Int playerMod;
 
@@ -92,7 +92,7 @@ namespace AdvancedWand.Persistence
                 {
                     for (int z = start.z; z <= end.z; z++)
                     {
-                        Vector3Int newPos = new(x, y, z);
+                        Vector3Int newPos = new Vector3Int(x, y, z);
                         if (World.TryGetTypeAt(newPos, out ushort type))
                         {
                             if (!types.ContainsKey(type))
@@ -138,7 +138,7 @@ namespace AdvancedWand.Persistence
         {
             byte[] binaryBlueprint = File.ReadAllBytes(file);
 
-            using ByteReader raw = ByteReader.Get(binaryBlueprint);
+            ByteReader raw = ByteReader.Get(binaryBlueprint);
 
             playerMod = raw.ReadVariableVector3Int();
             int typesC = raw.ReadVariableInt();
@@ -148,9 +148,9 @@ namespace AdvancedWand.Persistence
             zSize = raw.ReadVariableInt();
 
             //From one world to another
-            Dictionary<ushort, ushort> typesTransformation = new();
+            Dictionary<ushort, ushort> typesTransformation = new Dictionary<ushort, ushort>();
 
-            using ByteReader compressed = raw.ReadCompressed();
+            ByteReader compressed = raw.ReadCompressed();
 
             for (int i = 0; i < typesC; i++)
             {
@@ -187,7 +187,7 @@ namespace AdvancedWand.Persistence
 
         public override void Save(string name)
         {
-            using ByteBuilder builder = ByteBuilder.Get();
+            ByteBuilder builder = ByteBuilder.Get();
 
             builder.WriteVariable(playerMod);
 

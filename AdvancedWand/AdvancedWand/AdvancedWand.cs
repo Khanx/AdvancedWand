@@ -8,14 +8,14 @@ namespace AdvancedWand
     [ModLoader.ModManager]
     public class AdvancedWand
     {
-        private static readonly Dictionary<Players.Player, AdvancedWand> advancedWands = new();
+        private static readonly Dictionary<Players.Player, AdvancedWand> advancedWands = new Dictionary<Players.Player, AdvancedWand>();
         //It's a Dictionary because in a server can be more than one player
 
         public static int default_limit = 100000;
 
         public bool active = false;
         public int limit;
-        public SelectedArea area = new();
+        public SelectedArea area = new SelectedArea();
         public Structure copy;
 
         private AdvancedWand() { limit = default_limit; }
@@ -33,9 +33,9 @@ namespace AdvancedWand
             return null;
         }
 
-        private static readonly Dictionary<Vector3Int, List<(Vector3Int, ushort, BlockChangeRequestOrigin)>> chunkChanges = new();
-        private static readonly Stack<Vector3Int> chunkOrder = new();
-        private static readonly Queue<Vector3Int> failedChunks = new();
+        private static readonly Dictionary<Vector3Int, List<(Vector3Int, ushort, BlockChangeRequestOrigin)>> chunkChanges = new Dictionary<Vector3Int, List<(Vector3Int, ushort, BlockChangeRequestOrigin)>>();
+        private static readonly Stack<Vector3Int> chunkOrder = new Stack<Vector3Int>();
+        private static readonly Queue<Vector3Int> failedChunks = new Queue<Vector3Int>();
 
         private static long nextUpdate = 0;
         public static long increment = 250;
@@ -50,7 +50,7 @@ namespace AdvancedWand
             }
             else
             {
-                List<(Vector3Int, ushort, BlockChangeRequestOrigin)> changes = new()
+                List<(Vector3Int, ushort, BlockChangeRequestOrigin)> changes = new List<(Vector3Int, ushort, BlockChangeRequestOrigin)>()
                 {
                     (position, type, new BlockChangeRequestOrigin(player))
                 };

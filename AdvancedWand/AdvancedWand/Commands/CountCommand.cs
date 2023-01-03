@@ -49,7 +49,7 @@ namespace AdvancedWand.Commands
                 for (int y = start.y; y <= end.y; y++)
                     for (int z = start.z; z <= end.z; z++)
                     {
-                        Vector3Int newPos = new(x, y, z);
+                        Vector3Int newPos = new Vector3Int(x, y, z);
                         if (World.TryGetTypeAt(newPos, out ushort actualType))
                         {
                             if (actualType == blockIndex)

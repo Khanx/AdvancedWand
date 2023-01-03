@@ -41,7 +41,7 @@ namespace AdvancedWand
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
-            Dictionary<string, List<Vector3Int>> tree = new();
+            Dictionary<string, List<Vector3Int>> tree = new Dictionary<string, List<Vector3Int>>();
 
 
             if (wand.area == null)
@@ -60,7 +60,7 @@ namespace AdvancedWand
             Vector3Int end = wand.area.Corner2;
 
 
-            Vector3Int center = new((int)System.Math.Ceiling((start.x + end.x) / 2.0), start.y, (int)System.Math.Ceiling((start.z + end.z) / 2.0));
+            Vector3Int center = new Vector3Int((int)System.Math.Ceiling((start.x + end.x) / 2.0), start.y, (int)System.Math.Ceiling((start.z + end.z) / 2.0));
 
             Chat.Send(player, "<color=blue>Center: " + center + "</color>");
 
@@ -70,7 +70,7 @@ namespace AdvancedWand
                 {
                     for (int z = start.z; z <= end.z; z++)
                     {
-                        Vector3Int newPos = new(x, y, z);
+                        Vector3Int newPos = new Vector3Int(x, y, z);
                         if (World.TryGetTypeAt(newPos, out ItemTypes.ItemType type))
                         {
 
@@ -83,7 +83,7 @@ namespace AdvancedWand
                             }
                             else
                             {
-                                List<Vector3Int> l = new();
+                                List<Vector3Int> l = new List<Vector3Int>();
                                 l.Add(newPos - center);
                                 tree.Add(type.Name, l);
                             }

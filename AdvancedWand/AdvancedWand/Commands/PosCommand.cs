@@ -31,7 +31,7 @@ namespace AdvancedWand.Commands
                 return true;
             }
 
-            Vector3Int newPos = new(player.Position);
+            Vector3Int newPos = new Vector3Int(player.Position);
 
             if (splits[0].Equals("//pos1"))
             {

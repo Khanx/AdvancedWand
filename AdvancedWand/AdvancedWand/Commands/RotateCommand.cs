@@ -25,19 +25,34 @@ namespace AdvancedWand.Commands
 
             if (2 <= splits.Count)
             {
-                direction = splits[1].Trim().ToLower() switch
+                switch (splits[1].Trim().ToLower())
                 {
-                    "l" or "left" or "270" => 3,
-                    "r" or "right" or "90" => 1,
-                    "b" or "back" or "f" or "flip" or "180" => 2,
-                    _ => 1,
-                };
+                    case "l":
+                    case "left":
+                    case "270":
+                        direction = 3;
+                        break;
+
+                    case "r":
+                    case "right":
+                    case "90":
+                        direction = 1;
+                        break;
+
+                    case "b":
+                    case "back":
+                    case "f":
+                    case "flip":
+                    case "180":
+                        direction = 2;
+                        break;
+                }
             }
 
 
             AdvancedWand wand = AdvancedWand.GetAdvancedWand(player);
 
-            Blueprint blueprint = new(wand.area, player);
+            Blueprint blueprint = new Blueprint(wand.area, player);
 
             Vector3Int start = wand.area.Corner1;
             Vector3Int end = wand.area.Corner2;
@@ -47,7 +62,7 @@ namespace AdvancedWand.Commands
                 for (int y = end.y; y >= start.y; y--)
                     for (int z = end.z; z >= start.z; z--)
                     {
-                        Vector3Int newPos = new(x, y, z);
+                        Vector3Int newPos = new Vector3Int(x, y, z);
                         if (!World.TryGetTypeAt(newPos, out ushort actualType) || actualType != BlockTypes.BuiltinBlocks.Indices.air)
                             AdvancedWand.AddAction(newPos, BlockTypes.BuiltinBlocks.Indices.air, player);
                     }

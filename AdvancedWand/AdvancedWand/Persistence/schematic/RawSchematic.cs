@@ -74,7 +74,7 @@ namespace AdvancedWand.Persistence
                     NbtTag yTag = compTag["y"];
                     NbtTag zTag = compTag["z"];
                     NbtTag idTag = compTag["id"];
-                    SchematicBlock block = new()
+                    SchematicBlock block = new SchematicBlock()
                     {
                         X = xTag.IntValue,
                         Y = yTag.IntValue,

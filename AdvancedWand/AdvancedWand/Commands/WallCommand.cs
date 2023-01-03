@@ -44,13 +44,13 @@ namespace AdvancedWand
                     {
                         if (x == start.x || x == end.x || z == start.z || z == end.z)
                         {
-                            Vector3Int newPos = new(x, y, z);
+                            Vector3Int newPos = new Vector3Int(x, y, z);
                             if (!World.TryGetTypeAt(newPos, out ushort actualType) || actualType != blockIndex)
                                 AdvancedWand.AddAction(newPos, blockIndex, player);
                         }
                         else if (inner != BlockTypes.BuiltinBlocks.Indices.air)
                         {
-                            Vector3Int newPos = new(x, y, z);
+                            Vector3Int newPos = new Vector3Int(x, y, z);
                             if (!World.TryGetTypeAt(newPos, out ushort actualType) || actualType != blockIndex)
                                 AdvancedWand.AddAction(newPos, inner, player);
                         }

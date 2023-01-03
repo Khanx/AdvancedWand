@@ -12,7 +12,7 @@ namespace AdvancedWand.Persistence
         public static string Blueprint_FOLDER = "";
         public static string Schematic_FOLDER = "";
 
-        public static Dictionary<string, string> _structures = new();
+        public static Dictionary<string, string> _structures = new Dictionary<string, string>();
 
         [ModLoader.ModCallback(ModLoader.EModCallbackType.OnAssemblyLoaded, "Khanx.AdvancedWand.GetModPath")]
         public static void GetModPath(string path)

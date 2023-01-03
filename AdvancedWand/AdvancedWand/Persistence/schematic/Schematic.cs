@@ -92,9 +92,9 @@ namespace AdvancedWand.Persistence
 
         public Schematic(string file) : base(file)
         {
-            NbtFile nbtFile = new(file);
+            NbtFile nbtFile = new NbtFile(file);
 
-            RawSchematic raw = new(nbtFile);
+            RawSchematic raw = new RawSchematic(nbtFile);
 
             Name = Path.GetFileNameWithoutExtension(nbtFile.FileName);
             XMax = raw.XMax;
@@ -195,13 +195,13 @@ namespace AdvancedWand.Persistence
 
         public override void Save(string name)
         {
-            List<NbtTag> tags = new();
+            List<NbtTag> tags = new List<NbtTag>();
 
             tags.Add(new NbtInt("Width", XMax));
             tags.Add(new NbtInt("Height", YMax));
             tags.Add(new NbtInt("Length", ZMax));
 
-            List<NbtTag> blocks = new();
+            List<NbtTag> blocks = new List<NbtTag>();
 
             for (int Y = 0; Y < YMax; Y++)
             {
@@ -209,7 +209,7 @@ namespace AdvancedWand.Persistence
                 {
                     for (int X = 0; X < XMax; X++)
                     {
-                        NbtCompound compTag = new();
+                        NbtCompound compTag = new NbtCompound();
                         compTag.Add(new NbtInt("x", X));
                         compTag.Add(new NbtInt("y", Y));
                         compTag.Add(new NbtInt("z", Z));
@@ -219,10 +219,10 @@ namespace AdvancedWand.Persistence
                 }
             }
 
-            NbtList nbtList = new("CSBlocks", blocks);
+            NbtList nbtList = new NbtList("CSBlocks", blocks);
             tags.Add(nbtList);
 
-            NbtFile nbtFile = new(new NbtCompound("CompoundTag", tags));
+            NbtFile nbtFile = new NbtFile(new NbtCompound("CompoundTag", tags));
             var fileSave = Path.Combine(StructureManager.Schematic_FOLDER + name + ".csschematic");
 
             if (File.Exists(fileSave))
