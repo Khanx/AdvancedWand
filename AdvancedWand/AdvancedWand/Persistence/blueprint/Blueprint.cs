@@ -178,7 +178,7 @@ namespace AdvancedWand.Persistence
                         if (typesTransformation.TryGetValue(compressed.ReadVariableUShort(), out ushort type))
                             blocks[x, y, z] = type;
                         else
-                            blocks[x, y, z] = BuiltinBlocks.Indices.missingerror;
+                            blocks[x, y, z] = BuiltinBlocks.Indices.air;
                     }
                 }
             }
